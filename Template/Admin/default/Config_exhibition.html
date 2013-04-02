@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>展览信息设置</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel='stylesheet' type='text/css' href='__PUBLIC__/Admin/css/admin_style.css' />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/formValidator.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/formValidatorRegex.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    
+
+  });
+</script>
+</head>
+<body>
+<form action="?s=Admin/Config/updateweb"  method="post" id="myform">
+<table width="98%" border="0" cellpadding="4" cellspacing="1" class="table">
+<tr class="table_title"><td colspan="2">展览基本信息</td></tr>
+<tr class="ji">
+  <td class="left">展览名称（中文）</td>
+  <td><input type="text" name="con[web_name]" id="web_name" size="35" maxlength="50" value="{$con.web_name}">
+  </td>
+</tr>
+<tr class="tr">
+  <td class="left">展览名称（英文）</td>
+  <td ><input type="text" name="con[web_url]" id="web_url" size="35" maxlength="50" value="{$con.web_url}" >
+  </td>
+</tr>
+<tr class="ji">
+  <td class="left">展览Logo</td>
+  <td><input type="text" name="con[web_path]" id="web_path" size="35" maxlength="50" value="{$con.web_path}" >
+  </td>
+</tr> 
+ <tr class="tr">
+  <td class="left">所属行业</td>
+  <td><input type="text" name="con[web_icp]" id="web_icp" size="35" value="{$con.web_icp}">
+  </td>
+</tr> 
+<tr class="ji">
+  <td class="left">展览时间</td>
+  <td><input type="text" name="con[web_name]" id="web_name" size="35" maxlength="50" value="{$con.web_name}">
+  </td>
+</tr>
+<tr class="tr">
+  <td class="left">日开放时间</td>
+  <td ><input type="text" name="con[web_url]" id="web_url" size="35" maxlength="50" value="{$con.web_url}" >
+  </td>
+</tr>       
+<tr class="ji">
+  <td class="left">地区</td>
+  <td>
+	<select name="province" id="province" onchange="loadArea(this.value,'city')">
+        <option value="-1" selected>省份/直辖市</option>
+        <volist name="province" id="one">
+            <option value="{$one.area_id}">{$one.area_name}</option>
+        </volist>
+    </select>
+    <select name="city" id="city" onchange="loadArea(this.value,'district')">
+        <option value="-1">市/县</option>
+    </select>
+    <select name="district" id="district" onchange="loadArea(this.value,'null')">
+        <option value="-1">镇/区</option>
+    </select>
+  </td>
+</tr>
+<tr class="tr">
+  <td class="left">展览详细地址</td>
+  <td ><input type="text" name="con[web_url]" id="web_url" size="35" maxlength="50" value="{$con.web_url}" >
+  </td>
+</tr>    
+<tr class="ji">
+  <td class="left">展馆名称</td>
+  <td><input type="text" name="con[web_name]" id="web_name" size="35" maxlength="50" value="{$con.web_name}">
+  </td>
+</tr>
+<tr class="tr">
+  <td class="left">网址</td>
+  <td ><input type="text" name="con[web_url]" id="web_url" size="35" maxlength="50" value="{$con.web_url}" >
+  </td>
+</tr>   
+<tr class="ji">
+  <td class="left">主办单位</td>
+  <td title="设置主办单位">
+    <textarea name="con[web_copyright]" id="web_copyright" style="width:500px;height:50px">{$con.web_copyright}</textarea> <br>
+  </td>
+</tr> 
+ <tr class="tr">
+  <td class="left">承办单位</td>
+  <td>
+    <textarea name="con[web_tongji]" id="web_tongji" style="width:500px; height:50px">{$con.web_tongji}</textarea> <br>
+  </td>
+</tr> 
+<tr class="ji">
+  <td class="left">协办单位</td>
+  <td title="设置协办单位">
+    <textarea name="con[web_copyright]" id="web_copyright" style="width:500px;height:50px">{$con.web_copyright}</textarea> <br>
+  </td>
+</tr> 
+ <tr class="tr">
+  <td class="left">支持单位</td>
+  <td>
+    <textarea name="con[web_tongji]" id="web_tongji" style="width:500px; height:50px">{$con.web_tongji}</textarea> <br>
+  </td>
+</tr> 
+<tr class="ji">
+  <td class="left">模板主题方案</td>
+  <td><select name="con_home[default_theme]"><volist name="temp" id="vo"><option value="{$vo.filename}" <eq name="vo.filename" value="$con_home['default_theme']">selected</eq>>{$vo.filename}</option></volist></select> 
+  </td>
+</tr>
+<tr class="table_title"><td colspan="2">联系人设置</td></tr>
+<tr class="tr">
+  <td class="left">联系人</td>
+  <td><input type="text" name="con[web_admin_pagenum]" id="web_admin_pagenum" size="5" maxlength="5" value="{$con.web_admin_pagenum}" style="text-align:center">
+  </td>
+</tr>
+<tr class="ji">
+  <td class="left">联系地址</td>
+  <td><input type="text" name="con[web_home_pagenum]" id="web_home_pagenum" size="5" maxlength="5" value="{$con.web_home_pagenum}" style="text-align:center">
+  </td>
+</tr>
+<tr class="tr">
+<td class="left">邮编</td>
+<td>
+<input type="text" style="text-align:center" name="con[web_adsensepath]" id="web_adsensepath" value="{$con.web_adsensepath}" maxlength="30" size="20" >
+</td>
+</tr>    
+<tr class="ji">
+  <td class="left">电话</td>
+  <td><input type="text" name="con[web_home_pagenum]" id="web_home_pagenum" size="5" maxlength="5" value="{$con.web_home_pagenum}" style="text-align:center">
+  </td>
+</tr>
+<tr class="tr">
+<td class="left">传真</td>
+<td>
+<input type="text" style="text-align:center" name="con[web_adsensepath]" id="web_adsensepath" value="{$con.web_adsensepath}" maxlength="30" size="20" >
+</td>
+</tr>  
+<tr class="ji">
+  <td class="left">手机号码</td>
+  <td><input type="text" name="con[web_home_pagenum]" id="web_home_pagenum" size="5" maxlength="5" value="{$con.web_home_pagenum}" style="text-align:center">
+  </td>
+</tr>
+<tr class="table_title"><td colspan="2">附件上传</td></tr>
+<tr class="tr">
+  <td class="left">展会海报附件</td>
+  <td><input type="text" name="con[web_admin_pagenum]" id="web_admin_pagenum" size="5" maxlength="5" value="{$con.web_admin_pagenum}" style="text-align:center">
+  </td>
+</tr>
+<tr class="ji">
+  <td class="left">展会宣传资料附件</td>
+  <td><input type="text" name="con[web_home_pagenum]" id="web_home_pagenum" size="5" maxlength="5" value="{$con.web_home_pagenum}" style="text-align:center">
+  </td>
+</tr>
+<tr class="tr">
+<td class="left">展会视频附件</td>
+<td>
+<input type="text" style="text-align:center" name="con[web_adsensepath]" id="web_adsensepath" value="{$con.web_adsensepath}" maxlength="30" size="20" >
+</td>
+</tr>    
+<tr class="ji">
+  <td colspan="2">
+    <input class="bginput" type="submit" name="dosubmit" value="提交">
+    <input class="bginput" type="reset" name="Input" value="重置" >
+  </td>
+</tr>
+</table>
+</form>
+</body>
