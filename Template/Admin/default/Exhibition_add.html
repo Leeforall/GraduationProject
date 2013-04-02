@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>展览信息设置</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel='stylesheet' type='text/css' href='__PUBLIC__/Admin/css/admin_style.css' />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/area.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/formValidator.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/formValidatorRegex.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/My97DatePicker/WdatePicker.js"></script>
+
+<script>var ajaxurl="{:U('getArea')}";</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $.formValidator.initConfig({formid:"myform",autotip:true,onerror:function(msg,obj){
+			window.top.art.dialog({content:msg,lock:true,width:250,height:100,ok:function(){$(obj).focus();}});
+		}});
+		$("#name_cn").formValidator({onshow:"请输入用户名",onfocus:"用户名至少3个字符,最多50个字符",oncorrect:"输入正确"}).inputValidator({min:3,empty:{leftempty:false,rightempty:false,emptyerror:"两边不能有空符号"},onerror:"你输入的用户名非法,请确认"})
+		    .ajaxValidator({
+			datatype : "json",
+			async : true,
+			type: "GET",
+			url : "{:U('/Admin/User/check_username',array('userid'=>$info['id']))}",
+			success : function(data){
+	            if( data == "0" ){
+	            	return true;
+	            }else{
+	            	return false;
+	            }
+			},
+			error: function(){
+				window.top.art.dialog({content:"服务器没有返回数据，可能服务器忙，请重试",lock:true,width:250,height:100,ok:function(){}});
+			},
+			onerror : "该用户名已存在，请更换",
+			onwait : "用户名校验中..."
+		})<gt name="info.id" value="0">.defaultPassed()</gt>;
+		
+	$("#mobilephone").formValidator({empty:true,onShow:"请输入联系人的手机号码，可以为空哦",onFocus:"你要是输入了，必须输入正确",onCorrect:"谢谢你的合作",onEmpty:"你真的不想留手机号码啊？"}).inputValidator({min:11,max:11,onError:"手机号码必须是11位的,请确认"}).regexValidator({regExp:"mobile",dataType:"enum",onError:"你输入的手机号码格式不正确"});;
+	$("#telephone").formValidator({empty:true,onShow:"请输入联系人的联系电话，可以为空哦",onFocus:"格式例如：0577-88888888",onCorrect:"谢谢你的合作",onEmpty:"你真的不想留联系电话了吗？"}).regexValidator({regExp:"^(([0\\+]\\d{2,3}-)?(0\\d{2,3})-)?(\\d{7,8})(-(\\d{3,}))?$",onError:"你输入的联系电话格式不正确"});
+    $("#email").formValidator({onShow:"请输入邮箱",onFocus:"邮箱6-100个字符,输入正确了才能离开焦点",onCorrect:"恭喜你,你输对了",defaultValue:"@"}).inputValidator({min:6,max:100,onError:"你输入的邮箱长度非法,请确认"}).regexValidator({regExp:"^([\\w-.]+)@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.)|(([\\w-]+.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$",onError:"你输入的邮箱格式不正确"});
+  });
+</script>
+</head>
+<body>
+<form action="?s=Admin/Exhibition/add"  method="post" id="myform">
+<table width="98%" border="0" cellpadding="4" cellspacing="1" class="table">
+<tr class="table_title"><td colspan="2">展览基本信息</td></tr>
+<tr class="ji">
+  <td class="left">展览名称（中文）</td>
+  <td><input type="text" name="name_cn" id="name_cn" size="35" maxlength="50" value="{$con.web_name}">
+  </td>
+</tr>
+<tr class="tr">
+  <td class="left">展览名称（英文）</td>
+  <td ><input type="text" name="name_en" id="name_en" size="35" maxlength="50" value="{$con.web_url}" >
+  </td>
+</tr>
+<tr class="ji">
+  <td class="left">展览Logo</td>
+  <td><input type="text" name="logo_name" id="logo_name" size="35" maxlength="50" value="{$con.web_path}" >
+  </td>
+</tr> 
+ <tr class="tr">
+  <td class="left">所属行业</td>
+  <td colspan="3" class="lt">
+		<select name="type">
+			<volist name="type" id="vo">
+				<option value="{$vo.id}" <eq name="vo.id" value="$info.role">selected=""</eq> >{$vo.name}</option>
+			</volist>
+		</select>
+   </td>
+</tr> 
+<tr class="ji">
+  <td class="left">展览时间</td>
+  <td>开始<input type="text" name="period_start" id="period_start" size="35" maxlength="50" class="Wdate" 
+    onFocus="WdatePicker({maxDate:'#F{$dp.$D(\\'period_end\\')}'})" />
+      ~ 结束<input type="text" name="period_end" id="period_end" size="35" maxlength="50" class="Wdate"  
+	  onFocus="WdatePicker({minDate:'#F{$dp.$D(\\'period_start\\')}'})" />
+	  
+  </td>
+</tr>
+<tr class="tr">
+  <td class="left">日开放时间</td>
+  <td >开始<input type="text" name="day_start" id="day_start" size="35" maxlength="50" 
+  onfocus="WdatePicker({dateFmt:'H:mm',maxDate:'#F{$dp.$D(\\'day_end\\')}'})" class="Wdate"/>
+       ~ 结束<input type="text" name="day_end" id="day_end" size="35" maxlength="50"
+	   onfocus="WdatePicker({dateFmt:'H:mm',minDate:'#F{$dp.$D(\\'day_start\\')}'})" class="Wdate"/>
+  </td>
+</tr>       
+<tr class="ji">
+  <td class="left">地区</td>
+  <td>
+	<select name="province" id="province" onchange="loadArea(this.value,'city')">
+        <option value="-1" selected>省份/直辖市</option>
+        <volist name="province" id="one">
+            <option value="{$one.area_id}">{$one.area_name}</option>
+        </volist>
+    </select>
+    <select name="city" id="city" onchange="loadArea(this.value,'district')">
+        <option value="-1">市/县</option>
+    </select>
+    <select name="district" id="district" onchange="loadArea(this.value,'null')">
+        <option value="-1">镇/区</option>
+    </select>
+  </td>
+</tr>
+<tr class="tr">
+  <td class="left">展览详细地址</td>
+  <td ><input type="text" name="address" id="address" size="35" maxlength="50" value="{$con.web_url}" >
+  </td>
+</tr>    
+<tr class="ji">
+  <td class="left">展馆名称</td>
+  <td><input type="text" name="hall" id="hall" size="35" maxlength="50" value="{$con.web_name}">
+  </td>
+</tr>
+<tr class="tr">
+  <td class="left">网址</td>
+  <td ><input type="text" name="website" id="website" size="35" maxlength="50" value="{$con.web_url}" >
+  </td>
+</tr>   
+<tr class="ji">
+  <td class="left">主办单位</td>
+  <td title="设置主办单位">
+    <textarea name="organizer" id="organizer" style="width:500px;height:75px">{$con.web_copyright}</textarea> <br>
+  </td>
+</tr> 
+ <tr class="tr">
+  <td class="left">承办单位</td>
+  <td>
+    <textarea name="host" id="host" style="width:500px; height:75px">{$con.web_tongji}</textarea> <br>
+  </td>
+</tr> 
+<tr class="ji">
+  <td class="left">协办单位</td>
+  <td title="设置协办单位">
+    <textarea name="coorganizer" id="coorganizer" style="width:500px;height:75px">{$con.web_copyright}</textarea> <br>
+  </td>
+</tr> 
+ <tr class="tr">
+  <td class="left">支持单位</td>
+  <td>
+    <textarea name="supporter" id="supporter" style="width:500px; height:75px">{$con.web_tongji}</textarea> <br>
+  </td>
+</tr> 
+<tr class="ji">
+  <td class="left">展会状态：</td>
+	<td>
+		<input type="radio" class="radio" value="1" name="onshow" id="onshow1" <if condition="($info.onshow eq 1) OR ($info['onshow'] eq '') ">checked=""</if> >举办中
+		<input type="radio" class="radio" value="0" name="onshow" id="onshow2" <eq name="info.onshow" value="0">checked=""</eq> >筹备中
+	</td>
+</tr>
+<tr class="table_title"><td colspan="2">联系人设置</td></tr>
+<tr class="tr">
+  <td class="left">联系人</td>
+  <td><input type="text" name="contact" id="contact" size="20" maxlength="5" value="{$con.web_admin_pagenum}" >
+  </td>
+</tr>
+<tr class="ji">
+  <td class="left">联系地址</td>
+  <td><input type="text" name="contact_add" id="contact_add" size="20" maxlength="5" value="{$con.web_home_pagenum}" >
+  </td>
+</tr>
+<tr class="tr">
+<td class="left">邮编</td>
+<td>
+<input type="text" name="postcode" id="postcode" value="{$con.web_adsensepath}" maxlength="30" size="20" >
+</td>
+</tr>    
+<tr class="ji">
+  <td class="left">电话</td>
+  <td><input type="text" name="telephone" id="telephone" size="20" maxlength="5" value="{$con.web_home_pagenum}" >
+  </td>
+</tr>
+<tr class="tr">
+<td class="left">传真</td>
+<td>
+<input type="text" name="fax" id="fax" value="{$con.web_adsensepath}" maxlength="30" size="20" >
+</td>
+</tr>  
+<tr class="ji">
+  <td class="left">手机号码</td>
+  <td><input type="text" name="mobilephone" id="mobilephone" size="20" maxlength="5" value="{$con.web_home_pagenum}" >
+  </td>
+</tr>
+<tr class="table_title"><td colspan="2">附件上传</td></tr>
+<tr class="tr">
+  <td class="left">展会海报附件</td>
+  <td><input type="text" name="attachment_pic" id="attachment_pic" size="15" maxlength="5" value="{$con.web_admin_pagenum}" >
+  </td>
+</tr>
+<tr class="ji">
+  <td class="left">展会宣传资料附件</td>
+  <td><input type="text" name="attachment_doc" id="attachment_doc" size="15" maxlength="5" value="{$con.web_home_pagenum}" >
+  </td>
+</tr>
+<tr class="tr">
+<td class="left">展会视频附件</td>
+<td>
+<input type="text" name="attachment_vedio" id="attachment_vedio" value="{$con.web_adsensepath}" maxlength="5" size="15" >
+</td>
+</tr>
+<tr class="ji">
+	<td >展会状态：</td>
+	<td colspan="3" class="lt">
+		<input type="radio" class="radio" value="1" name="status" id="status1" <if condition="($info.status eq 1) OR ($info['status'] eq '') ">checked=""</if> >启用
+		<input type="radio" class="radio" value="0" name="status" id="status2" <eq name="info.status" value="0">checked=""</eq> >关闭
+	</td>
+</tr>    
+<tr class="tr">
+  <td colspan="2">
+    <input class="bginput" type="submit" name="dosubmit" value="提交">
+    <input class="bginput" type="reset" name="Input" value="重置" >
+  </td>
+</tr>
+</table>
+</form>
+</body>

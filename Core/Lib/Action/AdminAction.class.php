@@ -29,5 +29,17 @@ class AdminAction extends CmsAction{
         }
 
     }
-
+/*
+	public function getProvince(){
+		//获取省级地区
+        $province=D('areas')->where(array('parent_id'=>1))->select();
+		return $province;
+	}
+	
+	public function getArea(){
+        $where['parent_id']=$_REQUEST['areaId'];
+        $area=D('areas')->where($where)->select();
+        $this->ajaxReturn($area);
+    }
+	*/
 }
