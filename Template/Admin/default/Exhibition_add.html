@@ -9,8 +9,59 @@
 <script type="text/javascript" src="__PUBLIC__/js/formValidator.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/formValidatorRegex.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/My97DatePicker/WdatePicker.js"></script>
-
+<script type="text/javascript" src="__PUBLIC__/js/swfupload/swfupload.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/handlers.js"></script>
 <script>var ajaxurl="{:U('getArea')}";</script>
+<script type="text/javascript">
+
+
+		var swfu;
+		window.onload = function () {
+			swfu = new SWFUpload({
+				// Backend Settings
+				upload_url: "upload.php",
+				post_params: {"PHPSESSID": "<?php echo session_id(); ?>"},
+
+				// File Upload Settings
+				file_size_limit : "2 MB",	// 2MB
+				file_types : "*.jpg",
+				file_types_description : "JPG Images",
+				file_upload_limit : 1,
+
+				// Event Handler Settings - these functions as defined in Handlers.js
+				//  The handlers are not part of SWFUpload but are part of my website and control how
+				//  my website reacts to the SWFUpload events.
+				file_queue_error_handler : fileQueueError,
+				file_dialog_complete_handler : fileDialogComplete,
+				upload_progress_handler : uploadProgress,
+				upload_error_handler : uploadError,
+				upload_success_handler : uploadSuccess,
+				upload_complete_handler : uploadComplete,
+
+				// Button Settings
+				button_image_url : "__PUBLIC__/images/SmallSpyGlassWithTransperancy_17x18.png",
+				button_placeholder_id : "spanButtonPlaceholder",
+				button_width: 180,
+				button_height: 18,
+				button_text : '<span class="button">请选择Logo文件<span class="buttonSmall">(不超过2M)</span></span>',
+				button_text_style : '.button { font-family: Helvetica, Arial, sans-serif; font-size: 12pt; } .buttonSmall { font-size: 10pt; }',
+				button_text_top_padding: 0,
+				button_text_left_padding: 18,
+				button_window_mode: SWFUpload.WINDOW_MODE.TRANSPARENT,
+				button_cursor: SWFUpload.CURSOR.HAND,
+				
+				// Flash Settings
+				flash_url : "__PUBLIC__/js/swfupload/swfupload.swf",
+
+				custom_settings : {
+					upload_target : "divFileProgressContainer"
+				},
+				
+				// Debug Settings
+				debug: false
+			});
+		};
+</script>
 <script type="text/javascript">
   $(document).ready(function(){
     $.formValidator.initConfig({formid:"myform",autotip:true,onerror:function(msg,obj){
@@ -34,15 +85,21 @@
 			},
 			onerror : "该用户名已存在，请更换",
 			onwait : "用户名校验中..."
-		})<gt name="info.id" value="0">.defaultPassed()</gt>;
-		
-	$("#mobilephone").formValidator({empty:true,onShow:"请输入联系人的手机号码，可以为空哦",onFocus:"你要是输入了，必须输入正确",onCorrect:"谢谢你的合作",onEmpty:"你真的不想留手机号码啊？"}).inputValidator({min:11,max:11,onError:"手机号码必须是11位的,请确认"}).regexValidator({regExp:"mobile",dataType:"enum",onError:"你输入的手机号码格式不正确"});;
-	$("#telephone").formValidator({empty:true,onShow:"请输入联系人的联系电话，可以为空哦",onFocus:"格式例如：0577-88888888",onCorrect:"谢谢你的合作",onEmpty:"你真的不想留联系电话了吗？"}).regexValidator({regExp:"^(([0\\+]\\d{2,3}-)?(0\\d{2,3})-)?(\\d{7,8})(-(\\d{3,}))?$",onError:"你输入的联系电话格式不正确"});
-    $("#email").formValidator({onShow:"请输入邮箱",onFocus:"邮箱6-100个字符,输入正确了才能离开焦点",onCorrect:"恭喜你,你输对了",defaultValue:"@"}).inputValidator({min:6,max:100,onError:"你输入的邮箱长度非法,请确认"}).regexValidator({regExp:"^([\\w-.]+)@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.)|(([\\w-]+.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$",onError:"你输入的邮箱格式不正确"});
+		});
+	//$("#mobilephone").formValidator({onshow:"请输入联系人的手机号码，可以为空哦",onfocus:"你要是输入了，必须输入正确",oncorrect:"谢谢你的合作",onempty:"你真的不想留手机号码啊？"}).inputValidator({min:11,max:11,onerror:"手机号码必须是11位的,请确认"}).regexValidator({regexp:"mobile",datatype:"enum",onerror:"你输入的手机号码格式不正确"});;
+	//$("#telephone").formValidator({onshow:"请输入联系人的联系电话，可以为空哦",onfocus:"格式例如：0577-88888888",oncorrect:"谢谢你的合作",onempty:"你真的不想留联系电话了吗？"}).regexValidator({regexp:"^(([0\\+]\\d{2,3}-)?(0\\d{2,3})-)?(\\d{7,8})(-(\\d{3,}))?$",onerror:"你输入的联系电话格式不正确"});
+    $("#email").formValidator({onshow:"请输入邮箱",onfocus:"邮箱6-100个字符,输入正确了才能离开焦点",oncorrect:"恭喜你,你输对了",defaultvalue:"@"}).inputValidator({min:6,max:100,onError:"你输入的邮箱长度非法,请确认"}).regexValidator({regexp:"^([\\w-.]+)@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.)|(([\\w-]+.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$",onerror:"你输入的邮箱格式不正确"});
+	
+	$("#organizer").formValidator({onshow:"请输入主办单位"}).inputValidator({max:250,onerror:"你输入的描述长度不正确,请确认"});
+	$("#host").formValidator({onshow:"请输入承办单位"}).inputValidator({max:250,onError:"你输入的描述长度不正确,请确认"});
+	$("#coorganizer").formValidator({onshow:"请输入协办单位"}).inputValidator({max:250,onerror:"你输入的描述长度不正确,请确认"});
+	$("#supporter").formValidator({onshow:"请输入支持单位"}).inputValidator({max:250,onerror:"你输入的描述长度不正确,请确认"});
+	
   });
 </script>
 </head>
 <body>
+
 <form action="?s=Admin/Exhibition/add"  method="post" id="myform">
 <table width="98%" border="0" cellpadding="4" cellspacing="1" class="table">
 <tr class="table_title"><td colspan="2">展览基本信息</td></tr>
@@ -58,7 +115,11 @@
 </tr>
 <tr class="ji">
   <td class="left">展览Logo</td>
-  <td><input type="text" name="logo_name" id="logo_name" size="35" maxlength="50" value="{$con.web_path}" >
+  <td>
+     <div id="divFileProgressContainer" style="height: 30px;"></div>
+	 <div><span id="spanButtonPlaceholder"></span></div>
+	 <div id="thumbnails"></div>
+	 <input type="text" name="logo" id="logo" size="35" maxlength="50" readOnly="true" >
   </td>
 </tr> 
  <tr class="tr">
@@ -145,7 +206,7 @@
   </td>
 </tr> 
 <tr class="ji">
-  <td class="left">展会状态：</td>
+  <td class="left">展会举办状态：</td>
 	<td>
 		<input type="radio" class="radio" value="1" name="onshow" id="onshow1" <if condition="($info.onshow eq 1) OR ($info['onshow'] eq '') ">checked=""</if> >举办中
 		<input type="radio" class="radio" value="0" name="onshow" id="onshow2" <eq name="info.onshow" value="0">checked=""</eq> >筹备中
@@ -184,23 +245,6 @@
   <td><input type="text" name="mobilephone" id="mobilephone" size="20" maxlength="5" value="{$con.web_home_pagenum}" >
   </td>
 </tr>
-<tr class="table_title"><td colspan="2">附件上传</td></tr>
-<tr class="tr">
-  <td class="left">展会海报附件</td>
-  <td><input type="text" name="attachment_pic" id="attachment_pic" size="15" maxlength="5" value="{$con.web_admin_pagenum}" >
-  </td>
-</tr>
-<tr class="ji">
-  <td class="left">展会宣传资料附件</td>
-  <td><input type="text" name="attachment_doc" id="attachment_doc" size="15" maxlength="5" value="{$con.web_home_pagenum}" >
-  </td>
-</tr>
-<tr class="tr">
-<td class="left">展会视频附件</td>
-<td>
-<input type="text" name="attachment_vedio" id="attachment_vedio" value="{$con.web_adsensepath}" maxlength="5" size="15" >
-</td>
-</tr>
 <tr class="ji">
 	<td >展会状态：</td>
 	<td colspan="3" class="lt">
@@ -208,12 +252,11 @@
 		<input type="radio" class="radio" value="0" name="status" id="status2" <eq name="info.status" value="0">checked=""</eq> >关闭
 	</td>
 </tr>    
-<tr class="tr">
-  <td colspan="2">
+</table>
+<div id="bootline"></div>
+<div id="btnbox" class="btn">
     <input class="bginput" type="submit" name="dosubmit" value="提交">
     <input class="bginput" type="reset" name="Input" value="重置" >
-  </td>
-</tr>
-</table>
+</div>
 </form>
 </body>

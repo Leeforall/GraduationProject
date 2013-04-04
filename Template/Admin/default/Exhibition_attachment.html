@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>展览信息设置</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel='stylesheet' type='text/css' href='__PUBLIC__/Admin/css/admin_style.css' />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/js/artDialog/skins/default.css?4.1.6">
+<script type="text/javascript" src="__PUBLIC__/js/artDialog/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="__PUBLIC__/js/artDialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/swfupload.js"></script>
+</head>
+<body>
+<table width="98%" border="0" cellpadding="4" cellspacing="1" class="table">
+	<tr class="table_title"><td colspan="2">附件上传</td></tr>
+	<tr class="tr">
+	  <td class="left">展会资料附件</td>
+	  <td id="box_pics">
+	    <fieldset class="images_box">
+        <legend>资料上传</legend>
+		<center>
+		<div>最多同时可以上传 
+		<font color="red">20</font> 张</div>
+		</center>
+		<div id="pics_images" class="imagesList">
+		<input type="hidden" name="pics[]" value="">
+		<input type="hidden" name="pics_name[]" value=""></div>
+		</fieldset>
+		<div class="c"></div>
+		<input type="button" class="button" value="图片上传" onclick="javascript:swfupload('pics_uploadfile','pics','文件上传',1,1,0,20,'jpeg,jpg,png,gif',2,4,'73b5ugM1j0IpGu3eMjssTj2XUiJeDNpwdo2AZHmziyB5TtcllwJqo++mqOzAcg6Tkc/zNHie53kUTg',up_images,nodo)"> 
+	</td>
+	</tr>
+	<tr  class="ji">
+	
+	
+	<td class="left" >展会图片附件</td>
+	
+	<td id="box_pics">
+	    <fieldset class="images_box">
+        <legend>图片上传</legend>
+		<center>
+		<div>最多同时可以上传 
+		<font color="red">20</font> 张</div>
+		</center>
+		<div id="pics_images" class="imagesList">
+		<input type="hidden" name="pics[]" value="">
+		<input type="hidden" name="pics_name[]" value=""></div>
+		</fieldset>
+		<div class="c"></div>
+		<input type="button" class="button" value="图片上传" onclick="javascript:swfupload('pics_uploadfile','pics','文件上传',1,1,0,20,'jpeg,jpg,png,gif',2,4,'73b5ugM1j0IpGu3eMjssTj2XUiJeDNpwdo2AZHmziyB5TtcllwJqo++mqOzAcg6Tkc/zNHie53kUTg',up_images,nodo)"> 
+	</td>
+	</tr>
+	<tr  class="tr">
+	<td class="left" >展会视频附件</td>
+	
+	<td id="box_pics">
+	    <fieldset class="images_box">
+        <legend>视频上传</legend>
+		<center>
+		<div>最多同时可以上传 
+		<font color="red">20</font> 张</div>
+		</center>
+		<div id="pics_images" class="imagesList">
+		<input type="hidden" name="pics[]" value="">
+		<input type="hidden" name="pics_name[]" value=""></div>
+		</fieldset>
+		<div class="c"></div>
+		<input type="button" class="button" value="图片上传" onclick="javascript:swfupload('pics_uploadfile','pics','文件上传',1,1,0,20,'jpeg,jpg,png,gif',2,4,'73b5ugM1j0IpGu3eMjssTj2XUiJeDNpwdo2AZHmziyB5TtcllwJqo++mqOzAcg6Tkc/zNHie53kUTg',up_images,nodo)"> 
+		
+	</td>
+	</tr>
+</table>
+</body>
