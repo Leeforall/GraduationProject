@@ -311,6 +311,73 @@ INSERT INTO `tp_user` (`id`, `username`, `password`, `role`, `status`, `remark`,
 
 -- ----------------------------------------------------------------------------
 
+CREATE TABLE IF NOT EXISTS `tp_exhibition` (
+	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+	`name_cn` varchar(50) NOT NULL DEFAULT '',
+	`name_en` varchar(50) NOT NULL DEFAULT '',
+	`period_start` datetime DEFAULT NULL,
+	`period_end`  datetime DEFAULT NULL,
+	`day_start` time DEFAULT NULL,
+	`day_end`  time DEFAULT NULL,
+	`logo_name` varchar(50) NOT NULL DEFAULT '',
+	`logo_url` varchar(80) NOT NULL DEFAULT '',
+	`is_on_show` tinyint(1) unsigned NOT NULL DEFAULT '0',
+	`type_id` smallint(6) unsigned NOT NULL default '0' ,
+	`province_id` smallint(6) unsigned NOT NULL default '0' ,
+	`city_id` smallint(6) unsigned NOT NULL default '0' ,
+	`district_id` smallint(6) unsigned NOT NULL default '0' ,
+	`address`	varchar(50) NOT NULL DEFAULT '',
+	`hall`  varchar(30) NOT NULL DEFAULT '',
+	`website` varchar(50) NOT NULL DEFAULT '',
+	`organizer` varchar(250) NOT NULL DEFAULT '',
+	`host` varchar(250) NOT NULL DEFAULT '',
+	`coorganizer` varchar(250) NOT NULL DEFAULT '',
+	`supporter` varchar(250) NOT NULL DEFAULT '',
+	`description` varchar(250) NOT NULL DEFAULT '',
+	`contact` varchar(10) NOT NULL DEFAULT '',
+	`contact_add` varchar(50) NOT NULL DEFAULT '',
+	`postcode` varchar(10) NOT NULL DEFAULT '',
+	`telephone` varchar(20) NOT NULL DEFAULT '',
+	`mobilephone` varchar(20) NOT NULL DEFAULT '',
+	`fax` varchar(20) NOT NULL DEFAULT '',
+	`status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否激活 1：是 0：否',
+	`createtime` int(10) unsigned NOT NULL DEFAULT '0',
+	`is_verified` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否审核 1：是 0：否',
+	PRIMARY KEY (`id`),
+	KEY `name_cn` (`name_cn`),
+	KEY `province_id` (`province_id`),
+	KEY `city_id` (`city_id`),
+	KEY `district_id` (`district_id`),
+	KEY `is_on_show` (`is_on_show`),
+	KEY `type_id` (`type_id`),
+	KEY `status` (`status`),
+	KEY `is_verified` (`is_verified`)
+) ENGINE=MyISAM AUTO_INCREMENT=80 DEFAULT CHARSET=utf8;
+
+
+-- ----tp_attachment--------------
+
+CREATE TABLE IF NOT EXISTS `tp_attachment` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `exhibitionid` int(10) unsigned NOT NULL DEFAULT '0',
+  `exhibitid` int(10) unsigned NOT NULL DEFAULT '0',
+  `filename` varchar(50) NOT NULL DEFAULT '',
+  `filepath` varchar(80) NOT NULL DEFAULT '',
+  `filesize` int(10) unsigned NOT NULL DEFAULT '0',
+  `fileext` char(10) NOT NULL DEFAULT '',
+  `isimage` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `isthumb` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `isvideo` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `isdoc` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  `createtime` int(10) unsigned NOT NULL DEFAULT '0',
+  `uploadip` char(15) NOT NULL DEFAULT '',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=80 DEFAULT CHARSET=utf8;
+
+
+
 -- 
 -- 表的结构 `tp_areas`
 -- 
@@ -3737,4 +3804,9 @@ INSERT INTO `tp_areas` VALUES (3405, 3401, '包河区', 3);
 INSERT INTO `tp_areas` VALUES (3406, 3401, '长丰县', 3);
 INSERT INTO `tp_areas` VALUES (3407, 3401, '肥东县', 3);
 INSERT INTO `tp_areas` VALUES (3408, 3401, '肥西县', 3);
+
+
+
+
+
 

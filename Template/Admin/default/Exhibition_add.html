@@ -19,9 +19,9 @@
 		window.onload = function () {
 			swfu = new SWFUpload({
 				// Backend Settings
-				upload_url: "upload.php",
+				upload_url:"{:U('uploadLogo')}" ,
 				post_params: {"PHPSESSID": "<?php echo session_id(); ?>"},
-
+                file_post_name : "filedata",
 				// File Upload Settings
 				file_size_limit : "2 MB",	// 2MB
 				file_types : "*.jpg",
@@ -119,13 +119,14 @@
      <div id="divFileProgressContainer" style="height: 30px;"></div>
 	 <div><span id="spanButtonPlaceholder"></span></div>
 	 <div id="thumbnails"></div>
-	 <input type="text" name="logo" id="logo" size="35" maxlength="50" readOnly="true" >
+	 <input type="text" name="logo_url" id="logo_url" size="35" maxlength="80" readOnly="true" >
+	 <input type="hidden" name="logo_name" id="logo_name" size="35" maxlength="50" readOnly="true" >
   </td>
 </tr> 
  <tr class="tr">
   <td class="left">所属行业</td>
   <td colspan="3" class="lt">
-		<select name="type">
+		<select name="type_id">
 			<volist name="type" id="vo">
 				<option value="{$vo.id}" <eq name="vo.id" value="$info.role">selected=""</eq> >{$vo.name}</option>
 			</volist>
@@ -152,16 +153,16 @@
 <tr class="ji">
   <td class="left">地区</td>
   <td>
-	<select name="province" id="province" onchange="loadArea(this.value,'city')">
+	<select name="province_id" id="province" onchange="loadArea(this.value,'city')">
         <option value="-1" selected>省份/直辖市</option>
         <volist name="province" id="one">
             <option value="{$one.area_id}">{$one.area_name}</option>
         </volist>
     </select>
-    <select name="city" id="city" onchange="loadArea(this.value,'district')">
+    <select name="city_id" id="city" onchange="loadArea(this.value,'district')">
         <option value="-1">市/县</option>
     </select>
-    <select name="district" id="district" onchange="loadArea(this.value,'null')">
+    <select name="district_id" id="district" onchange="loadArea(this.value,'null')">
         <option value="-1">镇/区</option>
     </select>
   </td>
@@ -184,43 +185,43 @@
 <tr class="ji">
   <td class="left">主办单位</td>
   <td title="设置主办单位">
-    <textarea name="organizer" id="organizer" style="width:500px;height:75px">{$con.web_copyright}</textarea> <br>
+    <textarea name="organizer" id="organizer" style="width:500px;height:75px"></textarea> <br>
   </td>
 </tr> 
  <tr class="tr">
   <td class="left">承办单位</td>
   <td>
-    <textarea name="host" id="host" style="width:500px; height:75px">{$con.web_tongji}</textarea> <br>
+    <textarea name="host" id="host" style="width:500px; height:75px"></textarea> <br>
   </td>
 </tr> 
 <tr class="ji">
   <td class="left">协办单位</td>
   <td title="设置协办单位">
-    <textarea name="coorganizer" id="coorganizer" style="width:500px;height:75px">{$con.web_copyright}</textarea> <br>
+    <textarea name="coorganizer" id="coorganizer" style="width:500px;height:75px"></textarea> <br>
   </td>
 </tr> 
  <tr class="tr">
   <td class="left">支持单位</td>
   <td>
-    <textarea name="supporter" id="supporter" style="width:500px; height:75px">{$con.web_tongji}</textarea> <br>
+    <textarea name="supporter" id="supporter" style="width:500px; height:75px"></textarea> <br>
   </td>
 </tr> 
 <tr class="ji">
-  <td class="left">展会举办状态：</td>
+  <td class="left">举办状态：</td>
 	<td>
-		<input type="radio" class="radio" value="1" name="onshow" id="onshow1" <if condition="($info.onshow eq 1) OR ($info['onshow'] eq '') ">checked=""</if> >举办中
-		<input type="radio" class="radio" value="0" name="onshow" id="onshow2" <eq name="info.onshow" value="0">checked=""</eq> >筹备中
+		<input type="radio" class="radio" value="1" name="is_on_show" id="onshow1" <if condition="($info.is_on_show eq 1) OR ($info['is_on_show'] eq '') ">checked=""</if> >举办中
+		<input type="radio" class="radio" value="0" name="is_on_show" id="onshow2" <eq name="info.is_on_show" value="0">checked=""</eq> >筹备中
 	</td>
 </tr>
 <tr class="table_title"><td colspan="2">联系人设置</td></tr>
 <tr class="tr">
   <td class="left">联系人</td>
-  <td><input type="text" name="contact" id="contact" size="20" maxlength="5" value="{$con.web_admin_pagenum}" >
+  <td><input type="text" name="contact" id="contact" size="20" maxlength="5" >
   </td>
 </tr>
 <tr class="ji">
   <td class="left">联系地址</td>
-  <td><input type="text" name="contact_add" id="contact_add" size="20" maxlength="5" value="{$con.web_home_pagenum}" >
+  <td><input type="text" name="contact_add" id="contact_add" size="20" maxlength="5" >
   </td>
 </tr>
 <tr class="tr">
@@ -231,18 +232,18 @@
 </tr>    
 <tr class="ji">
   <td class="left">电话</td>
-  <td><input type="text" name="telephone" id="telephone" size="20" maxlength="5" value="{$con.web_home_pagenum}" >
+  <td><input type="text" name="telephone" id="telephone" size="20" maxlength="5" >
   </td>
 </tr>
 <tr class="tr">
 <td class="left">传真</td>
 <td>
-<input type="text" name="fax" id="fax" value="{$con.web_adsensepath}" maxlength="30" size="20" >
+<input type="text" name="fax" id="fax"  maxlength="30" size="20" >
 </td>
 </tr>  
 <tr class="ji">
   <td class="left">手机号码</td>
-  <td><input type="text" name="mobilephone" id="mobilephone" size="20" maxlength="5" value="{$con.web_home_pagenum}" >
+  <td><input type="text" name="mobilephone" id="mobilephone" size="20" maxlength="5"  >
   </td>
 </tr>
 <tr class="ji">

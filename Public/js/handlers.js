@@ -66,15 +66,23 @@ function uploadSuccess(file, serverData) {
 	try {
 		var progress = new FileProgress(file,  this.customSettings.upload_target);
 
-		alert(serverData);
-		if (serverData.substring(0, 7) === "FILEID:") {
-			addImage("thumbnail.php?id="+serverData.substring(7));
-
-			progress.setStatus("Thumbnail Created.");
+		progress.setComplete();
+		serverData=eval('('+serverData+')')
+		if (serverData.status==1){
+			var src = serverData.data.filepath; 
+			var filename = serverData.data.filename;
+			addImage(src);
+			var URL_input=document.getElementById("logo_url");
+			var Name_input=document.getElementById("logo_name");
+			URL_input.value=src;
+			Name_input.value=filename;
+			progress.setStatus("会展Logo缩略图生成");
 			progress.toggleCancel(false);
+			
+			
 		} else {
-			addImage("Public/images/error.gif");
-			progress.setStatus("Error.");
+			//addImage("Public/images/error.gif");
+			progress.setStatus("上传出错");
 			progress.toggleCancel(false);
 		}
 
@@ -145,8 +153,6 @@ function uploadError(file, errorCode, message) {
 
 function addImage(src) {
 	var newImg = document.createElement("img");
-	var logoinput=document.getElementById("logo");
-	logoinput.value=src;
 	newImg.style.margin = "5px";
 
 	document.getElementById("thumbnails").appendChild(newImg);
