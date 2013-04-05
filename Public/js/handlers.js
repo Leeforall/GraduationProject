@@ -66,7 +66,6 @@ function uploadSuccess(file, serverData) {
 	try {
 		var progress = new FileProgress(file,  this.customSettings.upload_target);
 
-		alert(serverData);
 		progress.setComplete();
 		serverData=eval('('+serverData+')')
 		if (serverData.status==1){
