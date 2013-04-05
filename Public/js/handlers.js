@@ -66,6 +66,7 @@ function uploadSuccess(file, serverData) {
 	try {
 		var progress = new FileProgress(file,  this.customSettings.upload_target);
 
+		alert(serverData);
 		progress.setComplete();
 		serverData=eval('('+serverData+')')
 		if (serverData.status==1){
@@ -100,7 +101,6 @@ function uploadComplete(file) {
 		} else {
 			var progress = new FileProgress(file,  this.customSettings.upload_target);
 			progress.setComplete();
-			progress.setStatus("Logo 上传成功");
 			progress.toggleCancel(false);
 		}
 	} catch (ex) {

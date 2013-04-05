@@ -19,11 +19,11 @@
 		window.onload = function () {
 			swfu = new SWFUpload({
 				// Backend Settings
-				upload_url:"{:U('uploadLogo')}" ,
+				upload_url:"{:U('Admin/Attachment/uploadLogo')}" ,
 				post_params: {"PHPSESSID": "<?php echo session_id(); ?>"},
                 file_post_name : "filedata",
 				// File Upload Settings
-				file_size_limit : "2 MB",	// 2MB
+				file_size_limit : "3 MB",	// 2MB
 				file_types : "*.jpg",
 				file_types_description : "JPG Images",
 				file_upload_limit : 1,
@@ -58,7 +58,7 @@
 				},
 				
 				// Debug Settings
-				debug: false
+				debug: true
 			});
 		};
 </script>
@@ -99,164 +99,185 @@
 </script>
 </head>
 <body>
-
-<form action="?s=Admin/Exhibition/add"  method="post" id="myform">
-<table width="98%" border="0" cellpadding="4" cellspacing="1" class="table">
-<tr class="table_title"><td colspan="2">展览基本信息</td></tr>
-<tr class="ji">
-  <td class="left">展览名称（中文）</td>
-  <td><input type="text" name="name_cn" id="name_cn" size="35" maxlength="50" value="{$con.web_name}">
-  </td>
-</tr>
-<tr class="tr">
-  <td class="left">展览名称（英文）</td>
-  <td ><input type="text" name="name_en" id="name_en" size="35" maxlength="50" value="{$con.web_url}" >
-  </td>
-</tr>
-<tr class="ji">
-  <td class="left">展览Logo</td>
-  <td>
-     <div id="divFileProgressContainer" style="height: 30px;"></div>
-	 <div><span id="spanButtonPlaceholder"></span></div>
-	 <div id="thumbnails"></div>
-	 <input type="text" name="logo_url" id="logo_url" size="35" maxlength="80" readOnly="true" >
-	 <input type="hidden" name="logo_name" id="logo_name" size="35" maxlength="50" readOnly="true" >
-  </td>
-</tr> 
- <tr class="tr">
-  <td class="left">所属行业</td>
-  <td colspan="3" class="lt">
-		<select name="type_id">
-			<volist name="type" id="vo">
-				<option value="{$vo.id}" <eq name="vo.id" value="$info.role">selected=""</eq> >{$vo.name}</option>
+	<gt name="info.id" value="0">
+		<form action="{:U('Admin/Exhibition/edit')}" method="post" name="form" id="myform">
+		<input type="hidden" name="id" value="{$info.id}">
+	<else />
+		<form action="?s=Admin/Exhibition/add"  method="post" id="myform">
+    </gt>
+		<table width="98%" border="0" cellpadding="4" cellspacing="1" class="table">
+	<tr class="table_title"><td colspan="2">展览基本信息</td></tr>
+	<tr class="ji">
+	  <td class="left">展览名称（中文）</td>
+	  <td><input type="text" name="name_cn" id="name_cn" size="35" maxlength="50" value="{$info.name_cn}">
+	  </td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">展览名称（英文）</td>
+	  <td ><input type="text" name="name_en" id="name_en" size="35" maxlength="50" value="{$info.name_en}" >
+	  </td>
+	</tr>
+	<tr class="ji">
+	  <td class="left">展览Logo</td>
+	  <td>
+		 <div id="divFileProgressContainer" style="height: 30px;"></div>
+		 <div><span id="spanButtonPlaceholder"></span></div>
+		 <div id="thumbnails"></div>
+		 <input type="text" name="logo_url" id="logo_url" size="35" maxlength="80" readOnly="true" >
+		 <input type="hidden" name="logo_name" id="logo_name" size="35" maxlength="50" readOnly="true" >
+	  </td>
+	</tr> 
+	 <tr class="tr">
+		  <td class="left">所属行业</td>
+		  <td colspan="3" class="lt">
+				<select name="type_id">
+					<volist name="type" id="vo">
+						<option value="{$vo.id}" <eq name="vo.id" value="$info.type_id">selected=""</eq> >{$vo.name}</option>
+					</volist>
+				</select>
+		   </td>
+		</tr> 
+	<tr class="ji">
+	  <td class="left">展览时间</td>
+	  <td>开始<input type="text" name="period_start" id="period_start" size="35" maxlength="50" class="Wdate" 
+		onFocus="WdatePicker({maxDate:'#F{$dp.$D(\\'period_end\\')}'})"  value="{$info.period_start}"/>
+		  ~ 结束<input type="text" name="period_end" id="period_end" size="35" maxlength="50" class="Wdate"  
+		  onFocus="WdatePicker({minDate:'#F{$dp.$D(\\'period_start\\')}'})" value="{$info.period_end}" />
+		  
+	  </td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">日开放时间</td>
+	  <td >开始<input type="text" name="day_start" id="day_start" size="35" maxlength="50" 
+	  onfocus="WdatePicker({dateFmt:'H:mm',maxDate:'#F{$dp.$D(\\'day_end\\')}'})" class="Wdate" value="{$info.day_start}"/>
+		   ~ 结束<input type="text" name="day_end" id="day_end" size="35" maxlength="50"
+		   onfocus="WdatePicker({dateFmt:'H:mm',minDate:'#F{$dp.$D(\\'day_start\\')}'})" class="Wdate" value="{$info.day_end}"/>
+	  </td>
+	</tr>       
+	<tr class="ji">
+	  <td class="left">地区</td>
+	  <td>
+		<select name="province_id" id="province" onchange="loadArea(this.value,'city')">
+			<option value="-1" selected>省份/直辖市</option>
+			<volist name="province" id="one">
+				<option value="{$one.area_id}" <eq name="one.area_id" value="$info.province_id">selected=""</eq>>{$one.area_name}</option>
 			</volist>
 		</select>
-   </td>
-</tr> 
-<tr class="ji">
-  <td class="left">展览时间</td>
-  <td>开始<input type="text" name="period_start" id="period_start" size="35" maxlength="50" class="Wdate" 
-    onFocus="WdatePicker({maxDate:'#F{$dp.$D(\\'period_end\\')}'})" />
-      ~ 结束<input type="text" name="period_end" id="period_end" size="35" maxlength="50" class="Wdate"  
-	  onFocus="WdatePicker({minDate:'#F{$dp.$D(\\'period_start\\')}'})" />
-	  
-  </td>
-</tr>
-<tr class="tr">
-  <td class="left">日开放时间</td>
-  <td >开始<input type="text" name="day_start" id="day_start" size="35" maxlength="50" 
-  onfocus="WdatePicker({dateFmt:'H:mm',maxDate:'#F{$dp.$D(\\'day_end\\')}'})" class="Wdate"/>
-       ~ 结束<input type="text" name="day_end" id="day_end" size="35" maxlength="50"
-	   onfocus="WdatePicker({dateFmt:'H:mm',minDate:'#F{$dp.$D(\\'day_start\\')}'})" class="Wdate"/>
-  </td>
-</tr>       
-<tr class="ji">
-  <td class="left">地区</td>
-  <td>
-	<select name="province_id" id="province" onchange="loadArea(this.value,'city')">
-        <option value="-1" selected>省份/直辖市</option>
-        <volist name="province" id="one">
-            <option value="{$one.area_id}">{$one.area_name}</option>
-        </volist>
-    </select>
-    <select name="city_id" id="city" onchange="loadArea(this.value,'district')">
-        <option value="-1">市/县</option>
-    </select>
-    <select name="district_id" id="district" onchange="loadArea(this.value,'null')">
-        <option value="-1">镇/区</option>
-    </select>
-  </td>
-</tr>
-<tr class="tr">
-  <td class="left">展览详细地址</td>
-  <td ><input type="text" name="address" id="address" size="35" maxlength="50" value="{$con.web_url}" >
-  </td>
-</tr>    
-<tr class="ji">
-  <td class="left">展馆名称</td>
-  <td><input type="text" name="hall" id="hall" size="35" maxlength="50" value="{$con.web_name}">
-  </td>
-</tr>
-<tr class="tr">
-  <td class="left">网址</td>
-  <td ><input type="text" name="website" id="website" size="35" maxlength="50" value="{$con.web_url}" >
-  </td>
-</tr>   
-<tr class="ji">
-  <td class="left">主办单位</td>
-  <td title="设置主办单位">
-    <textarea name="organizer" id="organizer" style="width:500px;height:75px"></textarea> <br>
-  </td>
-</tr> 
- <tr class="tr">
-  <td class="left">承办单位</td>
-  <td>
-    <textarea name="host" id="host" style="width:500px; height:75px"></textarea> <br>
-  </td>
-</tr> 
-<tr class="ji">
-  <td class="left">协办单位</td>
-  <td title="设置协办单位">
-    <textarea name="coorganizer" id="coorganizer" style="width:500px;height:75px"></textarea> <br>
-  </td>
-</tr> 
- <tr class="tr">
-  <td class="left">支持单位</td>
-  <td>
-    <textarea name="supporter" id="supporter" style="width:500px; height:75px"></textarea> <br>
-  </td>
-</tr> 
-<tr class="ji">
-  <td class="left">举办状态：</td>
+		<select name="city_id" id="city" onchange="loadArea(this.value,'district')">
+			<gt name="info.id" value="0">
+				<volist name="city" id="one">
+					<option value="{$one.area_id}" <eq name="one.area_id" value="$info.city_id">selected=""</eq>>{$one.area_name}</option>
+				</volist>
+			<else/>
+				<option value="-1" >市/县</option>	
+			</gt>	
+		</select>
+		<select name="district_id" id="district" onchange="loadArea(this.value,'null')">
+			<gt name="info.id" value="0">
+				<volist name="district" id="one">
+					<option value="{$one.area_id}" <eq name="one.area_id" value="$info.district_id">selected=""</eq>>{$one.area_name}</option>
+				</volist>
+			<else/>
+				<option value="-1" <eq name="vo.id" value="$info.province_id">selected=""</eq>>镇/区</option>
+			</gt>	
+		</select>
+	  </td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">展览详细地址</td>
+	  <td ><input type="text" name="address" id="address" size="35" maxlength="50" value="{$info.address}" >
+	  </td>
+	</tr>    
+	<tr class="ji">
+	  <td class="left">展馆名称</td>
+	  <td><input type="text" name="hall" id="hall" size="35" maxlength="50" value="{$info.hall}">
+	  </td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">网址</td>
+	  <td ><input type="text" name="website" id="website" size="35" maxlength="50" value="{$info.website}" >
+	  </td>
+	</tr>   
+	<tr class="ji">
+	  <td class="left">主办单位</td>
+	  <td title="设置主办单位">
+		<textarea name="organizer" id="organizer" style="width:500px;height:75px">{$info.organizer}</textarea> <br>
+	  </td>
+	</tr> 
+	 <tr class="tr">
+	  <td class="left">承办单位</td>
+	  <td>
+		<textarea name="host" id="host" style="width:500px; height:75px">{$info.host}</textarea> <br>
+	  </td>
+	</tr> 
+	<tr class="ji">
+	  <td class="left">协办单位</td>
+	  <td title="设置协办单位">
+		<textarea name="coorganizer" id="coorganizer" style="width:500px;height:75px">{$info.coorganizer}</textarea> <br>
+	  </td>
+	</tr> 
+	 <tr class="tr">
+	  <td class="left">支持单位</td>
+	  <td>
+		<textarea name="supporter" id="supporter" style="width:500px; height:75px" >{$info.supporter}</textarea> <br>
+	  </td>
+	</tr> 
+	<tr class="ji">
+	  <td class="left">举办状态：</td>
+		<td>
+			<input type="radio" class="radio" value="1" name="is_on_show" id="onshow1" <if condition="($info.is_on_show eq 1) OR ($info['is_on_show'] eq '') ">checked=""</if> >举办中
+			<input type="radio" class="radio" value="0" name="is_on_show" id="onshow2" <eq name="info.is_on_show" value="0">checked=""</eq> >筹备中
+		</td>
+	</tr>
+	<tr class="table_title"><td colspan="2">联系人设置</td></tr>
+	<tr class="tr">
+	  <td class="left">联系人</td>
+	  <td><input type="text" name="contact" id="contact" size="20" maxlength="5"  value="{$info.contact}">
+	  </td>
+	</tr>
+	<tr class="ji">
+	  <td class="left">联系地址</td>
+	  <td><input type="text" name="contact_add" id="contact_add" size="20" maxlength="5" value="{$info.contact_add}">
+	  </td>
+	</tr>
+	<tr class="tr">
+	<td class="left">邮编</td>
 	<td>
-		<input type="radio" class="radio" value="1" name="is_on_show" id="onshow1" <if condition="($info.is_on_show eq 1) OR ($info['is_on_show'] eq '') ">checked=""</if> >举办中
-		<input type="radio" class="radio" value="0" name="is_on_show" id="onshow2" <eq name="info.is_on_show" value="0">checked=""</eq> >筹备中
+	<input type="text" name="postcode" id="postcode" value="{$con.web_adsensepath}" maxlength="30" size="20" value="{$info.postcode}">
 	</td>
-</tr>
-<tr class="table_title"><td colspan="2">联系人设置</td></tr>
-<tr class="tr">
-  <td class="left">联系人</td>
-  <td><input type="text" name="contact" id="contact" size="20" maxlength="5" >
-  </td>
-</tr>
-<tr class="ji">
-  <td class="left">联系地址</td>
-  <td><input type="text" name="contact_add" id="contact_add" size="20" maxlength="5" >
-  </td>
-</tr>
-<tr class="tr">
-<td class="left">邮编</td>
-<td>
-<input type="text" name="postcode" id="postcode" value="{$con.web_adsensepath}" maxlength="30" size="20" >
-</td>
-</tr>    
-<tr class="ji">
-  <td class="left">电话</td>
-  <td><input type="text" name="telephone" id="telephone" size="20" maxlength="5" >
-  </td>
-</tr>
-<tr class="tr">
-<td class="left">传真</td>
-<td>
-<input type="text" name="fax" id="fax"  maxlength="30" size="20" >
-</td>
-</tr>  
-<tr class="ji">
-  <td class="left">手机号码</td>
-  <td><input type="text" name="mobilephone" id="mobilephone" size="20" maxlength="5"  >
-  </td>
-</tr>
-<tr class="ji">
-	<td >展会状态：</td>
-	<td colspan="3" class="lt">
-		<input type="radio" class="radio" value="1" name="status" id="status1" <if condition="($info.status eq 1) OR ($info['status'] eq '') ">checked=""</if> >启用
-		<input type="radio" class="radio" value="0" name="status" id="status2" <eq name="info.status" value="0">checked=""</eq> >关闭
+	</tr>    
+	<tr class="ji">
+	  <td class="left">电话</td>
+	  <td><input type="text" name="telephone" id="telephone" size="20" maxlength="5"  value="{$info.telephone}">
+	  </td>
+	</tr>
+	<tr class="tr">
+	<td class="left">传真</td>
+	<td>
+	<input type="text" name="fax" id="fax"  maxlength="30" size="20" value="{$info.fax}">
 	</td>
-</tr>    
-</table>
+	</tr>  
+	<tr class="ji">
+	  <td class="left">手机号码</td>
+	  <td><input type="text" name="mobilephone" id="mobilephone" size="20" maxlength="5" value="{$info.mobilephone}"  >
+	  </td>
+	</tr>
+	<tr class="ji">
+		<td >展会状态：</td>
+		<td colspan="3" class="lt">
+			<input type="radio" class="radio" value="1" name="status" id="status1" <if condition="($info.status eq 1) OR ($info['status'] eq '') ">checked=""</if> >启用
+			<input type="radio" class="radio" value="0" name="status" id="status2" <eq name="info.status" value="0">checked=""</eq> >关闭
+		</td>
+	</tr>    
+	</table>
 <div id="bootline"></div>
 <div id="btnbox" class="btn">
-    <input class="bginput" type="submit" name="dosubmit" value="提交">
+	<gt name="info.id" value="0">
+		<input class="bginput" type="submit" name="dosubmit" value="修 改" >
+	<else />
+		<input class="bginput" type="submit" name="dosubmit" value="提交">
+	</gt>
+		&nbsp;
     <input class="bginput" type="reset" name="Input" value="重置" >
 </div>
 </form>

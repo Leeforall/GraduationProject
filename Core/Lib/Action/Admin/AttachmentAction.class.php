@@ -102,6 +102,48 @@ class AttachmentAction extends  AdminAction {
 		$this->assign('more',$_GET['more']);		
 		$this->display();
 	}
+	
+	//Logo 图标上传
+	public function uploadLogo(){
+	
+		// Get the session Id passed from SWFUpload. We have to do this to work-around the Flash Player Cookie Bug
+		if (isset($_POST["PHPSESSID"])) {
+			session_id($_POST["PHPSESSID"]);
+		}
+		import("ORG.Net.UploadFile"); 
+        $upload = new UploadFile(); 
+		 //设置上传文件大小 
+        $upload->maxSize = 3292200;
+		//设置需要生成缩略图，仅对图像文件有效 
+        $upload->thumb = true; 
+		//缩略图文件名前缀
+		$upload->thumbPrefix ="s_";
+        //设置上传文件类型 
+        $upload->allowExts = explode(',','jpg,gif,png,jpeg'); 
+        //设置附件上传目录 
+        $upload->savePath = UPLOAD_PATH; 
+		 //设置上传文件规则 
+        $upload->saveRule = uniqid;
+		//设置缩略图最大宽度 
+        $upload->thumbMaxWidth = '100'; 
+        //设置缩略图最大高度 
+        $upload->thumbMaxHeight = '100'; 
+		 //删除原图 
+        $upload->thumbRemoveOrigin = true; 
+        if (!$upload->upload()) { 
+			$this->ajaxReturn(0,$upload->getErrorMsg(),0);
+        } else { 
+            //取得成功上传的文件信息 
+            $uploadList = $upload->getUploadFileInfo(); 
+			$imagearr = explode(',', 'jpg,gif,png,jpeg,bmp,ttf,tif'); 
+			$returndata['filepath'] = __ROOT__.substr($uploadList[0]['savepath'].'s_'.strtolower($uploadList[0]['savename']),1);
+			$returndata['fileext']  = strtolower($uploadList[0]['extension']); 
+			$returndata['filename'] =  $uploadList[0]['name'];
+			$returndata['filesize'] = $uploadList[0]['size']; 
+			
+			$this->ajaxReturn($returndata,'上传成功', '1');
+		}
+	}
 
 	public function upload(){
 		//if($_POST['swf_auth_key']!= sysmd5($_POST['PHPSESSID'].$this->userid)) $this->ajaxReturn(0,'1-'.$_POST['PHPSESSID'],0);
