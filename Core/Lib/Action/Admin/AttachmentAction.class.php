@@ -70,9 +70,7 @@ class AttachmentAction extends  AdminAction {
     }
 	public function index(){
 
-		$auth = str_replace(' ','+',$_REQUEST['auth']) ;
- 
-		$postd=array('isadmin','more','isthumb','file_limit','file_types','file_size','moduleid');
+		$postd=array('typeid','filetype','foreignid','file_limit','file_types','file_size','moduleid');
 		foreach((array)$_REQUEST as $key=>$res){
 			if(in_array($key,$postd))$postdata[$key]=$res;
 		}
@@ -83,23 +81,22 @@ class AttachmentAction extends  AdminAction {
 
 		$sessid = time();
 
-		$count = $this->dao->where('status=0 and userid ='.$this->userid)->count();
+		$userid=session('userid');
+		$count = $this->dao->where('status=0 and user_id ='.$this->userid)->count();
 		$this->assign('no_use_files',$count);
 		$this->assign('small_upfile_limit',$_REQUEST['file_limit'] - $count);
 
 
 		$types = '*.'.str_replace(",",";*.",$_REQUEST['file_types']); ;
-		$this->assign('moduleid',$_REQUEST['moduleid']);
+		$this->assign('module_id',$_REQUEST['moduleid']);
+		$this->assign('file_type',$_REQUEST['filetype']);
+		$this->assign('foreign_id',$_REQUEST['foreignid']);
+		$this->assign('type_id',$_REQUEST['typeid']);
+		$this->assign('file_types',$types);
 		$this->assign('file_size',$_REQUEST['file_size']);
 		$this->assign('file_limit',$_REQUEST['file_limit']);
-		$this->assign('file_types',$types);
-		$this->assign('isthumb',$_REQUEST['isthumb']);
-		$this->assign('isadmin',1);
-		$this->assign('userid',1);
-		$swf_auth_key ="asfsfsasafasd";
+		$this->assign('sessid',$sessid);
  
-		$this->assign('swf_auth_key',$swf_auth_key);
-		$this->assign('more',$_GET['more']);		
 		$this->display();
 	}
 	
@@ -157,7 +154,20 @@ class AttachmentAction extends  AdminAction {
 		$upload->subType = 'date';
 		$upload->dateFormat = 'Ym';
         //设置上传文件类型 
-        $upload->allowExts = explode(',','jpg,gif,png,jpeg'); 
+		$filetype=intval($_REQUEST['file_type']);
+		switch($filetype){
+			case 1:
+				$upload->allowExts = explode(',','docx,doc,pdf,xls,xlsx'); 
+			break;
+			case 2:
+				$upload->allowExts = explode(',','jpg,gif,png,jpeg'); 
+			break;
+			case 3:
+				$upload->allowExts = explode(',','flv,avi,rmvb'); 
+			break;
+			default:
+	
+		}
         //设置附件上传目录 
         $upload->savePath = UPLOAD_PATH; 
 		 //设置上传文件规则 
@@ -178,30 +188,28 @@ class AttachmentAction extends  AdminAction {
 				Image::water($uploadList[0]['savepath'].$uploadList[0]['savename'],'',$this->Config);
 			}
 			
-			$imagearr = explode(',', 'jpg,gif,png,jpeg,bmp,ttf,tif'); 
-			$vedioarr = explode(',', 'rmvb,avi'); 
 			$data=array();
 			$model = M('Attachment');
 			//保存当前数据对象
-			$data['exhibitionid'] = $_REQUEST['moduleid'];
-			$data['exhibitid'] = 0;
-			$data['userid'] = $_REQUEST['userid'];
-			$data['filename'] = $uploadList[0]['name'];
-			$data['filepath'] = __ROOT__.substr($uploadList[0]['savepath'].strtolower($uploadList[0]['savename']),1);
-			$data['filesize'] = $uploadList[0]['size']; 
-			$data['fileext'] = strtolower($uploadList[0]['extension']); 
-			$data['isimage'] = in_array($data['fileext'],$imagearr) ? 1 : 0;
-			$data['isvedio'] = in_array($data['fileext'],$vedioarr) ? 1 : 0;
-			$data['isthumb'] = intval($_REQUEST['isthumb']);
+			$data['module_id'] = intval($_REQUEST['module_id']);
+			$userid=session('userid');
+			$data['user_id'] = intval($userid);
+			$data['foreign_id']=intval($_REQUEST['foreign_id']);  //方便按模块管理附件
+			$data['type_id']=intval($_REQUEST['type_id']);  //所属模块类型，1为展会模块，2为展品模块，以后可以扩展其他
+			$data['file_type']=intval($_REQUEST['file_type']);   //目前有4种类型，0未知，1文档，2图片，3视频flv，4其他
+			$data['file_name'] = $uploadList[0]['name'];
+			$data['file_path'] = __ROOT__.substr($uploadList[0]['savepath'].strtolower($uploadList[0]['savename']),1);
+			$data['file_size'] = $uploadList[0]['size']; 
+			$data['file_ext'] = strtolower($uploadList[0]['extension']); 
 			$data['createtime'] = time();
-			$data['uploadip'] = get_client_ip();
+			$data['upload_ip'] = get_client_ip();
 			$aid = $model->add($data); 
 			$returndata['aid']		= $aid;
-			$returndata['filepath'] = $data['filepath'];
-			$returndata['fileext']  = $data['fileext'];
-			$returndata['isimage']  = $data['isimage'];
-			$returndata['filename'] = $data['filename'];
-			$returndata['filesize'] = $data['filesize']; 
+			$returndata['filepath'] = $data['file_path'];
+			$returndata['fileext']  = $data['file_ext'];
+			$returndata['filesize'] = $data['file_size'];
+			$returndata['filetype'] = $data['file_type'];
+			$returndata['filename'] = $data['file_name'];		
 
 			$this->ajaxReturn($returndata,'上传成功', '1');
         }	
