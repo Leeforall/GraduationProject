@@ -3,15 +3,18 @@ function add_uploadok(data)
 { 
 	var id = data.aid;
 	var src = data.filepath;
-	var ext =  data.isimage;
+	var fileext =data.fileext;
+	var type =  data.filetype;
 	var name = data.filename;
 	var filesize = data.filesize;
 	
+	alert (type);
 	
-	if(ext == 1) {
+	
+	if(type == 2) {
 		var img = '<a href="javascript:void(0);" onclick="javascript:add_file(this,'+id+')" id="on_'+id+'" class="on"><div class="icon"></div><img src="'+src+'" width="80" alt="'+name+'" imgid="'+id+'" path="'+src+'"/></a>';
 	} else {
-		var img = '<a href="javascript:void(0);" onclick="javascript:add_file(this,'+id+')" id="on_'+id+'" class="on"><div class="icon"></div><img src="Public/images/ext/'+ext+'.png" width="80" alt="'+name+'" imgid="'+id+'" path="'+src+'"/></a>';
+		var img = '<a href="javascript:void(0);" onclick="javascript:add_file(this,'+id+')" id="on_'+id+'" class="on"><div class="icon"></div><img src="Public/images/ext/'+fileext+'.png" width="80" alt="'+name+'" imgid="'+id+'" path="'+src+'"/></a>';
 	}
 	$('#thumbnails').append('<li><div id="attachment_'+id+'" class="img"></div></li>');
 	$('#attachment_'+id).html(img);	

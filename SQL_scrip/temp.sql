@@ -359,21 +359,25 @@ CREATE TABLE IF NOT EXISTS `tp_exhibition` (
 
 CREATE TABLE IF NOT EXISTS `tp_attachment` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `exhibitionid` int(10) unsigned NOT NULL DEFAULT '0',
-  `exhibitid` int(10) unsigned NOT NULL DEFAULT '0',
-  `filename` varchar(50) NOT NULL DEFAULT '',
-  `filepath` varchar(80) NOT NULL DEFAULT '',
-  `filesize` int(10) unsigned NOT NULL DEFAULT '0',
-  `fileext` char(10) NOT NULL DEFAULT '',
-  `isimage` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `isthumb` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `isvideo` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `isdoc` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `userid` int(10) unsigned NOT NULL DEFAULT '0',
+  `type_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '附件所属的类型，目前有两种 0：未知，1：展会类型附件 2：展品类型附件 后续可扩展其他类型',
+  `foreign_id` int(10) unsigned NOT NULL DEFAULT '0'COMMENT '附件关联的外部id，可以是展会或者展品的id',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '上传附件的用户',
+  `module_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '附件所属模块的id，为了方便附件管理',
+  `file_name` varchar(50) NOT NULL DEFAULT '',
+  `file_path` varchar(80) NOT NULL DEFAULT '',
+  `file_size` int(10) unsigned NOT NULL DEFAULT '0',
+  `file_ext` char(10) NOT NULL DEFAULT '',
+  `file_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '文件类型 0：未知，1：图片 2：视频，3：资料，4：其他类型',
   `createtime` int(10) unsigned NOT NULL DEFAULT '0',
-  `uploadip` char(15) NOT NULL DEFAULT '',
+  `upload_ip` char(15) NOT NULL DEFAULT '',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `is_verified` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否审核 1：是 0：否',
+  PRIMARY KEY (`id`),
+	KEY `type_id` (`type_id`),
+	KEY `module_id` (`module_id`),
+	KEY `foreign_id` (`foreign_id`),
+	KEY `status` (`status`),
+	KEY `is_verified` (`is_verified`)
 ) ENGINE=MyISAM AUTO_INCREMENT=80 DEFAULT CHARSET=utf8;
 
 

@@ -11,8 +11,8 @@ function clean_thumb(inputid){
 
 
 
-function swfupload(id,inputid,title,isadmin,more,isthumb,file_limit,file_types,file_size,moduleid,auth,yesdo,nodo){ 
-		url = 'http://localhost:8081/GraduationProject/index.php?s=Admin/Attachment/index&isadmin='+isadmin+'&more='+more+'&isthumb='+isthumb+'&file_limit='+file_limit+'&file_types='+file_types+'&file_size='+file_size+'&moduleid='+moduleid+'&auth='+auth;
+function swfupload(id,inputid,title,file_limit,file_types,file_size,moduleid,typeid,foreignid,filetype,yesdo,nodo){ 
+		url = 'http://localhost:8081/GraduationProject/index.php?s=Admin/Attachment/index&typeid='+typeid+'&file_limit='+file_limit+'&file_types='+file_types+'&file_size='+file_size+'&moduleid='+moduleid+'&foreignid='+foreignid+'&filetype='+filetype;
 		art.dialog.open(url, {
 		id: id,
 		title: title,
@@ -79,6 +79,40 @@ function up_images(iframeWin, topWin,id,inputid){
 					data += '<div id="uplist_'+aid+'">'+aidinput+'<input type="text" size="50" class="input-text" name="'+inputid+'[]" value="'+src+'"  />  <input type="text" class="input-text" name="'+inputid+'_name[]" value="'+name+'" size="30" /> &nbsp;<a href="javascript:remove_this(\'uplist_'+aid+'\');">移除</a> </div>';
 			});			
 			$('#'+inputid+'_images').append(data);
+		}
+}
+
+function up_docs(iframeWin, topWin,id,inputid){ 
+		var data = '';
+		var aidinput='';
+		var num = iframeWin.$('#myuploadform > div').length;
+		if(num){
+			iframeWin.$('#myuploadform  div ').each(function(){
+					var status =  $(this).find('#status').val();
+					var aid = $(this).find('#aids').val();
+					var src = $(this).find('#filedata').val();
+					var name = $(this).find('#namedata').val();
+					if(status==0) aidinput = '<input type="hidden" name="aid[]" value="'+aid+'"/>';
+					data += '<div id="uplist_'+aid+'">'+aidinput+'<input type="text" size="50" class="input-text" name="'+inputid+'[]" value="'+src+'"  />  <input type="text" class="input-text" name="'+inputid+'_name[]" value="'+name+'" size="30" /> &nbsp;<a href="javascript:remove_this(\'uplist_'+aid+'\');">移除</a> </div>';
+			});			
+			$('#'+inputid+'_div').append(data);
+		}
+}
+
+function up_vedios(iframeWin, topWin,id,inputid){ 
+		var data = '';
+		var aidinput='';
+		var num = iframeWin.$('#myuploadform > div').length;
+		if(num){
+			iframeWin.$('#myuploadform  div ').each(function(){
+					var status =  $(this).find('#status').val();
+					var aid = $(this).find('#aids').val();
+					var src = $(this).find('#filedata').val();
+					var name = $(this).find('#namedata').val();
+					if(status==0) aidinput = '<input type="hidden" name="aid[]" value="'+aid+'"/>';
+					data += '<div id="uplist_'+aid+'">'+aidinput+'<input type="text" size="50" class="input-text" name="'+inputid+'[]" value="'+src+'"  />  <input type="text" class="input-text" name="'+inputid+'_name[]" value="'+name+'" size="30" /> &nbsp;<a href="javascript:remove_this(\'uplist_'+aid+'\');">移除</a> </div>';
+			});			
+			$('#'+inputid+'_div').append(data);
 		}
 }
 

@@ -5,7 +5,7 @@ html{_overflow-y:scroll}
 .mainnav_title {display:none;}
 </style>
 <link href="__PUBLIC__/js/swfupload/swfupload.css" rel="stylesheet" type="text/css" />
-<link rel='stylesheet' type='text/css' href='__PUBLIC__/css/style.css' />
+<link href="__PUBLIC__/css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/swfupload/swfupload.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/swfupload/fileprogress.js"></script>
@@ -24,14 +24,13 @@ html{_overflow-y:scroll}
 				flash_url : "__PUBLIC__/js/swfupload/swfupload.swf",
 				upload_url: "{:U('Attachment/upload')}",
 				file_post_name : "filedata",
-				post_params: {"PHPSESSID" : "asdfsaf", 
-				"isadmin" : "1",
-				"userid":"1",
-				"swf_auth_key": "asdsfafaf",
-				"isthumb" : "1",
-				"moduleid" : "0",
-				"addwater":"en",
-				"lang":"en"},
+				post_params: {"PHPSESSID" : "<?php echo  $sessid;?>",
+				"module_id" : "<?php echo intval($module_id);?>",
+				"type_id": "<?php echo intval($type_id);?>",
+				"foreign_id" : "<?php echo intval($foreign_id);?>", 
+				"file_type": "<?php echo intval($file_type);?>", 
+				addwater:"<?php echo intval($watermark_enable);?>"
+				},
 				file_size_limit : "<?php echo $file_size;?> MB",
 				file_types : "<?php echo $file_types;?>",
 				file_types_description : "All Files",
@@ -124,9 +123,8 @@ function addwater_enable(){
 				<div id="divMovieContainer">
 					<div class="selectbut"><span id="spanButtonPlaceHolder"></span></div>
 					<input type="button" value="{:L('start_upload')}" id="uploadbut" onclick="swfu.startUpload();"/>
-					<div style="color:#959595;line-height:24px;height:24px;background:url() no-repeat;padding-left:20px;"><input type="checkbox" id="addwater" name="addwater" value="1" onclick="addwater_enable();" 
-					<if condition="$watermark_enable==1"> checked</if>/> 
-					<font color="green">{:L('upload_add_water')}</font> , {:L('upload_say4')} <font color="red">{$file_types}</font> {:L('upload_say5')}</div><br>
+					<div style="color:#959595;line-height:24px;height:24px;background:url() no-repeat;padding-left:20px;"><eq name="file_type" value="2"><input type="checkbox" id="addwater" name="addwater" value="1" onclick="addwater_enable();" >
+					<font color="green">{:L('upload_add_water')}</font>, </eq>{:L('upload_say4')} <font color="red">{$file_types}</font> {:L('upload_say5')}</div><br>
 					<div style="color:#454545;clear:both;line-height:24px;height:24px;"> {:L('upload_say1')} <font color="red">{$small_upfile_limit}</font> {:L('upload_say2')} <font color="red">{$file_size}</font>	{:L('upload_say3')}</div>
 				</div>
 

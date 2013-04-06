@@ -3,7 +3,7 @@
 <head>
 <title>展览信息设置</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel='stylesheet' type='text/css' href='__PUBLIC__/Admin/css/admin_style.css' />
+<link href="__PUBLIC__/Admin/css/admin_style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
 <link rel="stylesheet" href="__PUBLIC__/js/artDialog/skins/default.css?4.1.6">
 <script type="text/javascript" src="__PUBLIC__/js/artDialog/jquery.artDialog.js?skin=default"></script>
@@ -11,6 +11,10 @@
 <script type="text/javascript" src="__PUBLIC__/js/swfupload.js"></script>
 </head>
 <body>
+<?php
+$moduleid=session('moduleid');
+?>
+<empty name="moduleid">错误操作</empty>
 <table width="98%" border="0" cellpadding="4" cellspacing="1" class="table">
 	<tr class="table_title"><td colspan="2">附件上传</td></tr>
 	<tr class="tr">
@@ -22,12 +26,13 @@
 		<div>最多同时可以上传 
 		<font color="red">20</font> 张</div>
 		</center>
-		<div id="pics_images" class="imagesList">
-		<input type="hidden" name="pics[]" value="">
-		<input type="hidden" name="pics_name[]" value=""></div>
+		<div id="docs_div" class="imagesList">
+		<input type="hidden" name="docs[]" value="">
+		<input type="hidden" name="docs_name[]" value=""></div>
 		</fieldset>
 		<div class="c"></div>
-		<input type="button" class="button" value="图片上传" onclick="javascript:swfupload('pics_uploadfile','pics','文件上传',1,1,0,20,'jpeg,jpg,png,gif',2,4,'73b5ugM1j0IpGu3eMjssTj2XUiJeDNpwdo2AZHmziyB5TtcllwJqo++mqOzAcg6Tkc/zNHie53kUTg',up_images,nodo)"> 
+		<input type="button" class="button" value="资料上传" 
+		onclick="javascript:swfupload('docs_uploadfile','docs','文件上传',20,'doc,docx,pdf',2,<?php echo $moduleid?>,1,{$_GET.id},1,up_docs,nodo)"/> 
 	</td>
 	</tr>
 	<tr  class="ji">
@@ -47,7 +52,8 @@
 		<input type="hidden" name="pics_name[]" value=""></div>
 		</fieldset>
 		<div class="c"></div>
-		<input type="button" class="button" value="图片上传" onclick="javascript:swfupload('pics_uploadfile','pics','文件上传',1,1,0,20,'jpeg,jpg,png,gif',2,4,'73b5ugM1j0IpGu3eMjssTj2XUiJeDNpwdo2AZHmziyB5TtcllwJqo++mqOzAcg6Tkc/zNHie53kUTg',up_images,nodo)"> 
+		<input type="button" class="button" value="图片上传" 
+		onclick="javascript:swfupload('pics_uploadfile','pics','文件上传',20,'jpeg,jpg,png,gif',2,<?php echo $moduleid?>,1,{$_GET.id},2,up_images,nodo)"/> 
 	</td>
 	</tr>
 	<tr  class="tr">
@@ -60,12 +66,13 @@
 		<div>最多同时可以上传 
 		<font color="red">20</font> 张</div>
 		</center>
-		<div id="pics_images" class="imagesList">
-		<input type="hidden" name="pics[]" value="">
-		<input type="hidden" name="pics_name[]" value=""></div>
+		<div id="vedios_div" class="imagesList">
+		<input type="hidden" name="vedios[]" value="">
+		<input type="hidden" name="vedios_name[]" value=""></div>
 		</fieldset>
 		<div class="c"></div>
-		<input type="button" class="button" value="图片上传" onclick="javascript:swfupload('pics_uploadfile','pics','文件上传',1,1,0,20,'jpeg,jpg,png,gif',2,4,'73b5ugM1j0IpGu3eMjssTj2XUiJeDNpwdo2AZHmziyB5TtcllwJqo++mqOzAcg6Tkc/zNHie53kUTg',up_images,nodo)"> 
+		<input type="button" class="button" value="视频上传" 
+		onclick="javascript:swfupload('vedios_uploadfile','vedios','文件上传',20,'flv,rmvb,avi',2,<?php echo $moduleid?>,1,{$_GET.id},3,up_vedios,nodo)"/> 
 		
 	</td>
 	</tr>
