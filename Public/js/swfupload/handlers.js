@@ -8,8 +8,6 @@ function add_uploadok(data)
 	var name = data.filename;
 	var filesize = data.filesize;
 	
-	alert (type);
-	
 	
 	if(type == 2) {
 		var img = '<a href="javascript:void(0);" onclick="javascript:add_file(this,'+id+')" id="on_'+id+'" class="on"><div class="icon"></div><img src="'+src+'" width="80" alt="'+name+'" imgid="'+id+'" path="'+src+'"/></a>';
