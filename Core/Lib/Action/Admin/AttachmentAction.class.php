@@ -12,7 +12,7 @@
 //if(!defined("Yourphp")) exit("Access Denied");
 class AttachmentAction extends  AdminAction {
 
-	protected $lang,$dao,$Config,$sysConfig,$isadmin=0,$userid=0,$groupid=0;
+	protected $lang,$dao;
     function _initialize()
     {	
 		/*$this->isadmin= $_REQUEST['isadmin'] ? $_REQUEST['isadmin'] : 0;
@@ -192,7 +192,7 @@ class AttachmentAction extends  AdminAction {
 			$model = M('Attachment');
 			//保存当前数据对象
 			$data['module_id'] = intval($_REQUEST['module_id']);
-			$userid=session('userid');
+			$userid=intval($_REQUEST['user_id']);
 			$data['user_id'] = intval($userid);
 			$data['foreign_id']=intval($_REQUEST['foreign_id']);  //方便按模块管理附件
 			$data['type_id']=intval($_REQUEST['type_id']);  //所属模块类型，1为展会模块，2为展品模块，以后可以扩展其他

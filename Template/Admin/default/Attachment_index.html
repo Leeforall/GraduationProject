@@ -29,7 +29,8 @@ html{_overflow-y:scroll}
 				"type_id": "<?php echo intval($type_id);?>",
 				"foreign_id" : "<?php echo intval($foreign_id);?>", 
 				"file_type": "<?php echo intval($file_type);?>", 
-				addwater:"<?php echo intval($watermark_enable);?>"
+				"addwater":"<?php echo intval($watermark_enable);?>",
+				"user_id" : "<?php echo intval(session('userid'));?>"
 				},
 				file_size_limit : "<?php echo $file_size;?> MB",
 				file_types : "<?php echo $file_types;?>",

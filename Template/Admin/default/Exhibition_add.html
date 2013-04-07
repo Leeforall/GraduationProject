@@ -102,8 +102,10 @@
 	<gt name="info.id" value="0">
 		<form action="{:U('Admin/Exhibition/edit')}" method="post" name="form" id="myform">
 		<input type="hidden" name="id" value="{$info.id}">
+		<input type="hidden" name="user_id" value="{$info.user_id}">
 	<else />
 		<form action="?s=Admin/Exhibition/add"  method="post" id="myform">
+		<input type="hidden" name="user_id" value="<?php echo intval(session('userid'));?>">
     </gt>
 		<table width="98%" border="0" cellpadding="4" cellspacing="1" class="table">
 	<tr class="table_title"><td colspan="2">展览基本信息</td></tr>

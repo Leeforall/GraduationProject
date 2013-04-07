@@ -313,12 +313,13 @@ INSERT INTO `tp_user` (`id`, `username`, `password`, `role`, `status`, `remark`,
 
 CREATE TABLE IF NOT EXISTS `tp_exhibition` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-	`name_cn` varchar(50) NOT NULL DEFAULT '',
-	`name_en` varchar(50) NOT NULL DEFAULT '',
-	`period_start` datetime DEFAULT NULL,
-	`period_end`  datetime DEFAULT NULL,
-	`day_start` time DEFAULT NULL,
-	`day_end`  time DEFAULT NULL,
+	`user_id` int(10) unsigned NOT NULL DEFAULT '0',
+	`name_cn` varchar(50) NOT NULL DEFAULT '' COMMENT '中文名称',
+	`name_en` varchar(50) NOT NULL DEFAULT '' COMMENT '英文名称',
+	`period_start` datetime DEFAULT NULL COMMENT '开始时间',
+	`period_end`  datetime DEFAULT NULL COMMENT '结束时间',
+	`day_start` time DEFAULT NULL COMMENT '日开放起始时间',
+	`day_end`  time DEFAULT NULL COMMENT '日开放结束时间',
 	`logo_name` varchar(50) NOT NULL DEFAULT '',
 	`logo_url` varchar(80) NOT NULL DEFAULT '',
 	`is_on_show` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -345,6 +346,7 @@ CREATE TABLE IF NOT EXISTS `tp_exhibition` (
 	`is_verified` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否审核 1：是 0：否',
 	PRIMARY KEY (`id`),
 	KEY `name_cn` (`name_cn`),
+	KEY `user_id` (`user_id`),
 	KEY `province_id` (`province_id`),
 	KEY `city_id` (`city_id`),
 	KEY `district_id` (`district_id`),
@@ -352,7 +354,7 @@ CREATE TABLE IF NOT EXISTS `tp_exhibition` (
 	KEY `type_id` (`type_id`),
 	KEY `status` (`status`),
 	KEY `is_verified` (`is_verified`)
-) ENGINE=MyISAM AUTO_INCREMENT=80 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 
 -- ----tp_attachment--------------

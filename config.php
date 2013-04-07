@@ -8,7 +8,7 @@ return array (
   'db_port' => 3306,
   'db_prefix' => 'tp_',
   'web_name' => 'CMS网',
-  'web_url' => 'http://localhost:8081/GraduationProject/index.php',
+  'web_url' => 'http://localhost:8081/GraduationProject/admin/',
   'web_path' => '/',
   'web_icp' => '粤ICP备000000号',
   'CRON_MAX_TIME' => 60,

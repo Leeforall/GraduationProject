@@ -24,7 +24,7 @@ class IndexAction extends AdminAction {
     
     public function left(){
         $pid = $this->_get('id',intval,0);    //选择子菜单
-		dump('当前模块的id是：'.$pid);//for debug
+		//dump('当前模块的id是：'.$pid);//for debug
 		// 为附件上传获取模块变量进行session设置
 		session('moduleid',$pid); 
         $NodeDB = D('Node');
