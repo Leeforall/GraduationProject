@@ -1,4 +1,17 @@
 <?php
+//删除附件
+function delattach($map=''){
+		$model = M('Attachment');
+		$att= $model->field('aid,filepath')->where($map)->select();
+		$aids=array();
+		foreach((array)$att as $key=> $r){
+			$aids[]=$r['aid'];
+			@unlink(__ROOT__.$r['filepath']);
+		}
+		$r =$model->delete(implode(',',$aids));
+		return  false!==$r ? true : false;
+}
+
 
 // 数组保存到文件
 function arr2file($filename, $arr=''){

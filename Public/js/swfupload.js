@@ -60,7 +60,8 @@ function up_image(iframeWin, topWin,id,inputid){
 			if(filedata){
 				$('#'+inputid+'_pic').attr('src',filedata);
 				$('#'+inputid).val(filedata);
-				if(status==0) $('#'+inputid+'_aid_box').html('<input type="hidden"  name="aid[]" value="'+aids+'"  />');				
+				if(status==0) $('#'+inputid+'_aid_box').
+				html('<input type="hidden"  name="aid[]" value="'+aids+'"  />');				
 			}
 		}
 }
@@ -76,7 +77,11 @@ function up_images(iframeWin, topWin,id,inputid){
 					var src = $(this).find('#filedata').val();
 					var name = $(this).find('#namedata').val();
 					if(status==0) aidinput = '<input type="hidden" name="aid[]" value="'+aid+'"/>';
-					data += '<div id="uplist_'+aid+'">'+aidinput+'<input type="text" size="50" class="input-text" name="'+inputid+'[]" value="'+src+'"  />  <input type="text" class="input-text" name="'+inputid+'_name[]" value="'+name+'" size="30" /> &nbsp;<a href="javascript:remove_this(\'uplist_'+aid+'\');">移除</a> </div>';
+					data += '<div id="uplist_'+aid+'">'+aidinput
+					+'<input type="text" size="50" class="input-text" name="'+
+					inputid+'[]" value="'+src+'"  />  <input type="text" class="input-text" name="'+
+					inputid+'_name[]" value="'+name+'" size="30" /> &nbsp;<a href="javascript:remove_this(\'uplist_'+aid+'\');">删除</a> </div>';
+					//onclick="return confirmurl(\'{:U(\'/Admin/Attachment/del/\',array(\'id\'=&gt;'+aid+'))}\',\'确定删除该附件吗?\')">删除</a> </div>';
 			});			
 			$('#'+inputid+'_images').append(data);
 		}

@@ -1,4 +1,6 @@
-function loadArea(areaId,areaType) {
+function loadArea(select,areaType) {
+	var areaId=select.value;
+	setValue(select.id);
     $.post(ajaxurl,{'areaId':areaId},function(data){
         if(areaType=='city'){
            $('#'+areaType).html('<option value="-1">市/县</option>');
@@ -12,4 +14,9 @@ function loadArea(areaId,areaType) {
             });
         }
     });
+}
+
+function setValue(id){
+	var val=$('#'+id).find("option:selected").text();
+	$("#"+id+"_name").val(val)
 }
