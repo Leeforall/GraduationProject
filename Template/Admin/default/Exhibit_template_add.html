@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>展品信息类别和模板管理</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Admin/css/admin_style.css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/area.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/formValidator.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/my.js"></script>
+<link href="__PUBLIC__/css/style.css" rel="stylesheet" type="text/css" />
+<script>
+var getTypes="{:U('getTypes')}";
+var getTypeById="{:U('getTypeById')}";
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$.formValidator.initConfig({formid:"myform",autotip:true,onerror:function(msg,obj){
+			window.top.art.dialog({content:msg,lock:true,width:250,height:100,ok:function(){$(obj).focus();}});
+		}});
+		$("#name").formValidator({onshow:"请输入参展商类型名称",onfocus:"请输入参展商类型名称"}).inputValidator({min:1,onerror:"参展商类型名称必须填写"});
+		$("#remark").formValidator({empty:true,onshow:"请输入参展商类型描述",onfocus:"请输入参展商类型描述"}).inputValidator({max:25,onerror:"描述不能超过25个字符,请确认"});
+	    //tab 效果
+		Tabs("#tabs",".title ul li",".content",".tabbox","on",1);
+		$("#template_add").hide();
+		$("#add").click(function(){
+			$("#prompt").hide();
+		 });
+	});
+</script>
+</head>
+<body>
+			<table width="98%" border="0" cellpadding="4" cellspacing="1" class="table">
+
+				<tr class="table_title">
+					<td colspan="4">请选择展品信息类别</td>
+				</tr>
+
+				<tr class="tr rt">
+					<td width="100">展品信息类别名称：</td>
+					<td colspan="3" class="lt">
+						<select name="Level_1" id="Level_1" onchange="loadData(this,'Level_2')" size="10" style="width:150px">
+							<option value="0" selected>请选择</option>
+							<volist name="level" id="one">
+								<option value="{$one.id}">{$one.type_name}</option>
+							</volist>
+							<option value="-1" >其他</option>
+						</select>
+						<select name="Level_2" id="Level_2" onchange="loadData(this,'Level_3')" size="10" style="width:150px">
+						</select>
+						<select name="Level_3" id="Level_3" onchange="loadData(this,'null')" size="10" style="width:150px">
+						</select>
+					</td>
+				</tr>
+				<tr class="tr rt">
+				
+					<td width="100"></td>
+					<td colspan="3" class="lt">
+						<div id="tabs">
+						<div class="title">
+							<ul>
+							<li class="on"><a href="javascript:void(0);" >模板信息管理</a></li>
+							<li><a href="javascript:void(0);" id="manage_type">类别类型管理</a></li>
+							</ul>
+						</div>
+						<div class="content">
+							<div class="tabbox" style="display:block;">
+								<form action="{:U('/Admin/Exhibitor/type_add')}" method="post" name="form" id="template_add">
+								<table cellpadding="4" cellspacing="1" class="table" width="98%">
+									<tr class="tr rt">
+										<td width="100">展品信息类别名称：</td>
+										<td colspan="3" class="lt">
+											<input type="text" name="name" id="name" style="width:200px">
+										</td>
+									</tr>
+									<tr class="tr rt">
+										<td >展品信息类别状态：</td>
+										<td colspan="3" class="lt">
+											<input type="radio" class="radio" value="1" name="status" >
+												启用
+												<input type="radio" class="radio" value="0" name="status">
+												关闭
+										</td>
+									</tr>
+									<tr class="tr rt">
+										<td >备注说明：</td>
+										<td colspan="3" class="lt">
+											<input type="text" name="remark" id="remark" style="width:400px">
+										</td>
+									</tr>
+									<tr class="tr lt">
+										<td colspan="4">
+												<input class="bginput" type="submit" name="dosubmit" value="添 加">
+											&nbsp;
+											<input class="bginput" type="button" onclick="javascript:history.back(-1);" value="返 回" ></td>
+									</tr>
+								</table>
+								<input type="text" id="parent_id" name="parent_id"/>
+								<input type="text" id="type_level" name="type_level"/>
+								</form>
+								
+							</div>
+							
+							<div class="tabbox">
+								<div id="prompt">
+									<label>该类别暂时还没有模板</label>
+									<button  class="bginput" id="add" type="button">添加</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					</td>
+				</tr>
+				
+				
+				
+	
+</table>
+</form>
+<div id="data"><div>
+</body>
+</html>
