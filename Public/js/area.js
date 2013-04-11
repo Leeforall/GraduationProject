@@ -24,9 +24,9 @@ function setValue(id){
 function loadData(select,Type) {
 	var Id=select.value;
 	if(Id==0){
-		$('#template_add').hide();
+		$('#tab').hide();
 	}else{
-		$('#template_add').show();
+		$('#tab').show();
 	}
 	$.post(getTypes,{'Id':Id},function(data){
 		if(Type=='Level_2'){
@@ -60,7 +60,7 @@ function getTypeInfo(){
 				});
 			}else{
 				setInputData(null);
-				$('#parent_id').val(0);
+				$('#parent_id').val(1);
 				$('#type_level').val(1);
 			}
 		}
@@ -94,6 +94,8 @@ function getTypeInfo(){
 
 function setInputData(item){
 	if(item!=null){
+		$('#dosubmit').val('修 改');
+		$('#manage_template').show();
 		var id=item.id;
 		var pid=item.parent_id;
 		var remark=item.remark;
@@ -105,18 +107,22 @@ function setInputData(item){
 		$('#remark').val(remark);
 		$('#parent_id').val(pid);
 		$('#type_level').val(type_level);
-		var str='<input type="text" id="type_id" name="id" value=\''+id+'\'/>';
+		$('#template_add').attr('action',actionEdit);
+		var str='<input type="hidden" id="type_id" name="id" value=\''+id+'\'/>';
 		$('#template_add').append(str);
 		if(status=='1')
 			$("input[name='status'][value=1]").attr("checked",true); 
 		else	
 			$("input[name='status'][value=0]").attr("checked",true);  
 	}else{
+		$('#dosubmit').val('添 加');
 		$('#name').val(null);
 		$('#remark').val(null);
 		$("input[name='status'][value=1]").attr("checked",true); 
 		$('#type_id').remove();
 		$('#parent_id').val(null);
 		$('#type_level').val(null);
+		$('#template_add').attr('action',actionAdd);
+		$('#manage_template').hide();
 	}
 }

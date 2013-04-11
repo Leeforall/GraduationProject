@@ -12,6 +12,8 @@
 <script>
 var getTypes="{:U('getTypes')}";
 var getTypeById="{:U('getTypeById')}";
+var actionAdd="{:U('/Admin/Exhibit/type_add')}";
+var actionEdit="{:U('/Admin/Exhibit/type_edit')}"
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -22,7 +24,7 @@ var getTypeById="{:U('getTypeById')}";
 		$("#remark").formValidator({empty:true,onshow:"请输入参展商类型描述",onfocus:"请输入参展商类型描述"}).inputValidator({max:25,onerror:"描述不能超过25个字符,请确认"});
 	    //tab 效果
 		Tabs("#tabs",".title ul li",".content",".tabbox","on",1);
-		$("#template_add").hide();
+		$("#tab").hide();
 		$("#add").click(function(){
 			$("#prompt").hide();
 		 });
@@ -52,25 +54,25 @@ var getTypeById="{:U('getTypeById')}";
 						</select>
 					</td>
 				</tr>
-				<tr class="tr rt">
+				<tr class="tr rt" id="tab">
 				
 					<td width="100"></td>
 					<td colspan="3" class="lt">
 						<div id="tabs">
 						<div class="title">
 							<ul>
-							<li class="on"><a href="javascript:void(0);" >模板信息管理</a></li>
-							<li><a href="javascript:void(0);" id="manage_type">类别类型管理</a></li>
+							<li class="on" id="manage_type"><a href="javascript:void(0);" >信息类别管理</a></li>
+							<li id="manage_template"><a href="javascript:void(0);" >模板管理</a></li>
 							</ul>
 						</div>
 						<div class="content">
 							<div class="tabbox" style="display:block;">
-								<form action="{:U('/Admin/Exhibitor/type_add')}" method="post" name="form" id="template_add">
+								<form action="" method="post" name="form" id="template_add">
 								<table cellpadding="4" cellspacing="1" class="table" width="98%">
 									<tr class="tr rt">
 										<td width="100">展品信息类别名称：</td>
 										<td colspan="3" class="lt">
-											<input type="text" name="name" id="name" style="width:200px">
+											<input type="text" name="type_name" id="name" style="width:200px">
 										</td>
 									</tr>
 									<tr class="tr rt">
@@ -90,13 +92,14 @@ var getTypeById="{:U('getTypeById')}";
 									</tr>
 									<tr class="tr lt">
 										<td colspan="4">
-												<input class="bginput" type="submit" name="dosubmit" value="添 加">
+											<input class="bginput" type="submit" name="dosubmit" id="dosubmit" style="width:50px" value="">
 											&nbsp;
-											<input class="bginput" type="button" onclick="javascript:history.back(-1);" value="返 回" ></td>
+											<input class="bginput" type="button" onclick="javascript:history.back(-1);" value="返 回" style="width:50px">
+										</td>
 									</tr>
 								</table>
-								<input type="text" id="parent_id" name="parent_id"/>
-								<input type="text" id="type_level" name="type_level"/>
+								<input type="hidden" id="parent_id" name="parent_id"/>
+								<input type="hidden" id="type_level" name="type_level"/>
 								</form>
 								
 							</div>
