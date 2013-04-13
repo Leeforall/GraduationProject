@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>模板管理</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/formValidator.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/formValidatorRegex.js"></script>
+<link rel='stylesheet' type='text/css' href='__PUBLIC__/Admin/css/admin_style.css' />
+<script>
+
+function IFrameResize(){
+ //alert(this.document.body.scrollHeight); //弹出当前页面的高度
+ var obj = parent.document.getElementById("main");  //取得父页面IFrame对象
+ //alert(obj.height); //弹出父页面中IFrame中设置的高度
+ var heights = document.body.clientHeight;
+ obj.height = heights;  //调整父页面中IFrame的高度为此页面的高度
+}
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$.formValidator.initConfig({formid:"myform",autotip:true,onerror:function(msg,obj){
+			window.top.art.dialog({content:msg,lock:true,width:250,height:100,ok:function(){$(obj).focus();}});
+		}});
+		$('#doadd').click(function(){
+					var str='<table cellpadding="4" cellspacing="1" class="table" width="98%" id="sites">';
+					str+='<tr class="tr rt">';
+					str+='<td width="100">属性名称</td>';
+					str+='<td colspan="3" class="lt">';
+						str+='<input type="text" name="att_name" value="" /><input type="button" class="button" value="删除" id="remove"/>';
+					str+='</td>'
+					str+='</tr>';
+					str+='<tr class="tr rt" id="tr_select">';
+					str+='<td width="100">选择控件类型</td>';
+					str+='<td colspan="3" class="lt">';
+						str+='	<select id="type_select" name="type[]" >';
+						str+='		<option value=1>文本框</option>';
+						str+='		<option value=2>复选框</option>';
+						str+='		<option value=3>下拉框</option>';
+						str+='		<option value=-1 selected="">请选择</option>';
+						str+='	</select>';
+					str+='</td>';
+					str+='</tr>';
+					str+='<tr class="tr rt">';
+					str+='<td width="100">计量单位</td>';
+					str+='<td colspan="3" class="lt">';
+						str+='<input type="checkbox" name="checkbox" id="add_unit" checked="true">是否有单位</input>&nbsp;<input type="text" name="unit" id="unit" value="" />';
+					str+='</td>';
+					str+='</tr>';
+					str+='</table>';
+					$('#attlist').append(str);
+					IFrameResize();
+				});
+		//这个on方法是为原先没出现在 html页面的 标签绑定事件
+			$(document).on("click", "#remove", function(){ 
+				$(this).parents('table#sites').remove();
+				IFrameResize();
+			});
+			$(document).on("click", "#add_unit", function(){ 
+				if($(this).parents('table#sites').find('#add_unit').attr("checked")){
+					$(this).parents('table#sites').find('#unit').removeAttr("disabled");
+				}else{
+					$(this).parents('table#sites').find('#unit').attr("disabled",true);
+				}
+			});
+			$('#div_add').hide();
+			$("#add").click(function(){
+				$("#prompt").hide();
+				$('#div_add').show();
+			});
+			//$('#div_add').hide();
+			$(document).on("change", "#type_select", function(){ 
+				var option = $(this).val();
+				if ($(this).parents("table#sites").find('#textarea').length > 0) {
+    				//do sth	
+					$(this).parents("table#sites").find('#textarea').remove();
+				}
+				var str="";
+				str+='<tr class="tr rt" id="textarea">';
+				switch(option){
+					case '1':
+						str+='<input type="hidden" name="att_values" />';
+					break;
+					case '2':
+					case '3':
+						str+='<td width="100">属性值列表(回车分开)</td>';
+						str+='<td colspan="3" class="lt">';
+						str+='<textarea name="att_values" id="att_values" style="width:500px;height:75px" placeholder="换行区分"></textarea>';
+						str+='</td>'
+					break;
+					default:
+						alert("请选择类型");
+				}
+				str+='</tr>';
+				//alert($(this).parents('div').size());
+				$(this).parents('table#sites').append(str);
+				if ($(this).parents('table#sites').find('#att_values').length > 0) 
+				$(this).parents('table#sites').find('#att_values').formValidator({onshow:"请输入选项值，用回车分开"}).inputValidator({max:250,onerror:"你输入的描述长度不正确,请确认"});
+				IFrameResize();
+			});
+	});
+</script>
+</head>
+<body >
+<div id="prompt">
+									<label>该类别暂时还没有模板</label>
+									<button  class="bginput" id="add" type="button">添加</button>
+								</div>
+								<div id="div_add">
+									<form action="" method="post" name="form" id="template_add">
+									<div id="attlist">
+									</div>
+									<div>
+										<input class="bginput" type="button" name="doadd" id="doadd" style="width:80px" value="添加属性">
+										&nbsp;
+										<input class="bginput" type="submit" name="dosubmit" id="dosubmit" style="width:50px" value="提 交">
+										&nbsp;
+										<input class="bginput" type="button" onclick="javascript:history.back(-1);" value="返 回" style="width:50px">
+									</div>
+									</form>
+							</div>
+							
+							</body>
+							</html>

@@ -8,14 +8,10 @@ class LoginAction extends AdminAction{
     	//检测后台登录入口是否正确
         if(!session('?right_enter')) {
         	redirect(C('web_url'));exit;
-			dump('11111');
         }
 		if (session(C('USER_AUTH_KEY'))){
-			
-		dump('2222');
 			redirect(C('cms_admin').'?s=Admin/Index');exit;
 		}
-		dump('33333');
 		$this->display();
     }	
 

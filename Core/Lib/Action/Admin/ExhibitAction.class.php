@@ -18,6 +18,9 @@ class ExhibitAction extends AdminAction{
 		$this->display();
 	}
 	
+	public function template_test(){
+		$this->display();
+	}
 	
 	public function type_add(){
 		$ExhibittypeDAO=D('Exhibittype');

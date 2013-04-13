@@ -24,9 +24,9 @@ function setValue(id){
 function loadData(select,Type) {
 	var Id=select.value;
 	if(Id==0){
-		$('#tab').hide();
+		$('#tabs').hide();
 	}else{
-		$('#tab').show();
+		$('#tabs').show();
 	}
 	$.post(getTypes,{'Id':Id},function(data){
 		if(Type=='Level_2'){
@@ -58,6 +58,8 @@ function getTypeInfo(){
 						setInputData(data[0]); 
 					}
 				});
+				var iframe = document.getElementById('main');
+				iframe.src = iframesrc;
 			}else{
 				setInputData(null);
 				$('#parent_id').val(1);
@@ -71,6 +73,8 @@ function getTypeInfo(){
 						setInputData(data[0]); 
 					}
 				});
+				var iframe = document.getElementById('main');
+				iframe.src = iframesrc;
 			}else{
 				setInputData(null);
 				$('#parent_id').val(id_l1);
@@ -84,6 +88,8 @@ function getTypeInfo(){
 						setInputData(data[0]); 
 					}
 				});
+				var iframe = document.getElementById('main');
+				iframe.src = iframesrc;
 			}else{
 				setInputData(null);
 				$('#parent_id').val(id_l2);
@@ -107,9 +113,9 @@ function setInputData(item){
 		$('#remark').val(remark);
 		$('#parent_id').val(pid);
 		$('#type_level').val(type_level);
-		$('#template_add').attr('action',actionEdit);
+		$('#type_add').attr('action',actionEdit);
 		var str='<input type="hidden" id="type_id" name="id" value=\''+id+'\'/>';
-		$('#template_add').append(str);
+		$('#type_add').append(str);
 		if(status=='1')
 			$("input[name='status'][value=1]").attr("checked",true); 
 		else	
@@ -122,7 +128,7 @@ function setInputData(item){
 		$('#type_id').remove();
 		$('#parent_id').val(null);
 		$('#type_level').val(null);
-		$('#template_add').attr('action',actionAdd);
+		$('#type_add').attr('action',actionAdd);
 		$('#manage_template').hide();
 	}
 }

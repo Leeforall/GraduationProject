@@ -88,7 +88,8 @@ $(window).resize(function(){
 	}
 });
 window.onresize = function(){
-	var heights = document.documentElement.clientHeight-150;document.getElementById('main').height = heights;
+	var heights = document.documentElement.clientHeight-150;
+	document.getElementById('main').height = heights;
 	var openClose = $("#main").height()+39;
 }
 window.onresize();

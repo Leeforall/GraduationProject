@@ -13,7 +13,8 @@
 var getTypes="{:U('getTypes')}";
 var getTypeById="{:U('getTypeById')}";
 var actionAdd="{:U('/Admin/Exhibit/type_add')}";
-var actionEdit="{:U('/Admin/Exhibit/type_edit')}"
+var actionEdit="{:U('/Admin/Exhibit/type_edit')}";
+var iframesrc="{:U('/Admin/Exhibit/template_test')}";
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -22,23 +23,20 @@ var actionEdit="{:U('/Admin/Exhibit/type_edit')}"
 		}});
 		$("#name").formValidator({onshow:"请输入参展商类型名称",onfocus:"请输入参展商类型名称"}).inputValidator({min:1,onerror:"参展商类型名称必须填写"});
 		$("#remark").formValidator({empty:true,onshow:"请输入参展商类型描述",onfocus:"请输入参展商类型描述"}).inputValidator({max:25,onerror:"描述不能超过25个字符,请确认"});
-	    //tab 效果
+	    //tab 效果\
 		Tabs("#tabs",".title ul li",".content",".tabbox","on",1);
-		$("#tab").hide();
-		$("#add").click(function(){
-			$("#prompt").hide();
-		 });
+		$("#tabs").hide();
 	});
 </script>
 </head>
 <body>
-			<table width="98%" border="0" cellpadding="4" cellspacing="1" class="table">
+			<table width="98%"  border="0" cellpadding="4" cellspacing="1" class="table">
 
 				<tr class="table_title">
 					<td colspan="4">请选择展品信息类别</td>
 				</tr>
 
-				<tr class="tr rt">
+				<tr class="tr rt" >
 					<td width="100">展品信息类别名称：</td>
 					<td colspan="3" class="lt">
 						<select name="Level_1" id="Level_1" onchange="loadData(this,'Level_2')" size="10" style="width:150px">
@@ -54,72 +52,67 @@ var actionEdit="{:U('/Admin/Exhibit/type_edit')}"
 						</select>
 					</td>
 				</tr>
-				<tr class="tr rt" id="tab">
-				
-					<td width="100"></td>
-					<td colspan="3" class="lt">
-						<div id="tabs">
+</table>
+<div id="tabs">
 						<div class="title">
 							<ul>
 							<li class="on" id="manage_type"><a href="javascript:void(0);" >信息类别管理</a></li>
 							<li id="manage_template"><a href="javascript:void(0);" >模板管理</a></li>
 							</ul>
 						</div>
-						<div class="content">
+						<div class="content"  >
 							<div class="tabbox" style="display:block;">
-								<form action="" method="post" name="form" id="template_add">
-								<table cellpadding="4" cellspacing="1" class="table" width="98%">
-									<tr class="tr rt">
-										<td width="100">展品信息类别名称：</td>
-										<td colspan="3" class="lt">
-											<input type="text" name="type_name" id="name" style="width:200px">
-										</td>
-									</tr>
-									<tr class="tr rt">
-										<td >展品信息类别状态：</td>
-										<td colspan="3" class="lt">
-											<input type="radio" class="radio" value="1" name="status" >
-												启用
-												<input type="radio" class="radio" value="0" name="status">
-												关闭
-										</td>
-									</tr>
-									<tr class="tr rt">
-										<td >备注说明：</td>
-										<td colspan="3" class="lt">
-											<input type="text" name="remark" id="remark" style="width:400px">
-										</td>
-									</tr>
-									<tr class="tr lt">
-										<td colspan="4">
-											<input class="bginput" type="submit" name="dosubmit" id="dosubmit" style="width:50px" value="">
-											&nbsp;
-											<input class="bginput" type="button" onclick="javascript:history.back(-1);" value="返 回" style="width:50px">
-										</td>
-									</tr>
-								</table>
-								<input type="hidden" id="parent_id" name="parent_id"/>
-								<input type="hidden" id="type_level" name="type_level"/>
+								<form action="" method="post" name="form" id="type_add">
+									<table cellpadding="4" cellspacing="1" class="table" width="98%">
+										<tr class="tr rt">
+											<td width="100">展品信息类别名称：</td>
+											<td colspan="3" class="lt">
+												<input type="text" name="type_name" id="name" style="width:200px">
+											</td>
+										</tr>
+										<tr class="tr rt">
+											<td >展品信息类别状态：</td>
+											<td colspan="3" class="lt">
+												<input type="radio" class="radio" value="1" name="status" >
+													启用
+													<input type="radio" class="radio" value="0" name="status">
+													关闭
+											</td>
+										</tr>
+										<tr class="tr rt">
+											<td >备注说明：</td>
+											<td colspan="3" class="lt">
+												<input type="text" name="remark" id="remark" style="width:400px">
+											</td>
+										</tr>
+										<tr class="tr lt">
+											<td colspan="4">
+												<input class="bginput" type="submit" name="dosubmit" id="dosubmit" style="width:50px" value="">
+												&nbsp;
+												<input class="bginput" type="button" onclick="javascript:history.back(-1);" value="返 回" style="width:50px">
+											</td>
+										</tr>
+									</table>
+									<input type="hidden" id="parent_id" name="parent_id"/>
+									<input type="hidden" id="type_level" name="type_level"/>
 								</form>
 								
 							</div>
+							<div class="tabbox" >
+								<iframe name="main" id="main" src="" frameborder="false" scrolling="no" style="border:none; margin-bottom:10px;"  width="100%" height="auto"  ></iframe>
+						    </div>
 							
-							<div class="tabbox">
-								<div id="prompt">
-									<label>该类别暂时还没有模板</label>
-									<button  class="bginput" id="add" type="button">添加</button>
-								</div>
-							</div>
-						</div>
+							
 					</div>
-					</td>
-				</tr>
-				
-				
-				
-	
-</table>
-</form>
-<div id="data"><div>
+					</div>
+<div id="data"></div>
+
+<script>
+window.onresize = function(){
+	var heights = document.documentElement.clientHeight-275;
+	document.getElementById('main').height = heights;
+}
+window.onresize();
+</script>
 </body>
 </html>
