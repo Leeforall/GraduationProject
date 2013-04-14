@@ -311,6 +311,8 @@ INSERT INTO `tp_user` (`id`, `username`, `password`, `role`, `status`, `remark`,
 
 -- ----------------------------------------------------------------------------
 
+-- -----------tp_exhibition-----------
+
 CREATE TABLE IF NOT EXISTS `tp_exhibition` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 	`user_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -360,6 +362,74 @@ CREATE TABLE IF NOT EXISTS `tp_exhibition` (
 	KEY `is_verified` (`is_verified`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
+-- ---------------------------------------------------------
+
+-- --tp_exhibitor
+
+CREATE TABLE IF NOT EXISTS `tp_exhibitor` (
+	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+	`user_id` int(10) unsigned NOT NULL DEFAULT '0',
+	`name_cn` varchar(50) NOT NULL DEFAULT '' COMMENT '中文名称',
+	`name_en` varchar(50) NOT NULL DEFAULT '' COMMENT '英文名称',
+	`logo_name` varchar(50) NOT NULL DEFAULT '',
+	`logo_url` varchar(80) NOT NULL DEFAULT '',
+	`type_id` smallint(6) unsigned NOT NULL default '0' COMMENT '公司类型id',
+	`type_name` varchar(50) NOT NULL DEFAULT '' COMMENT '公司类型名称',
+	`province_id` smallint(6) unsigned NOT NULL default '0' ,
+	`city_id` smallint(6) unsigned NOT NULL default '0' ,
+	`district_id` smallint(6) unsigned NOT NULL default '0' ,
+	`province_name` varchar(8) NOT NULL DEFAULT '',
+	`city_name` varchar(8) NOT NULL DEFAULT '',
+	`district_name` varchar(8) NOT NULL DEFAULT '',
+	`product1` varchar(20) NOT NULL DEFAULT '',
+	`product2` varchar(20) NOT NULL DEFAULT '',
+	`product3` varchar(20) NOT NULL DEFAULT '',
+	`product4` varchar(20) NOT NULL DEFAULT '',
+	`product5` varchar(20) NOT NULL DEFAULT '',
+	`product6` varchar(20) NOT NULL DEFAULT '',
+	`product7` varchar(20) NOT NULL DEFAULT '',
+	`product8` varchar(20) NOT NULL DEFAULT '',
+	`product9` varchar(20) NOT NULL DEFAULT '',
+	`website` varchar(50) NOT NULL DEFAULT '',	
+	`description` varchar(250) NOT NULL DEFAULT '',
+	`contact` varchar(10) NOT NULL DEFAULT '',
+	`sex` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否激活 1：先生 0：女士',
+	`charger` varchar(10) NOT NULL DEFAULT '',
+	`department` varchar(20) NOT NULL DEFAULT '',
+	`position` varchar(20) NOT NULL DEFAULT '',
+	`contact_add` varchar(50) NOT NULL DEFAULT '',
+	`postcode` varchar(10) NOT NULL DEFAULT '',
+	`telephone` varchar(20) NOT NULL DEFAULT '',
+	`mobilephone` varchar(20) NOT NULL DEFAULT '',
+	`fax` varchar(20) NOT NULL DEFAULT '',
+	`email` varchar(20) NOT NULL DEFAULT '',
+	`status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否激活 1：是 0：否',
+	`createtime` int(10) unsigned NOT NULL DEFAULT '0',
+	`is_verified` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否审核 1：是 0：否',
+	PRIMARY KEY (`id`),
+	KEY `name_cn` (`name_cn`),
+	KEY `user_id` (`user_id`),
+	KEY `status` (`status`),
+	KEY `type_id` (`type_id`),
+	KEY `province_id` (`province_id`),
+	KEY `city_id` (`city_id`),
+	KEY `district_id` (`district_id`),
+	KEY `is_verified` (`is_verified`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+
+-- ----------------------------------------------------
+-- ----tp_exhibitor_exhibittype
+CREATE TABLE IF NOT EXISTS `tp_exhibitor_exhibittype` (
+  `exhibitor_id` int(10) unsigned NOT NULL,
+  `exhibittype_id` smallint(6) unsigned NOT NULL,
+  `category_name` varchar(50) NOT NULL DEFAULT '',
+  KEY `exhibitor_id` (`exhibitor_id`),
+  KEY `exhibittype_id` (`exhibittype_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- ----------------------------------------------------------------
 
 -- ----tp_attachment--------------
 

@@ -8,10 +8,20 @@
 <script type="text/javascript" src="__PUBLIC__/js/area.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/formValidator.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/formValidatorRegex.js"></script>
-<script type="text/javascript" src="__PUBLIC__/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/swfupload/swfupload.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/handlers.js"></script>
-<script>var ajaxurl="{:U('getAreas')}";</script>
+<script>
+var ajaxurl="{:U('getAreas')}";
+var getTypes="{:U('getTypes')}";
+function selectAllOptions()
+{
+  var selObj = document.getElementById('category');
+  for (var i=0; i<selObj.options.length; i++) {
+    selObj.options[i].selected = true;
+  }
+}
+</script>
+
 <script type="text/javascript">
 
 
@@ -89,76 +99,53 @@
 	//$("#mobilephone").formValidator({onshow:"请输入联系人的手机号码，可以为空哦",onfocus:"你要是输入了，必须输入正确",oncorrect:"谢谢你的合作",onempty:"你真的不想留手机号码啊？"}).inputValidator({min:11,max:11,onerror:"手机号码必须是11位的,请确认"}).regexValidator({regexp:"mobile",datatype:"enum",onerror:"你输入的手机号码格式不正确"});;
 	//$("#telephone").formValidator({onshow:"请输入联系人的联系电话，可以为空哦",onfocus:"格式例如：0577-88888888",oncorrect:"谢谢你的合作",onempty:"你真的不想留联系电话了吗？"}).regexValidator({regexp:"^(([0\\+]\\d{2,3}-)?(0\\d{2,3})-)?(\\d{7,8})(-(\\d{3,}))?$",onerror:"你输入的联系电话格式不正确"});
     $("#email").formValidator({onshow:"请输入邮箱",onfocus:"邮箱6-100个字符,输入正确了才能离开焦点",oncorrect:"恭喜你,你输对了",defaultvalue:"@"}).inputValidator({min:6,max:100,onError:"你输入的邮箱长度非法,请确认"}).regexValidator({regexp:"^([\\w-.]+)@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.)|(([\\w-]+.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$",onerror:"你输入的邮箱格式不正确"});
-	
-	$("#organizer").formValidator({onshow:"请输入主办单位"}).inputValidator({max:250,onerror:"你输入的描述长度不正确,请确认"});
-	$("#host").formValidator({onshow:"请输入承办单位"}).inputValidator({max:250,onError:"你输入的描述长度不正确,请确认"});
-	$("#coorganizer").formValidator({onshow:"请输入协办单位"}).inputValidator({max:250,onerror:"你输入的描述长度不正确,请确认"});
-	$("#supporter").formValidator({onshow:"请输入支持单位"}).inputValidator({max:250,onerror:"你输入的描述长度不正确,请确认"});
-	
   });
 </script>
 </head>
 <body>
 	<gt name="info.id" value="0">
-		<form action="{:U('Admin/Exhibition/edit')}" method="post" name="form" id="myform">
+		<form action="{:U('Admin/Exhibitor/edit')}" method="post" name="form" id="myform">
 		<input type="hidden" name="id" value="{$info.id}">
 		<input type="hidden" name="user_id" value="{$info.user_id}">
 	<else />
-		<form action="?s=Admin/Exhibition/add"  method="post" id="myform">
+		<form action="{:U('Admin/Exhibitor/add')}" method="post" id="myform" onsubmit="selectAllOptions()">
 		<input type="hidden" name="user_id" value="<?php echo intval(session('userid'));?>">
     </gt>
 		<table width="98%" border="0" cellpadding="4" cellspacing="1" class="table">
-	<tr class="table_title"><td colspan="2">展览基本信息</td></tr>
+	<tr class="table_title"><td colspan="2">参展商基本信息</td></tr>
 	<tr class="ji">
-	  <td class="left">展览名称（中文）</td>
+	  <td class="left">公司名称（中文）</td>
 	  <td><input type="text" name="name_cn" id="name_cn" size="35" maxlength="50" value="{$info.name_cn}">
 	  </td>
 	</tr>
 	<tr class="tr">
-	  <td class="left">展览名称（英文）</td>
+	  <td class="left">公司名称（英文）</td>
 	  <td ><input type="text" name="name_en" id="name_en" size="35" maxlength="50" value="{$info.name_en}" >
 	  </td>
 	</tr>
 	<tr class="ji">
-	  <td class="left">展览Logo</td>
+	  <td class="left">公司Logo</td>
 	  <td>
 		 <div id="divFileProgressContainer" style="height: 30px;"></div>
 		 <div><span id="spanButtonPlaceholder"></span></div>
 		 <div id="thumbnails"></div>
 		 <input type="text" name="logo_url" id="logo_url" size="35" maxlength="80" readOnly="true" >
-		 <input type="text" name="logo_name" id="logo_name" size="35" maxlength="50" readOnly="true" >
+		 <input type="text" name="logo_name" id="logo_name" size="35" maxlength="80" readOnly="true" >
 	  </td>
 	</tr> 
 	 <tr class="tr">
-		  <td class="left">所属行业</td>
+		  <td class="left">公司类型</td>
 		  <td colspan="3" class="lt">
-				<select name="type_id" id="type" onchange="setValue(this.id)">
+				<select name="type_id" id="type" onchange="setValue(this.id)" style="width:150px">
 					<volist name="type" id="vo">
 						<option value="{$vo.id}" <eq name="vo.id" value="$info.type_id">selected=""</eq> >{$vo.name}</option>
 					</volist>
 				</select>
-				<input type="hidden" id="type_name" name="type_name" value="{$info.type_name}"/>
+				<input type="text" id="type_name" name="type_name" value="{$info.type_name}"/>
 		   </td>
 		</tr> 
 	<tr class="ji">
-	  <td class="left">展览时间</td>
-	  <td>开始<input type="text" name="period_start" id="period_start" size="35" maxlength="50" class="Wdate" 
-		onFocus="WdatePicker({maxDate:'#F{$dp.$D(\\'period_end\\')}'})"  value="{$info.period_start}"/>
-		  ~ 结束<input type="text" name="period_end" id="period_end" size="35" maxlength="50" class="Wdate"  
-		  onFocus="WdatePicker({minDate:'#F{$dp.$D(\\'period_start\\')}'})" value="{$info.period_end}" />
-		  
-	  </td>
-	</tr>
-	<tr class="tr">
-	  <td class="left">日开放时间</td>
-	  <td >开始<input type="text" name="day_start" id="day_start" size="35" maxlength="50" 
-	  onfocus="WdatePicker({dateFmt:'H:mm',maxDate:'#F{$dp.$D(\\'day_end\\')}'})" class="Wdate" value="{$info.day_start}"/>
-		   ~ 结束<input type="text" name="day_end" id="day_end" size="35" maxlength="50"
-		   onfocus="WdatePicker({dateFmt:'H:mm',minDate:'#F{$dp.$D(\\'day_start\\')}'})" class="Wdate" value="{$info.day_end}"/>
-	  </td>
-	</tr>       
-	<tr class="ji">
-	  <td class="left">地区</td>
+	  <td class="left">主要经营地点</td>
 	  <td>
 		<select name="province_id" id="province" onchange="loadArea(this,'city')">
 			<option value="-1" selected>省份/直辖市</option>
@@ -190,92 +177,130 @@
 	  </td>
 	</tr>
 	<tr class="tr">
-	  <td class="left">展览详细地址</td>
-	  <td ><input type="text" name="address" id="address" size="35" maxlength="50" value="{$info.address}" >
+	  <td class="left">主营产品</td>
+	  <td >
+	  <input name="product1" id="product" type="text" maxlength="10" value="{$info.product1}">
+	  <input name="product2" id="product" type="text" maxlength="10" value="{$info.product2}">
+	  <input name="product3" id="product" type="text" maxlength="10" value="{$info.product3}">
+	  <br/>
+	  <input name="product4" id="product" type="text" maxlength="10" value="{$info.product4}">
+	  <input name="product5" id="product" type="text" maxlength="10" value="{$info.product5}">
+	  <input name="product6" id="product" type="text" maxlength="10" value="{$info.product6}">
+	   <br/>
+	  <input name="product7" id="product" type="text" maxlength="10" value="{$info.product7}">
+	  <input name="product8" id="product" type="text" maxlength="10" value="{$info.product8}">
+	  <input name="product9" id="product" type="text" maxlength="10" value="{$info.product9}">
+	   <br/>
+	   <span class="gray04">每空限填<span class="orange">１</span>种产品名称，建议10个字以下</span>
 	  </td>
-	</tr>    
-	<tr class="ji">
-	  <td class="left">展馆名称</td>
-	  <td><input type="text" name="hall" id="hall" size="35" maxlength="50" value="{$info.hall}">
-	  </td>
-	</tr>
+	</tr> 
 	<tr class="tr">
-	  <td class="left">网址</td>
-	  <td ><input type="text" name="website" id="website" size="35" maxlength="50" value="{$info.website}" >
-	  </td>
-	</tr>   
+		  <td class="left">主要经营行业</td>
+		  <td colspan="3" class="lt">
+			<p class="orange">
+                        请选择完整的行业大类和子类，最多可添加 8 个。<br>
+                        您选择的分类超细,目标客户越容易搜索到您。
+            </p>
+			<p>
+				<select name="Level_1" id="Level_1" onchange="loadLevel(this,'Level_2')" size="10" style="width:150px">
+							<option value="0" selected>请选择</option>
+							<volist name="level" id="one">
+								<option value="{$one.id}">{$one.type_name}</option>
+							</volist>
+						</select>
+						<select name="Level_2" id="Level_2" onchange="loadLevel(this,'Level_3')" size="10" style="width:150px">
+						</select>
+						<select name="Level_3" id="Level_3" onchange="loadLevel(this,'null')" size="10" style="width:150px">
+						</select>
+			</p>		
+			<p>
+			<input type="button" value="添加" onclick="javascript:addCategory();">
+			&nbsp;
+			<input type="button" value="删除" onclick="javascript:removeCategory();">
+			</p>		
+			<p id="category_p">		
+				<select name="categoryid[]" id="category" multiple="multiple" onchange="setValue(this.id)"  size="6" style="width:250px">
+					<volist name="category" id="vo">
+						<option value="{$vo.exhibittype_id}" >{$vo.category_name}</option>
+					</volist>
+				</select>
+				<volist name="category" id="vo">
+					<input type="hidden"  name="categoryname[]" id="h_{$vo.exhibittype_id}"  value="{$vo.category_name}"/>
+				</volist>
+			</p>
+		   </td>
+		</tr> 
+
 	<tr class="ji">
-	  <td class="left">展览描述</td>
-	  <td title="展览描述">
+	  <td class="left">公司描述</td>
+	  <td title="公司描述">
 		<textarea name="description" id="description" style="width:500px;height:75px">{$info.description}</textarea> <br>
 	  </td>
-	</tr> 
-	<tr class="ji">
-	  <td class="left">主办单位</td>
-	  <td title="设置主办单位">
-		<textarea name="organizer" id="organizer" style="width:500px;height:75px">{$info.organizer}</textarea> <br>
-	  </td>
-	</tr> 
-	 <tr class="tr">
-	  <td class="left">承办单位</td>
-	  <td>
-		<textarea name="host" id="host" style="width:500px; height:75px">{$info.host}</textarea> <br>
-	  </td>
-	</tr> 
-	<tr class="ji">
-	  <td class="left">协办单位</td>
-	  <td title="设置协办单位">
-		<textarea name="coorganizer" id="coorganizer" style="width:500px;height:75px">{$info.coorganizer}</textarea> <br>
-	  </td>
-	</tr> 
-	 <tr class="tr">
-	  <td class="left">支持单位</td>
-	  <td>
-		<textarea name="supporter" id="supporter" style="width:500px; height:75px" >{$info.supporter}</textarea> <br>
-	  </td>
-	</tr> 
-	<tr class="ji">
-	  <td class="left">举办状态：</td>
-		<td>
-			<input type="radio" class="radio" value="1" name="is_on_show" id="onshow1" <if condition="($info.is_on_show eq 1) OR ($info['is_on_show'] eq '') ">checked=""</if> >举办中
-			<input type="radio" class="radio" value="0" name="is_on_show" id="onshow2" <eq name="info.is_on_show" value="0">checked=""</eq> >筹备中
-		</td>
-	</tr>
+	</tr> 		
 	<tr class="table_title"><td colspan="2">联系人设置</td></tr>
 	<tr class="tr">
 	  <td class="left">联系人</td>
 	  <td><input type="text" name="contact" id="contact" size="20" maxlength="5"  value="{$info.contact}">
+			<input type="radio" class="radio" value="1" name="sex" id="sex1" <if condition="($info.sex eq 1) OR ($info['sex'] eq '') ">checked=""</if> >先生
+			&nbsp;
+			<input type="radio" class="radio" value="0" name="sex" id="sex2" <eq name="info.sex" value="0">checked=""</eq> >女士
+	  </td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">部门</td>
+	  <td><input type="text" name="department" id="department" size="20" maxlength="5"  value="{$info.department}">
+	  </td>
+	</tr>
+	<tr class="tr">
+	<td class="left">职位</td>
+	<td>
+	<input type="text" name="position" id="position"  maxlength="30" size="20" value="{$info.position}">
+	</td>
+	</tr> 
+	<tr class="tr">
+	  <td class="left">负责人</td>
+	  <td><input type="text" name="charger" id="charger" size="20" maxlength="5"  value="{$info.charger}">
 	  </td>
 	</tr>
 	<tr class="ji">
 	  <td class="left">联系地址</td>
-	  <td><input type="text" name="contact_add" id="contact_add" size="20" maxlength="5" value="{$info.contact_add}">
+	  <td><input type="text" name="contact_add" id="contact_add" size="30" maxlength="5" value="{$info.contact_add}">
 	  </td>
 	</tr>
 	<tr class="tr">
 	<td class="left">邮编</td>
 	<td>
-	<input type="text" name="postcode" id="postcode" value="{$con.web_adsensepath}" maxlength="30" size="20" value="{$info.postcode}">
+	<input type="text" name="postcode" id="postcode" maxlength="30" size="30" value="{$info.postcode}">
 	</td>
 	</tr>    
 	<tr class="ji">
 	  <td class="left">电话</td>
-	  <td><input type="text" name="telephone" id="telephone" size="20" maxlength="5"  value="{$info.telephone}">
+	  <td><input type="text" name="telephone" id="telephone" size="30" maxlength="5"  value="{$info.telephone}">
 	  </td>
 	</tr>
 	<tr class="tr">
-	<td class="left">传真</td>
-	<td>
-	<input type="text" name="fax" id="fax"  maxlength="30" size="20" value="{$info.fax}">
-	</td>
-	</tr>  
-	<tr class="ji">
 	  <td class="left">手机号码</td>
-	  <td><input type="text" name="mobilephone" id="mobilephone" size="20" maxlength="5" value="{$info.mobilephone}"  >
+	  <td><input type="text" name="mobilephone" id="mobilephone" size="30" maxlength="5" value="{$info.mobilephone}"  >
 	  </td>
 	</tr>
 	<tr class="ji">
-		<td >展会状态：</td>
+	<td class="left">传真</td>
+	<td>
+	<input type="text" name="fax" id="fax"  maxlength="30" size="30" value="{$info.fax}">
+	</td>
+	</tr> 
+	<tr class="tr">
+	  <td class="left">邮箱</td>
+	  <td ><input type="text" name="email" id="email" size="30" maxlength="50" value="{$info.email}" >
+	  </td>
+	</tr>  
+	<tr class="tr">
+	  <td class="left">网址</td>
+	  <td ><input type="text" name="website" id="website" size="30" maxlength="50" value="{$info.website}" >
+	  </td>
+	</tr>  
+	<tr class="ji">
+		<td >展商状态：</td>
 		<td colspan="3" class="lt">
 			<input type="radio" class="radio" value="1" name="status" id="status1" <if condition="($info.status eq 1) OR ($info['status'] eq '') ">checked=""</if> >启用
 			<input type="radio" class="radio" value="0" name="status" id="status2" <eq name="info.status" value="0">checked=""</eq> >关闭

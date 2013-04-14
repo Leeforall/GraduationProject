@@ -132,3 +132,94 @@ function setInputData(item){
 		$('#manage_template').hide();
 	}
 }
+
+
+function loadLevel(select,Type) {
+	var Id=select.value;
+	$.post(getTypes,{'Id':Id},function(data){
+		if(Type=='Level_2'){
+			$('#'+Type).html('');
+			$('#Level_3').html('');
+		}else if(Type=='Level_3'){
+			$('#'+Type).html('');
+		}
+		if(Type!='null'&&Id>0){
+			if(data!=null){
+				$.each(data,function(no,items){
+					$('#'+Type).append('<option value="'+items.id+'">'+items.type_name+'</option>');
+				});
+			}
+		}
+	});
+}
+
+
+function addCategory(){
+	if($("#category option").length>7){
+		alert('已经超过8个');
+		return ;
+	}
+	var id_l1=$('#Level_1').find("option:selected").val();
+	var id_l2=$('#Level_2').find("option:selected").val();
+	var id_l3=$('#Level_3').find("option:selected").val();
+	if(typeof  id_l1==="undefined") return;
+	else{
+		if(typeof  id_l2==="undefined"){
+			if(isRepeat(id_l1)){
+				return;
+			}else{
+				var str='';
+				var level1=$('#Level_1').find("option:selected").text();
+				var name=level1;
+				str='<option value="'+id_l1+'" id="c'+id_l1+'">'+name+'</option>'
+				$('#category').append(str);
+				$('#category_p').append('<input type="hidden" name="categoryname[]" id="h_'+id_l1+'" value="'+name+'"/>');
+			}
+		}else{
+			if(typeof  id_l3==="undefined"){
+				if(isRepeat(id_l2)){
+					return;
+				}else{
+					var str='';
+					var level1=$('#Level_1').find("option:selected").text();
+					var level2=$('#Level_2').find("option:selected").text();
+					var name=level1+'=>'+level2;
+					str='<option value="'+id_l2+'" id="c'+id_l2+'">'+name+'</option>'
+					$('#category').append(str);
+					$('#category_p').append('<input type="hidden" name="categoryname[]" id="h_'+id_l2+'" value="'+name+'"/>');
+				}
+			}else{
+				if(isRepeat(id_l3)){
+					return;
+				}else{
+					var str='';
+					var level1=$('#Level_1').find("option:selected").text();
+					var level2=$('#Level_2').find("option:selected").text();
+					var level3=$('#Level_3').find("option:selected").text();
+					var name=level1+'=>'+level2+'=>'+level3;
+					str='<option value="'+id_l3+'" id="c'+id_l3+'">'+name+'</option>'
+					$('#category').append(str);
+					$('#category_p').append('<input type="hidden" name="categoryname[]" id="h_'+id_l3+'" value="'+name+'"/>');
+				}
+			}
+		}
+		
+	}
+}
+
+function isRepeat(val){
+    var returnVal=false;
+	$('#category option').each(function(){
+		if($(this).val() == val){
+			returnVal=true;
+			return false;
+		}
+	});
+	return returnVal;
+}
+
+function removeCategory(){
+	var val=$('#category').find("option:selected").val();
+	$("#category option[value='"+val+"']").remove();
+	$("#h_"+val).remove();
+}
