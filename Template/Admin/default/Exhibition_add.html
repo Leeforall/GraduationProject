@@ -12,6 +12,10 @@
 <script type="text/javascript" src="__PUBLIC__/js/swfupload/swfupload.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/handlers.js"></script>
 <script>var ajaxurl="{:U('getAreas')}";</script>
+<style>
+#uploaddiv { width:40%; float:left;}
+#thumbnails { width:60%; float:right;}
+</style>
 <script type="text/javascript">
 
 
@@ -122,11 +126,13 @@
 	<tr class="ji">
 	  <td class="left">展览Logo</td>
 	  <td>
+		 <div id="uploaddiv">
 		 <div id="divFileProgressContainer" style="height: 30px;"></div>
 		 <div><span id="spanButtonPlaceholder"></span></div>
+		 </div>
 		 <div id="thumbnails"></div>
-		 <input type="text" name="logo_url" id="logo_url" size="35" maxlength="80" readOnly="true" >
-		 <input type="text" name="logo_name" id="logo_name" size="35" maxlength="50" readOnly="true" >
+		 <input type="hidden" name="logo_url" id="logo_url" size="35" maxlength="80" readOnly="true" value="{$info.logo_url}">
+		 <input type="hidden" name="logo_name" id="logo_name" size="35" maxlength="50" readOnly="true" value="{$info.logo_name}">
 	  </td>
 	</tr> 
 	 <tr class="tr">
@@ -255,7 +261,7 @@
 	<tr class="tr">
 	<td class="left">邮编</td>
 	<td>
-	<input type="text" name="postcode" id="postcode" value="{$con.web_adsensepath}" maxlength="30" size="20" value="{$info.postcode}">
+	<input type="text" name="postcode" id="postcode" maxlength="30" size="20" value="{$info.postcode}">
 	</td>
 	</tr>    
 	<tr class="ji">

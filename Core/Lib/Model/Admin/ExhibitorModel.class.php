@@ -12,6 +12,7 @@ class ExhibitorModel extends Model {
 	//自动完成
 	protected $_auto = array ( 
 		array('createtime','time',1,'function'), 	//新增时
+		array('modifytime','time',1,'function'), 	//新增时
 		array('is_verified',1), 	//新增时
 	);
 	

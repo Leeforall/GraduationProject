@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>模板管理</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/formValidator.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/formValidatorRegex.js"></script>
+<!-- Optionaly -->
+		<script type="text/javascript" src="__PUBLIC__/js/jquery.validate.min.js"></script>
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/css/jquery.stepy.css" />
+		<script type="text/javascript" src="__PUBLIC__/js/jquery.stepy.min.js"></script>
+</head>
+<script>
+$(document).ready(function(){
+	$('#custom').stepy({
+		backLabel:	'Backward',
+		block:		true,
+		errorImage:	true,
+		nextLabel:	'Forward',
+		titleClick:	true,
+		validate:	true
+	});
+});
+</script>
+<body>
+
+<style>
+#container { width:800px; padding:0; margin:0 auto; height:100%;}
+#leftDiv { width:24%; float:left;  line-height:300px; height:600px; display:block; background-color:#ccc; color:#f00;}
+#rightDiv { width:74%; float:right;  line-height:600px; height:600px; display:block; }
+</style>
+<div id="container"> 
+	<div id="leftDiv">
+	leftDiv
+	</div> 
+	<div id="rightDiv">
+		<form id="custom" >
+				<fieldset title="Thread 1">
+					<legend>description one</legend>
+
+					<label>User:</label>
+					<!-- Hidden fields are not focused.  -->
+					<input type="hidden" name="hidden" />
+
+					<!-- Disabled fields are not validated.  -->
+					<input type="text" value="wbotelhos" size="40" name="user" disabled="disabled" />
+
+					<label>E-mail:</label>
+					<input type="text" size="40" name="email" />
+					<input type="checkbox" name="checked" /> Checked?
+
+					<label>Newsletter?</label>
+					<input type="radio" name="newsletter" /> Yep
+					<input type="radio" name="newsletter" /> Nop
+
+					<label>Password:</label>
+					<input type="password" name="password" size="40" />
+				</fieldset>
+
+				<fieldset title="Thread 2">
+					<legend>description two</legend>
+
+					<label>Nick Name:</label>
+					<input type="text" size="30" />
+
+					<label>Bio:</label>
+					<textarea name="bio" rows="5" cols="60"></textarea>
+				</fieldset>
+	
+				<fieldset title="Thread 3">
+					<legend>description three</legend>
+
+					<label>Birthday:</label>
+					<select name="day">
+						<option></option>
+						<option>23</option>
+					</select>
+
+					<select>
+						<option>10</option>
+					</select>
+
+					<select>
+						<option>1984</option>
+					</select>
+
+					<label>Site:</label>
+					<input type="text" name="site" size="40" />
+				</fieldset>
+	
+				<input type="submit" class="finish" value="Finish!" />
+			</form>
+
+	</div> 
+</div> 
+</body>
+</html>

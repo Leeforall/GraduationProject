@@ -28,8 +28,8 @@ class ExhibitorAction extends AdminAction{
 			if($ExhibitorDAO -> create()){
 				$exhibitor_id = $ExhibitorDAO->add();
 				if($exhibitor_id){
-				$categoryids=$_POST['categoryid'];
-				$categorynames=$_POST['categoryname'];
+					$categoryids=$_POST['categoryid'];
+					$categorynames=$_POST['categoryname'];
 					if(count($categoryids)==count($categorynames)){
 						$length=count($categoryids);
 						$i=0;
@@ -45,8 +45,10 @@ class ExhibitorAction extends AdminAction{
 						}
 						if($i==$length){
 							$this->assign("jumpUrl",U('/Admin/Exhibitor/index'));
-							$this->success('添加成功！');
+							$this->success('展商信息添加成功！');
 						}else{
+							$where['exhibitor_id']=$exhibitor_id;
+							D("ExhibitorExhibittype")->where($where)->delete();
 							$this->error('展商信息添加成功,但主要经营行业添加失败!');
 						}
 					}
@@ -88,11 +90,41 @@ class ExhibitorAction extends AdminAction{
 		$ExhibitorDAO = D('Exhibitor');
 		if(isset($_POST['dosubmit'])) {
 			if($ExhibitorDAO -> create()){
+				$ExhibitorDAO ->modifytime=time();//增加一个更新时间，要不如果更新没改动就会失败
 				if($ExhibitorDAO->save()){
-					 $this->assign("jumpUrl",U('/Admin/Exhibition/index'));
-                    $this->success('编辑成功！');
+					$categoryids=$_POST['categoryid'];
+					$categorynames=$_POST['categoryname'];
+					if(count($categoryids)==count($categorynames)){
+						$where['exhibitor_id']=$_POST['id'];
+						if(D("ExhibitorExhibittype")->where($where)->delete()){
+							$length=count($categoryids);
+							$i=0;
+							for(;$i<$length;$i++){
+								$data['exhibitor_id'] = $_POST['id'];;
+								$data['exhibittype_id'] = $categoryids[$i];
+								$data['category_name'] = $categorynames[$i];
+								if (D("ExhibitorExhibittype")->data($data)->add()){
+									continue;
+								}else{
+									break;
+								}
+							}
+							if($i==$length){
+								$this->assign("jumpUrl",U('/Admin/Exhibitor/index'));
+								$this->success('展商信息编辑成功！');
+							}else{
+								$this->error('展商信息编辑成功,但主要经营行业更新失败!');
+							}
+						}else{
+							D("ExhibitorExhibittype")->where($where)->delete();
+							$this->error('展商信息编辑成功,但主要经营行业更新失败!');
+						}
+					}
+					/*
+					$this->assign("jumpUrl",U('/Admin/Exhibitor/index'));
+                    $this->success('编辑成功！');*/
 				}else{
-					$this->error('编辑失败!');
+					$this->error('展商信息编辑失败!');
 				}
 			}else{
 				$this->error($ExhibitorDAO->getError());
