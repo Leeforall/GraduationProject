@@ -1,95 +1,185 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>模板管理</title>
+<title>会员注册</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
-<script type="text/javascript" src="__PUBLIC__/js/formValidator.js"></script>
-<script type="text/javascript" src="__PUBLIC__/js/formValidatorRegex.js"></script>
 <!-- Optionaly -->
 		<script type="text/javascript" src="__PUBLIC__/js/jquery.validate.min.js"></script>
 <link type="text/css" rel="stylesheet" href="__PUBLIC__/css/jquery.stepy.css" />
 		<script type="text/javascript" src="__PUBLIC__/js/jquery.stepy.min.js"></script>
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/admin/css/admin_regist.css" />		
 </head>
 <script>
 $(document).ready(function(){
 	$('#custom').stepy({
-		backLabel:	'Backward',
+		backLabel:	'上一步',
 		block:		true,
 		errorImage:	true,
-		nextLabel:	'Forward',
+		nextLabel:	'下一步',
 		titleClick:	true,
-		validate:	true
+		validate:	true,
+		next: function(index) {
+				if(index==3){
+					var realname=$('#real_name').val();
+					var username=$('#username').val();
+					var telephone=$('#telephone').val();
+					var email=$('#email').val();
+					$('#label_realname').text(realname);
+					$('#label_username').text(username);
+					$('#label_email').text(email);
+					$('#label_telephone').text(telephone);
+				}
+			}
+		
+	});
+	
+	// validate signup form on keyup and submit
+	$("#custom").validate({
+		rules: {
+			username: {
+				required: true,
+				minlength: 4
+			},
+			password: {
+				required: true,
+				minlength: 6
+			},
+			repassword: {
+				required: true,
+				minlength: 6,
+				equalTo: "#password"
+			},
+			email: {
+				required: true,
+				email: true
+			},
+			telephone: {
+				required: true,
+				number: true
+			},
+			verify: {
+				required: true,
+				maxlength: 4
+			}
+		},
+		messages: {
+			username: {
+				required: "请输入用户名",
+				minlength: "用户名至少4个字符"
+			},
+			password: {
+				required: "请输入密码",
+				minlength: "密码至少6个字符"
+			},
+			repassword: {
+				required: "请确认密码",
+				minlength: "密码至少6个字符",
+				equalTo: "必须与密码一致"
+			},
+			email: "请输入有效的邮箱地址",
+			telephone: "请输入有效联系方式",
+			verify:{
+				required: "验证码必须",
+				maxlength: "不能超过4个字符"
+			}
+		}
 	});
 });
 </script>
 <body>
-
-<style>
-#container { width:800px; padding:0; margin:0 auto; height:100%;}
-#leftDiv { width:24%; float:left;  line-height:300px; height:600px; display:block; background-color:#ccc; color:#f00;}
-#rightDiv { width:74%; float:right;  line-height:600px; height:600px; display:block; }
-</style>
 <div id="container"> 
 	<div id="leftDiv">
-	leftDiv
+		 <ol >
+      <li>
+	  <span>1.</span>
+	  <p>展上宝是一款面向参展商和展会参观客户的移动互联网应用系统
+	   </p>
+	   </li>     
+		<li>
+		<span>2.</span>
+		<p>展上宝为参展商和展会参观客户搭建了一个信息共享和交流的平台 
+	   </p>
+	   </li>     
+		<li>
+		<span>3.</span>
+		<p>展上宝完全可以满足不同的展商个性化定制自己的信息的需求
+	   </p>
+	   </li>   
+	</ol>  
 	</div> 
 	<div id="rightDiv">
-		<form id="custom" >
-				<fieldset title="Thread 1">
-					<legend>description one</legend>
+		<form id="custom" action="{:U('Admin/Register/add')}" method="post" name="register" >
+				<fieldset title="第一步">
+					<legend>设置用户名密码</legend>
 
-					<label>User:</label>
-					<!-- Hidden fields are not focused.  -->
-					<input type="hidden" name="hidden" />
-
+					<label>用户名称:</label>
+					<br/>
 					<!-- Disabled fields are not validated.  -->
-					<input type="text" value="wbotelhos" size="40" name="user" disabled="disabled" />
+					<input type="text"  size="30" name="username" id="username"/>
+					<br/>
+					<br/>
+					<label>密 码:</label>
+					<br/>
+					<input type="password" size="30" name="password" id="password"/>
+					<br/>
+					<br/>
+					<label>确认密码:</label>
+					<br/>
+					<input type="password" size="30" name="repassword" id="repassword"/>
+					<br/>
+					<br/>
 
-					<label>E-mail:</label>
-					<input type="text" size="40" name="email" />
-					<input type="checkbox" name="checked" /> Checked?
-
-					<label>Newsletter?</label>
-					<input type="radio" name="newsletter" /> Yep
-					<input type="radio" name="newsletter" /> Nop
-
-					<label>Password:</label>
-					<input type="password" name="password" size="40" />
 				</fieldset>
 
-				<fieldset title="Thread 2">
-					<legend>description two</legend>
+				<fieldset title="第二步">
+					<legend>填写用户联系信息</legend>
 
-					<label>Nick Name:</label>
-					<input type="text" size="30" />
-
-					<label>Bio:</label>
-					<textarea name="bio" rows="5" cols="60"></textarea>
-				</fieldset>
-	
-				<fieldset title="Thread 3">
-					<legend>description three</legend>
-
-					<label>Birthday:</label>
-					<select name="day">
-						<option></option>
-						<option>23</option>
-					</select>
-
-					<select>
-						<option>10</option>
-					</select>
-
-					<select>
-						<option>1984</option>
-					</select>
-
-					<label>Site:</label>
-					<input type="text" name="site" size="40" />
+					<label>姓 名:</label>
+					<br/>
+					<input type="text" size="30" name="real_name" id="real_name"/>
+					<br/>
+					<br/>
+					<label>电子邮箱:</label>
+					<br/>
+					<input type="text" size="30" name="email" id="email"/>
+					<br/>
+					<br/>
+					<label>联系电话:</label>
+					<br/>
+					<input type="text" size="30" name="telephone" id="telephone"/>
+					<br/>
+					<br/>
 				</fieldset>
 	
-				<input type="submit" class="finish" value="Finish!" />
+				<fieldset title="完成">
+					<legend>信息确认</legend>
+
+
+					<label >用户名称:</label>
+					<label  id="label_username"></label>
+					<br/>
+					<br/>
+					<label >姓    名:</label>
+					<label  id="label_realname"></label>
+					<br/>
+					<br/>
+					<label >联系电话:</label>
+					<label  id="label_telephone"></label>
+					<br/>
+					<br/>
+					<label >电子邮箱:</label>
+					<label id="label_email"></label>
+					<br/>
+					<br/>
+					<label >验证码:</label>
+					<input type="text" name="verify" id="verify" size="3" onfocus="this.style.borderColor='#fc9938'" onblur="this.style.borderColor='#dcdcdc'" />
+					<img id="verifyImg" SRC="{:U('Admin/Public/verify')}" onclick='this.src=this.src+"&"+Math.random()' BORDER="0" ALT="点击刷新验证码" style="cursor:pointer" align="absmiddle">
+					<br/>
+					<br/>
+				</fieldset>
+				<input type="hidden" name="role" id="role" value="{$role_id}"/>
+				<input type="submit" class="finish" name="dosubmit" value="提交!" />
 			</form>
 
 	</div> 

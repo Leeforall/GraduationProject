@@ -12,6 +12,8 @@ class UserModel extends Model {
 	//自动验证
 	protected $_validate=array(
 		array('username','require','用户名称必须！',1,'',3),
+		//array('real_name','require','真实姓名必须！',1,'',3),
+		//array('email','require','电子邮件必须！',1,'',3),
 		array('username','','用户名称已经存在！',1,'unique',3), // 新增修改时候验证username字段是否唯一
 	);
 

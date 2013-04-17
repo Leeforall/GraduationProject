@@ -1,0 +1,30 @@
+﻿body{ background: #F3F7FB;}
+#container { width:1000px; padding:0; margin:0 auto; height:100%; }
+#leftDiv { width:40%; float:left;  height:100%;  background-color: #F3F7FB;  }
+#rightDiv { width:60%; float:right;  height:100%; display:block;  }
+#custom {margin-top:150px; width:400px}
+#fieldset {height:250px;}
+#rightDiv li{margin-top:150px;}
+#leftDiv ol {
+	margin-top:180px;
+   color: #ccc;   
+   list-style-type: none; 
+}       
+#leftDiv ol li {
+   position: relative;   
+   font: bold italic 45px/1.5 Helvetica, Verdana, sans-serif;   
+   margin-bottom: 20px; 
+}       
+#leftDiv li p {
+   font: 20px/1.5 Helvetica, sans-serif;   
+   padding-left: 60px;   
+   color: #555;
+}       
+#leftDiv span {
+   position: absolute; 
+}  
+#custom label.error {
+	margin-left: 10px;
+	width: auto;
+	display: inline;
+}

@@ -24,7 +24,6 @@ function loginok(form){
   }
   return (true);
 }
-
 if(self!=top){
   top.location=self.location;
 }
@@ -39,27 +38,27 @@ if(self!=top){
         <dl>
           <dd>{$Think.lang.lan_username}：</dd>
           <dd>
-            <input type="text" name="username" id="login_name" size="15" onfocus="this.style.borderColor='#fc9938'" onblur="this.style.borderColor='#dcdcdc'" />
+            <input type="text" name="username" id="login_name" size="10" onfocus="this.style.borderColor='#fc9938'" onblur="this.style.borderColor='#dcdcdc'" />
           </dd>
           <dd>{$Think.lang.lan_password}：</dd>
           <dd>
-            <input type="password" name="password" id="login_pwd" size="15" onfocus="this.style.borderColor='#fc9938'" onblur="this.style.borderColor='#dcdcdc'" />
+            <input type="password" name="password" id="login_pwd" size="10" onfocus="this.style.borderColor='#fc9938'" onblur="this.style.borderColor='#dcdcdc'" />
           </dd>
           <dd>{$Think.lang.lan_verify}：</dd>
           <dd>
             <input type="text" name="verify" id="verify" size="3" onfocus="this.style.borderColor='#fc9938'" onblur="this.style.borderColor='#dcdcdc'" />
             <img id="verifyImg" SRC="{:U('Admin/Public/verify')}" onclick='this.src=this.src+"&"+Math.random()' BORDER="0" ALT="点击刷新验证码" style="cursor:pointer" align="absmiddle">
           </dd>
-          <dd>
+		  
+		  </div>
+        </dl>
+      </div>
+	  <div class="bm_button">
             <input name="submit" type="submit" value="" class="input" />
-          </dd>
-        </dl>
+			<input name="regist" type="button" value="" class="regist"  id="regist"
+			onclick="window.location.href='{:U('Admin/Register/index')}'"/>
       </div>
-      <div class="butbox">
-        <dl>
-          <dd>{$Think.config.cms_name}是一个采用PHP和MYSQL数据库构建的高效的管理系统</dd>
-        </dl>
-      </div>
+      
       <div style="clear:both"></div>
     </form>
   </div>

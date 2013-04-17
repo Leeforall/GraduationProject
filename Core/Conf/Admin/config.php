@@ -8,7 +8,7 @@ return array (
   'USER_AUTH_MODEL' => 'User',
   'AUTH_PWD_ENCODER' => 'md5',
   'USER_AUTH_GATEWAY' => '/Admin/Login',
-  'NOT_AUTH_MODULE' => 'Login,Public',
+  'NOT_AUTH_MODULE' => 'Login,Public,Register',
   'REQUIRE_AUTH_MODULE' => '',
   'NOT_AUTH_ACTION' => '',
   'REQUIRE_AUTH_ACTION' => '',
