@@ -11,7 +11,7 @@ class ExhibitorAction extends AdminAction{
 		$map=array();
 		$ExhibitorDAO = D('Exhibitor');
 		$count=$ExhibitorDAO->where($map)->count();
-		$Page=new Page($count); //实例化分页类，传入总数
+		$Page=new Page($count,C('web_admin_pagenum')); //实例化分页类，传入总数
 		// 进行分页数据查询 注意page方法的参数的前面部分是当前的页数使用 $_GET[p]获取
         $nowPage = isset($_GET['p'])?$_GET['p']:1;
         $show       = $Page->show();// 分页显示输出

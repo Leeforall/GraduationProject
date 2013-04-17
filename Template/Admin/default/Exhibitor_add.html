@@ -134,7 +134,9 @@ function selectAllOptions()
 		 <div id="divFileProgressContainer" style="height: 30px;"></div>
 		 <div><span id="spanButtonPlaceholder"></span></div>
 		 </div>
-		 <div id="thumbnails"></div>
+		 <div id="thumbnails">
+			<img id="thumbnail" src="{$info.logo_url}" style="margin:5px"/>
+		 </div>
 		 <input type="hidden" name="logo_url" id="logo_url" size="35" maxlength="80" readOnly="true" value="{$info.logo_url}">
 		 <input type="hidden" name="logo_name" id="logo_name" size="35" maxlength="80" readOnly="true" value="{$info.logo_name}">
 	  </td>
@@ -147,7 +149,7 @@ function selectAllOptions()
 						<option value="{$vo.id}" <eq name="vo.id" value="$info.type_id">selected=""</eq> >{$vo.name}</option>
 					</volist>
 				</select>
-				<input type="text" id="type_name" name="type_name" value="{$info.type_name}"/>
+				<input type="hidden" id="type_name" name="type_name" value="{$info.type_name}"/>
 		   </td>
 		</tr> 
 	<tr class="ji">

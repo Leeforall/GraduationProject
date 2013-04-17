@@ -51,10 +51,10 @@ function uploadProgress(file, bytesLoaded) {
 		var progress = new FileProgress(file,  this.customSettings.upload_target);
 		progress.setProgress(percent);
 		if (percent === 100) {
-			progress.setStatus("Creating thumbnail...");
+			progress.setStatus("正在生成缩略图...");
 			progress.toggleCancel(false, this);
 		} else {
-			progress.setStatus("Uploading...");
+			progress.setStatus("正在上传...");
 			progress.toggleCancel(true, this);
 		}
 	} catch (ex) {
@@ -151,25 +151,24 @@ function uploadError(file, errorCode, message) {
 
 
 function addImage(src) {
-	var newImg = document.createElement("img");
-	newImg.style.margin = "5px";
+	var Img = document.getElementById("thumbnail");
+	Img.style.margin = "5px";
 
-	document.getElementById("thumbnails").appendChild(newImg);
-	if (newImg.filters) {
+	if (Img.filters) {
 		try {
-			newImg.filters.item("DXImageTransform.Microsoft.Alpha").opacity = 0;
+			Img.filters.item("DXImageTransform.Microsoft.Alpha").opacity = 0;
 		} catch (e) {
 			// If it is not set initially, the browser will throw an error.  This will set it if it is not set yet.
-			newImg.style.filter = 'progid:DXImageTransform.Microsoft.Alpha(opacity=' + 0 + ')';
+			Img.style.filter = 'progid:DXImageTransform.Microsoft.Alpha(opacity=' + 0 + ')';
 		}
 	} else {
-		newImg.style.opacity = 0;
+		Img.style.opacity = 0;
 	}
 
-	newImg.onload = function () {
-		fadeIn(newImg, 0);
+	Img.onload = function () {
+		fadeIn(Img, 0);
 	};
-	newImg.src = src;
+	Img.src = src;
 }
 
 function fadeIn(element, opacity) {

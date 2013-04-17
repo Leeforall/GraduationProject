@@ -15,9 +15,10 @@
 	-khtml-border-radius: 3px; -moz-border-radius: 3px; -opera-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px;
 	
 }
-.step label { color: #444; font: bold 15px verdana; margin: 10px 0 3px 7px; width:50px;}
+.step label { color: #444; font: bold 15px verdana; margin: 10px 0 3px 7px; width:50px; }
 .step legend { color: #4080BF; font: bold 20px verdana; padding: 0 2px 3px 2px; }
-.step input, .step textarea, .step select { border: 1px solid #AAA; font: 15x verdana; margin-left: 7px; }
+.step input, .step textarea, .step select { border: 1px solid #AAA; font: 18x verdana; margin-left: 7px; 
+	}
 
 
 

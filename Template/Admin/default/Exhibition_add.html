@@ -104,7 +104,7 @@
 </head>
 <body>
 	<gt name="info.id" value="0">
-		<form action="{:U('Admin/Exhibition/edit')}" method="post" name="form" id="myform">
+		<form action="{:U('Admin/Exhibition/edit')}" method="post" name="form" id="myform" >
 		<input type="hidden" name="id" value="{$info.id}">
 		<input type="hidden" name="user_id" value="{$info.user_id}">
 	<else />
@@ -130,7 +130,9 @@
 		 <div id="divFileProgressContainer" style="height: 30px;"></div>
 		 <div><span id="spanButtonPlaceholder"></span></div>
 		 </div>
-		 <div id="thumbnails"></div>
+		 <div id="thumbnails">
+			<img id="thumbnail" src="{$info.logo_url}" style="margin:5px"/>
+		 </div>
 		 <input type="hidden" name="logo_url" id="logo_url" size="35" maxlength="80" readOnly="true" value="{$info.logo_url}">
 		 <input type="hidden" name="logo_name" id="logo_name" size="35" maxlength="50" readOnly="true" value="{$info.logo_name}">
 	  </td>
@@ -293,7 +295,7 @@
 	<gt name="info.id" value="0">
 		<input class="bginput" type="submit" name="dosubmit" value="修改" >
 	<else />
-		<input class="bginput" type="submit" name="dosubmit" value="提交">
+		<input class="bginput" type="submit" name="dosubmit" value="提交" >
 	</gt>
 		&nbsp;
     <input class="bginput" type="reset" name="Input" value="重置" >
