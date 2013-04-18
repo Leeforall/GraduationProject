@@ -59,7 +59,7 @@ function getTypeInfo(){
 					}
 				});
 				var iframe = document.getElementById('main');
-				iframe.src = iframesrc;
+				iframe.src = iframesrc+'/id/'+id_l1;
 			}else{
 				setInputData(null);
 				$('#parent_id').val(1);
@@ -74,7 +74,7 @@ function getTypeInfo(){
 					}
 				});
 				var iframe = document.getElementById('main');
-				iframe.src = iframesrc;
+				iframe.src = iframesrc+'/id/'+id_l2;
 			}else{
 				setInputData(null);
 				$('#parent_id').val(id_l1);
@@ -89,7 +89,7 @@ function getTypeInfo(){
 					}
 				});
 				var iframe = document.getElementById('main');
-				iframe.src = iframesrc;
+				iframe.src = iframesrc+'/id/'+id_l3;
 			}else{
 				setInputData(null);
 				$('#parent_id').val(id_l2);

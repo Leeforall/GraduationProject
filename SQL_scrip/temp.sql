@@ -433,6 +433,19 @@ CREATE TABLE IF NOT EXISTS `tp_exhibitor_exhibittype` (
   KEY `exhibittype_id` (`exhibittype_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------
+-- ----tp_exhibit_template
+CREATE TABLE IF NOT EXISTS `tp_exhibit_template` (
+  `exhibittype_id` int(10) unsigned NOT NULL,
+  `att_name` varchar(50) NOT NULL DEFAULT '',
+  `att_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0未知 1 文本框 2复选 3 下拉',
+  `has_unit` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否有单位',
+  `unit` varchar(10) NOT NULL DEFAULT '' COMMENT '单位名称',
+  `value` varchar(255) NOT NULL DEFAULT '' COMMENT '值列表',
+  `html_value` varchar(5000) NOT NULL DEFAULT '',
+  KEY `exhibittype_id` (`exhibittype_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 -- ----------------------------------------------------------------
 
@@ -440,7 +453,7 @@ CREATE TABLE IF NOT EXISTS `tp_exhibitor_exhibittype` (
 
 CREATE TABLE IF NOT EXISTS `tp_attachment` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `type_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '附件所属的类型，目前有两种 0：未知，1：展会类型附件 2：展品类型附件 后续可扩展其他类型',
+  `type_id` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '附件所属的类型，目前有两种 0：未知，1：展会类型附件 2：展品类型附件 后续可扩展其他类型',
   `foreign_id` int(10) unsigned NOT NULL DEFAULT '0'COMMENT '附件关联的外部id，可以是展会或者展品的id',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '上传附件的用户',
   `module_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '附件所属模块的id，为了方便附件管理',
