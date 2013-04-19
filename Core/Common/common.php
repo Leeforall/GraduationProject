@@ -132,6 +132,7 @@ function get_color_date($type='Y-m-d H:i:s',$time,$color='red'){
 	    return date($type,$time);
 	}
 }
+
 //生成字母前缀
 function get_letter($s0){
 	$firstchar_ord = ord(strtoupper($s0{0})); 

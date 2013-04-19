@@ -56,12 +56,15 @@ var iframesrc="{:U('/Admin/Exhibit/template_test')}";
 <div id="tabs">
 						<div class="title">
 							<ul>
-							<li class="on" id="manage_type"><a href="javascript:void(0);" >信息类别管理</a></li>
-							<li id="manage_template"><a href="javascript:void(0);" >模板管理</a></li>
+							<li class="on" id="manage_template"><a href="javascript:void(0);" >模板管理</a></li>
+							<li id="manage_type"><a href="javascript:void(0);" >信息类别管理</a></li>
 							</ul>
 						</div>
 						<div class="content"  >
 							<div class="tabbox" style="display:block;">
+								<iframe name="template_tab" id="template_tab" src="" onload="this.height=template_tab.document.body.scrollHeight" frameborder="false" scrolling="no" style="border:none;"  width="100%"  ></iframe>
+						    </div>
+							<div class="tabbox" >
 								<form action="" method="post" name="form" id="type_add">
 									<table cellpadding="4" cellspacing="1" class="table" width="98%">
 										<tr class="tr rt">
@@ -98,21 +101,15 @@ var iframesrc="{:U('/Admin/Exhibit/template_test')}";
 								</form>
 								
 							</div>
-							<div class="tabbox" >
-								<iframe name="main" id="main" src="" frameborder="false" scrolling="no" style="border:none; margin-bottom:10px;"  width="100%" height="auto"  ></iframe>
-						    </div>
-							
 							
 					</div>
 					</div>
-<div id="data"></div>
-
 <script>
-window.onresize = function(){
+/*window.onresize = function(){
 	var heights = document.documentElement.clientHeight-275;
 	document.getElementById('main').height = heights;
 }
-window.onresize();
+window.onresize();*/
 </script>
 </body>
 </html>

@@ -6,22 +6,35 @@
 <script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/formValidator.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/formValidatorRegex.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Admin/js/function.js"></script>
 <link rel='stylesheet' type='text/css' href='__PUBLIC__/Admin/css/admin_style.css' />
 <script>
 
 function IFrameResize(){
  //alert(this.document.body.scrollHeight); //弹出当前页面的高度
- var obj = parent.document.getElementById("main");  //取得父页面IFrame对象
+ var obj = parent.document.getElementById("template_tab");  //取得父页面IFrame对象
  //alert(obj.height); //弹出父页面中IFrame中设置的高度
  var heights = document.body.clientHeight;
  obj.height = heights;  //调整父页面中IFrame的高度为此页面的高度
+ //alert(heights);
 }
 </script>
 <script type="text/javascript">
+
+	function checkAddAttrs(){
+		if($('#attlist').find('table').length>0){
+			$('#dosubmit').show();
+		}else{
+			$('#dosubmit').hide();
+		}
+	};
 	$(document).ready(function(){
 		$.formValidator.initConfig({formid:"myform",autotip:true,onerror:function(msg,obj){
 			window.top.art.dialog({content:msg,lock:true,width:250,height:100,ok:function(){$(obj).focus();}});
 		}});
+		$('#dosubmit').hide();
+		$('#div_add').hide();
+		IFrameResize();
 		$('#doadd').click(function(){
 					var str='<table cellpadding="4" cellspacing="1" class="table" width="98%" id="sites">';
 					str+='<tr class="tr rt">';
@@ -53,28 +66,19 @@ function IFrameResize(){
 					str+='</tr>';
 					str+='</table>';
 					$('#attlist').append(str);
+					checkAddAttrs();
 					IFrameResize();
 				});
 		//这个on方法是为原先没出现在 html页面的 标签绑定事件
 			$(document).on("click", "#remove", function(){ 
 				$(this).parents('table#sites').remove();
+				checkAddAttrs();
 				IFrameResize();
 			});
-			/*
-			<input type="checkbox" name="checkbox[]" id="add_unit" checked="true">是否有单位</input>
-			$(document).on("click", "#add_unit", function(){ 
-				if($(this).parents('table#sites').find('#add_unit').attr("checked")){
-					$(this).parents('table#sites').find('#unit').removeAttr("readonly");
-				}else{
-					$(this).parents('table#sites').find('#unit').attr("readonly",true);
-				}
-			})*/;
-			$('#div_add').hide();
 			$("#add").click(function(){
 				$("#prompt").hide();
 				$('#div_add').show();
 			});
-			//$('#div_add').hide();
 			$(document).on("change", "#unit_select", function(){ 
 				var option = $(this).val();
 				switch(option){
@@ -110,10 +114,12 @@ function IFrameResize(){
 				str+='</tr>';
 				//alert($(this).parents('div').size());
 				$(this).parents('table#sites').append(str);
-				if ($(this).parents('table#sites').find('#att_values').length > 0) 
-					//$(this).parents('table#sites').find('#att_values').formValidator({onshow:"请输入选项值，用回车分开"}).inputValidator({max:250,onerror:"你输入的描述长度不正确,请确认"});
 				IFrameResize();
+				//if ($(this).parents('table#sites').find('#att_values').length > 0) 
+					//$(this).parents('table#sites').find('#att_values').formValidator({onshow:"请输入选项值，用回车分开"}).inputValidator({max:250,onerror:"你输入的描述长度不正确,请确认"});
+				
 			});
+			
 	});
 </script>
 </head>
@@ -122,39 +128,66 @@ function IFrameResize(){
 		
 		<empty name="list">
 								<div id="prompt">
-								<label>该类别暂时还没有模板</label>
-									<button  class="bginput" id="add" type="button">添加</button>
+									<h1>该类别暂时还没有模板</h1>
+									<button  class="bginput" id="add" type="button" style="width:80px" >添加</button>
 								</div>
 								<div id="div_add">
 									<form action="{:U('Admin/Exhibit/template_add')}" method="post" name="form" id="template_add">
 									<input type="text" name="exhibittype_id" value="<?php echo $_GET['id'];?>"/>
-									
 									<div id="attlist">
 									</div>
 									<div>
 										<input class="bginput" type="button" name="doadd" id="doadd" style="width:80px" value="添加属性">
 										&nbsp;
 										<input class="bginput" type="submit" name="dosubmit" id="dosubmit" style="width:50px" value="提 交">
-										&nbsp;
-										<input class="bginput" type="button" onclick="javascript:history.back(-1);" value="返 回" style="width:50px">
 									</div>
-									</form>
+								</form>
 							</div>
 				<else/>
 			<div id="display_template">
+			
 					<table cellpadding="4" cellspacing="1" class="table" width="98%" id="sites">
-					<tr class="table_title"><td colspan="2">模板具体样式</td></tr>
+					<tr >
+						<td colspan="4" class="table_title">
+						<span class="fl">模板具体样式预览</span>
+						<span class="fr">
+							<input class="bginput" type="button" name="dodelete" id="dodelete" style="width:80px" value="删除模板" onclick="return confirmurl('{:U('/Admin/Exhibit/template_del/',array('id'=>$_GET['id']))}','确定删除该模板吗?')"/>
+							<input class="bginput" type="submit" name="doreload" id="doreload" style="width:50px" value="刷新" onclick="window.location.reload();" >
+						</span>
+						</td>
+					</tr>
+					<tr class="list_head ct">
+						<td width="200px">属性名称</td>
+						<td width="400px">属性元素</td>
+						<td width="70">状态</td>
+						<td >管理操作</td>
+					</tr>
 						<volist name="list" id="vo">
 							<tr class="tr rt">
-							<td width="150">{$vo.att_name}</td>
-							<td colspan="3" class="lt">
-							{$vo.html_value}
+							<td width="200px" >{$vo.att_name}</td>
+							<td  class="lt" width="400px">
+								{$vo.html_value}
+							</td>
+							<td align='center'><eq name="vo.status" value="1"><font color="red">√</font><else/><font color="blue">×</font></eq> 
+							<td align='center'>
+								<a href="{:U('/Admin/Exhibit/template_delone/',array('id'=>$vo['exhibittype_id'],'name'=>$vo['att_name']))}">修改</a>|
+								<a href="javascript:void(0)" onclick="return confirmurl('{:U('/Admin/Exhibit/template_delone/',array('id'=>$vo['exhibittype_id'],'name'=>$vo['att_name']))}','确定删除该属性吗?')">删除</a>
 							</td>
 							<tr>
 						</volist>
 				    </table>
+					<form action="{:U('Admin/Exhibit/template_add')}" method="post" name="form" id="template_add">
+						<div id="attlist">
+						</div>
+						<div>
+							<input type="hidden" name="exhibittype_id" value="<?php echo $_GET['id'];?>"/>
+							<input class="bginput" type="button" name="doadd" id="doadd" style="width:80px" value="继续添加">
+								&nbsp;
+							<input class="bginput" type="submit" name="dosubmit" id="dosubmit" style="width:50px" value="提 交">
+						</div>
+					</form>
 		</div>
 		</empty>
 </div>
-							</body>
-							</html>
+</body>
+</html>

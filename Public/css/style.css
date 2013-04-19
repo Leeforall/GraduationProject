@@ -164,13 +164,6 @@ select{ vertical-align:middle;background:none repeat scroll 0 0 #F9F9F9;border-c
 .thumb_box input {margin-top:5px;}
 
 
-#tabs {margin:0px auto;overflow:hidden;}
-#tabs .title {overflow:hidden;background:url(../images/tab_bottom_line.jpg) repeat-x 0 28px;height:29px;}
-#tabs .title ul li {float:left;height:27px;line-height:27px;border:1px solid #CFDFF0;border-bottom:0;background:#EAEEF4;padding:0px 10px;}
-#tabs .title ul li.on {background:#FFF;height:28px;}
-#tabs .content_1 {border:1px solid #CFDFF0;overflow:hidden;border-top:none;}
-#tabs .tabbox {display:none;padding:10px;}
-
 .colorimg {width:16px;height:16px;float:left;border:1px solid #ccc;margin-top:3px;}
 .style_bold {margin-top:0px;border:none;}
 

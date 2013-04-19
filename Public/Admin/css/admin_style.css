@@ -283,7 +283,7 @@ input, textarea, select, button, file {	font-size:12px;margin:0px;}
 #tabs .title ul li {float:left;height:27px;line-height:27px;border:1px solid #CFDFF0;border-bottom:0;background:#EAEEF4;padding:0px 10px;}
 #tabs .title ul li.on {background:#FFF;height:28px;}
 #tabs .content_1 {border:1px solid #CFDFF0;overflow:hidden;border-top:none;}
-#tabs .tabbox {display:none;padding:10px;}
+#tabs .tabbox {display:none;padding:0px;}
 
 
 /*formValidator表单验证*/

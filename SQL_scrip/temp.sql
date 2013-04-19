@@ -443,6 +443,7 @@ CREATE TABLE IF NOT EXISTS `tp_exhibit_template` (
   `unit` varchar(10) NOT NULL DEFAULT '' COMMENT '单位名称',
   `value` varchar(255) NOT NULL DEFAULT '' COMMENT '值列表',
   `html_value` varchar(5000) NOT NULL DEFAULT '',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
   KEY `exhibittype_id` (`exhibittype_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

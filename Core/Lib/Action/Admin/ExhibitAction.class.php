@@ -18,14 +18,43 @@ class ExhibitAction extends AdminAction{
 		$this->display();
 	}
 	
+	public function template_del(){
+		$ExhibitTemplateDAO=D('ExhibitTemplate');
+		if(isset($_GET['id'])){
+			$where['exhibittype_id']=intval($_GET['id']);
+			$result=$ExhibitTemplateDAO->where($where)->delete();
+			if($result){
+				$this->success('模板删除成功！！！');
+			}else{
+				$this->error('模板删除失败！！');
+			}
+		}
+	}
+	
+	public function template_delone()
+	{
+		$id = $this->_get('id','intval',0);
+        if(!$id)$this->error('参数错误!');
+		$name= $_GET['name'];
+		$ExhibitTemplateDAO=D('ExhibitTemplate');
+		$where['exhibittype_id']=$id;
+		$where['att_name']=$name;
+		$result=$ExhibitTemplateDAO->where($where)->delete();
+		if($result){
+			$this->success('属性"'.$name.'"删除成功！！！');
+		}else{
+			$this->error('属性"'.$name.'"删除失败！！');
+		}
+	}
+	
 	public function template_add(){
 		$ExhibitTemplateDAO=D('ExhibitTemplate');
 		if(isset($_POST['dosubmit'])) {
-			dump($_POST['att_name']);
+			/*dump($_POST['att_name']);
 			dump($_POST['att_type']);
 			dump($_POST['unit_select']);
 			dump($_POST['att_unit']);
-			dump($_POST['att_values']);
+			dump($_POST['att_values']);*/
 			$names=$_POST['att_name'];
 			$types=$_POST['att_type'];
 			$hasunits=$_POST['unit_select'];

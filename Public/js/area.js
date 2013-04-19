@@ -58,7 +58,7 @@ function getTypeInfo(){
 						setInputData(data[0]); 
 					}
 				});
-				var iframe = document.getElementById('main');
+				var iframe = document.getElementById('template_tab');
 				iframe.src = iframesrc+'/id/'+id_l1;
 			}else{
 				setInputData(null);
@@ -73,7 +73,7 @@ function getTypeInfo(){
 						setInputData(data[0]); 
 					}
 				});
-				var iframe = document.getElementById('main');
+				var iframe = document.getElementById('template_tab');
 				iframe.src = iframesrc+'/id/'+id_l2;
 			}else{
 				setInputData(null);
@@ -88,7 +88,7 @@ function getTypeInfo(){
 						setInputData(data[0]); 
 					}
 				});
-				var iframe = document.getElementById('main');
+				var iframe = document.getElementById('template_tab');
 				iframe.src = iframesrc+'/id/'+id_l3;
 			}else{
 				setInputData(null);
