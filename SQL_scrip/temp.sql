@@ -299,6 +299,7 @@ CREATE TABLE IF NOT EXISTS `tp_user` (
   `last_login_time` int(11) unsigned NOT NULL COMMENT '最后登录时间',
   `last_login_ip` varchar(15) DEFAULT NULL COMMENT '最后登录IP',
   `last_location` varchar(100) DEFAULT NULL COMMENT '最后登录位置',
+  `login_count` INT(10) UNSIGNED NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`),
   KEY `username` (`username`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='用户表' AUTO_INCREMENT=8 ;
@@ -362,6 +363,44 @@ CREATE TABLE IF NOT EXISTS `tp_exhibition` (
 	KEY `district_id` (`district_id`),
 	KEY `is_on_show` (`is_on_show`),
 	KEY `type_id` (`type_id`),
+	KEY `status` (`status`),
+	KEY `is_verified` (`is_verified`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+
+
+-- -------------------------------------------
+
+-- ------tp_exhibit----------
+
+
+CREATE TABLE IF NOT EXISTS `tp_exhibit` (
+	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+	`user_id` int(10) unsigned NOT NULL DEFAULT '0',
+	`name_cn` varchar(50) NOT NULL DEFAULT '' COMMENT '中文名称',
+	`name_en` varchar(50) NOT NULL DEFAULT '' COMMENT '英文名称',
+	`validity_period_value` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '有效期值',
+	`validity_period_name` varchar(20) NOT NULL DEFAULT '' COMMENT '有效期名称',
+	`category_id` smallint(6) unsigned NOT NULL default '0' ,
+	`jsondata` varchar(1000) NOT NULL DEFAULT '',
+	`level_1` smallint(6) unsigned NOT NULL default '0' ,
+	`level_2` smallint(6) unsigned NOT NULL default '0' ,
+	`level_3` smallint(6) unsigned NOT NULL default '0' ,
+	`level1_name` varchar(20) NOT NULL DEFAULT '',
+	`level2_name` varchar(20) NOT NULL DEFAULT '',
+	`level3_name` varchar(20) NOT NULL DEFAULT '',
+	`description` varchar(3000) NOT NULL DEFAULT '',
+	`status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否激活 1：是 0：否',
+	`createtime` int(10) unsigned NOT NULL DEFAULT '0',
+	`modifytime` int(10) unsigned NOT NULL DEFAULT '0',
+	`is_verified` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否审核 1：是 0：否',
+	PRIMARY KEY (`id`),
+	KEY `name_cn` (`name_cn`),
+	KEY `user_id` (`user_id`),
+	KEY `level_1` (`level_1`),
+	KEY `level_2` (`level_2`),
+	KEY `level_3` (`level_3`),
+	KEY `category_id` (`category_id`),
 	KEY `status` (`status`),
 	KEY `is_verified` (`is_verified`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -436,6 +475,7 @@ CREATE TABLE IF NOT EXISTS `tp_exhibitor_exhibittype` (
 -- --------------------------------------------------
 -- ----tp_exhibit_template
 CREATE TABLE IF NOT EXISTS `tp_exhibit_template` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `exhibittype_id` int(10) unsigned NOT NULL,
   `att_name` varchar(50) NOT NULL DEFAULT '',
   `att_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0未知 1 文本框 2复选 3 下拉',
@@ -444,6 +484,7 @@ CREATE TABLE IF NOT EXISTS `tp_exhibit_template` (
   `value` varchar(255) NOT NULL DEFAULT '' COMMENT '值列表',
   `html_value` varchar(5000) NOT NULL DEFAULT '',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
   KEY `exhibittype_id` (`exhibittype_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

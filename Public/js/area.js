@@ -134,14 +134,43 @@ function setInputData(item){
 }
 
 
-function loadLevel(select,Type) {
+function loadLevel(select,Type,action) {
 	var Id=select.value;
+	//action =1的时候是在展品信息的时候用 action =0在参展商使用
+	if(action){
+		setValue(select.id);
+		$('#category_id').val(Id);
+		$.post(getTemplate,{'Id':Id},function(data){
+			if(data!=null){
+				//console.log(data);
+				$('.tr_dymanic').remove();
+				var str='';
+				$.each(data,function(no,items){
+					console.log(data);
+					str+='<tr class="tr_dymanic" >';
+					str+=	'<td class="left">'+items.att_name+'</td>';
+					str+='<td >'+items.html_value+'</td>';
+					str+='</tr>';
+				});
+				$('#tr_description').before(str);
+			}else{
+				$('.tr_dymanic').remove();
+			}
+		});
+	}
 	$.post(getTypes,{'Id':Id},function(data){
-		if(Type=='Level_2'){
+		if(Type=='level_2'){
 			$('#'+Type).html('');
-			$('#Level_3').html('');
-		}else if(Type=='Level_3'){
+			$('#level_3').html('');
+			if(action){
+				$("#level_3_name").val('')
+				$("#level_2_name").val('');
+			}
+		}else if(Type=='level_3'){
 			$('#'+Type).html('');
+			if(action){
+				$("#level_3_name").val('')
+			}
 		}
 		if(Type!='null'&&Id>0){
 			if(data!=null){
@@ -159,9 +188,9 @@ function addCategory(){
 		alert('已经超过8个');
 		return ;
 	}
-	var id_l1=$('#Level_1').find("option:selected").val();
-	var id_l2=$('#Level_2').find("option:selected").val();
-	var id_l3=$('#Level_3').find("option:selected").val();
+	var id_l1=$('#level_1').find("option:selected").val();
+	var id_l2=$('#level_2').find("option:selected").val();
+	var id_l3=$('#level_3').find("option:selected").val();
 	if(typeof  id_l1==="undefined") return;
 	else{
 		if(typeof  id_l2==="undefined"){
@@ -169,7 +198,7 @@ function addCategory(){
 				return;
 			}else{
 				var str='';
-				var level1=$('#Level_1').find("option:selected").text();
+				var level1=$('#level_1').find("option:selected").text();
 				var name=level1;
 				str='<option value="'+id_l1+'" id="c'+id_l1+'">'+name+'</option>'
 				$('#category').append(str);
@@ -181,8 +210,8 @@ function addCategory(){
 					return;
 				}else{
 					var str='';
-					var level1=$('#Level_1').find("option:selected").text();
-					var level2=$('#Level_2').find("option:selected").text();
+					var level1=$('#level_1').find("option:selected").text();
+					var level2=$('#level_2').find("option:selected").text();
 					var name=level1+'=>'+level2;
 					str='<option value="'+id_l2+'" id="c'+id_l2+'">'+name+'</option>'
 					$('#category').append(str);
@@ -193,9 +222,9 @@ function addCategory(){
 					return;
 				}else{
 					var str='';
-					var level1=$('#Level_1').find("option:selected").text();
-					var level2=$('#Level_2').find("option:selected").text();
-					var level3=$('#Level_3').find("option:selected").text();
+					var level1=$('#level_1').find("option:selected").text();
+					var level2=$('#level_2').find("option:selected").text();
+					var level3=$('#level_3').find("option:selected").text();
 					var name=level1+'=>'+level2+'=>'+level3;
 					str='<option value="'+id_l3+'" id="c'+id_l3+'">'+name+'</option>'
 					$('#category').append(str);

@@ -24,16 +24,18 @@ function IFrameResize(){
 	function checkAddAttrs(){
 		if($('#attlist').find('table').length>0){
 			$('#dosubmit').show();
+			$("#prompt").hide();
 		}else{
 			$('#dosubmit').hide();
+			$("#prompt").show();
 		}
 	};
 	$(document).ready(function(){
+		$('#dosubmit').hide();
 		$.formValidator.initConfig({formid:"myform",autotip:true,onerror:function(msg,obj){
 			window.top.art.dialog({content:msg,lock:true,width:250,height:100,ok:function(){$(obj).focus();}});
 		}});
-		$('#dosubmit').hide();
-		$('#div_add').hide();
+		//$('#div_add').hide();
 		IFrameResize();
 		$('#doadd').click(function(){
 					var str='<table cellpadding="4" cellspacing="1" class="table" width="98%" id="sites">';
@@ -75,10 +77,13 @@ function IFrameResize(){
 				checkAddAttrs();
 				IFrameResize();
 			});
+			/*
 			$("#add").click(function(){
 				$("#prompt").hide();
 				$('#div_add').show();
+				IFrameResize();
 			});
+			*/
 			$(document).on("change", "#unit_select", function(){ 
 				var option = $(this).val();
 				switch(option){
@@ -124,26 +129,7 @@ function IFrameResize(){
 </script>
 </head>
 <body >
-<div id="content">
-		
-		<empty name="list">
-								<div id="prompt">
-									<h1>该类别暂时还没有模板</h1>
-									<button  class="bginput" id="add" type="button" style="width:80px" >添加</button>
-								</div>
-								<div id="div_add">
-									<form action="{:U('Admin/Exhibit/template_add')}" method="post" name="form" id="template_add">
-									<input type="text" name="exhibittype_id" value="<?php echo $_GET['id'];?>"/>
-									<div id="attlist">
-									</div>
-									<div>
-										<input class="bginput" type="button" name="doadd" id="doadd" style="width:80px" value="添加属性">
-										&nbsp;
-										<input class="bginput" type="submit" name="dosubmit" id="dosubmit" style="width:50px" value="提 交">
-									</div>
-								</form>
-							</div>
-				<else/>
+	
 			<div id="display_template">
 			
 					<table cellpadding="4" cellspacing="1" class="table" width="98%" id="sites">
@@ -151,11 +137,23 @@ function IFrameResize(){
 						<td colspan="4" class="table_title">
 						<span class="fl">模板具体样式预览</span>
 						<span class="fr">
-							<input class="bginput" type="button" name="dodelete" id="dodelete" style="width:80px" value="删除模板" onclick="return confirmurl('{:U('/Admin/Exhibit/template_del/',array('id'=>$_GET['id']))}','确定删除该模板吗?')"/>
+							<notempty name="list">
+								<input class="bginput" type="button" name="dodelete" id="dodelete" style="width:80px" value="删除模板" onclick="return confirmurl('{:U('/Admin/Exhibit/template_del/',array('exhibittype_id'=>$_GET['id']))}','确定删除该模板吗?')"/>
+							</notempty>	
 							<input class="bginput" type="submit" name="doreload" id="doreload" style="width:50px" value="刷新" onclick="window.location.reload();" >
 						</span>
 						</td>
 					</tr>
+					
+		<empty name="list">
+			<tr class="tr">
+				<td colspan="4" align='center'>
+					<div id="prompt">
+						<h2>该类别暂时还没有模板</h2>
+					</div>	
+				</td>
+			</tr>
+		<else/>
 					<tr class="list_head ct">
 						<td width="200px">属性名称</td>
 						<td width="400px">属性元素</td>
@@ -170,24 +168,27 @@ function IFrameResize(){
 							</td>
 							<td align='center'><eq name="vo.status" value="1"><font color="red">√</font><else/><font color="blue">×</font></eq> 
 							<td align='center'>
-								<a href="{:U('/Admin/Exhibit/template_delone/',array('id'=>$vo['exhibittype_id'],'name'=>$vo['att_name']))}">修改</a>|
-								<a href="javascript:void(0)" onclick="return confirmurl('{:U('/Admin/Exhibit/template_delone/',array('id'=>$vo['exhibittype_id'],'name'=>$vo['att_name']))}','确定删除该属性吗?')">删除</a>
+								<a href="{:U('/Admin/Exhibit/template_delone/',array('id'=>$vo['id'],'exhibittype_id'=>$vo['exhibittype_id']))}">修改</a>|
+								<a href="javascript:void(0)" onclick="return confirmurl('{:U('/Admin/Exhibit/template_delone/',array('id'=>$vo['id'],'exhibittype_id'=>$vo['exhibittype_id']))}','确定删除该属性吗?')">删除</a>
 							</td>
-							<tr>
-						</volist>
-				    </table>
-					<form action="{:U('Admin/Exhibit/template_add')}" method="post" name="form" id="template_add">
+							</tr>
+						</volist>	
+		</empty>
+		</table>
+		<form action="{:U('Admin/Exhibit/template_add')}" method="post" name="form" id="template_add">
 						<div id="attlist">
 						</div>
 						<div>
 							<input type="hidden" name="exhibittype_id" value="<?php echo $_GET['id'];?>"/>
+							<empty name="list">
+							<input class="bginput" type="button" name="doadd" id="doadd" style="width:80px" value="添加属性">
+							<else/>
 							<input class="bginput" type="button" name="doadd" id="doadd" style="width:80px" value="继续添加">
+							</empty>
 								&nbsp;
 							<input class="bginput" type="submit" name="dosubmit" id="dosubmit" style="width:50px" value="提 交">
 						</div>
 					</form>
 		</div>
-		</empty>
-</div>
 </body>
 </html>

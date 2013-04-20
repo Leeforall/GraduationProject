@@ -131,7 +131,7 @@
 		 <div><span id="spanButtonPlaceholder"></span></div>
 		 </div>
 		 <div id="thumbnails">
-			<img id="thumbnail" src="{$info.logo_url}" style="margin:5px"/>
+			<img id="thumbnail" style="margin:5px;height:60px" <eq name="info.logo_url" value=""> src='__PUBLIC__/images/no_pic.jpg'<else/>src='{$info.logo_url}'</eq>  ></img>
 		 </div>
 		 <input type="hidden" name="logo_url" id="logo_url" size="35" maxlength="80" readOnly="true" value="{$info.logo_url}">
 		 <input type="hidden" name="logo_name" id="logo_name" size="35" maxlength="50" readOnly="true" value="{$info.logo_name}">

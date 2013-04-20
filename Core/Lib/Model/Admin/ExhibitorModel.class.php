@@ -3,9 +3,9 @@ class ExhibitorModel extends Model {
 
 	//自动验证
 	protected $_validate=array(
-		array('name_cn','require','展览名称必须！',1,'',3),
-		array('name_cn','','展览名称已经存在！',1,'unique',3), // 新增修改时候验证name_cn字段是否唯一
-		array('status','require','展览状态必须！',1,'',3),
+		array('name_cn','require','参展商名称必须！',1,'',3),
+		array('name_cn','','参展商名称已经存在！',1,'unique',3), // 新增修改时候验证name_cn字段是否唯一
+		array('status','require','参展商状态必须！',1,'',3),
 		array('contact','require','联系人必须！',1,'',3)
 	);
 	

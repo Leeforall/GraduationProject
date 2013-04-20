@@ -78,6 +78,7 @@ class LoginAction extends AdminAction{
             $data['id']	=	$authInfo['id'];
             $data['last_login_time']	=	time();
             $data['last_login_ip']	=	get_client_ip();
+            $data['login_count']	=	array('exp','login_count+1');
             $User->save($data);
 			
             // 缓存访问权限

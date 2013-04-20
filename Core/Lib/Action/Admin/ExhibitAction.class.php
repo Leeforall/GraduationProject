@@ -11,22 +11,87 @@ class ExhibitAction extends AdminAction{
 		
 	}
 	
+	public function add(){
+		$ExhibitDAO=D('Exhibit');
+		if(isset($_POST['dosubmit'])) {
+			$categoryid=$_POST['category_id'];
+			$ExhibitTemplateDAO=D('ExhibitTemplate');
+			$ids=$ExhibitTemplateDAO->where(array('exhibittype_id'=>$categoryid))->getField('id',true);
+			$jsondata['category_id']=$categoryid;
+			$maps=array();
+			$index=0;
+			foreach($ids as $id){
+				$values=$_POST['value_'.$id];
+				$name=$_POST['name_'.$id];
+				//dump($id);
+				//dump($values);
+				$map['id']=$id;
+				$map['name']=$name;
+				$map['value']=$values;
+				$maps[$index]=$map;
+				$index++;
+			}
+			$jsondata['values']=$maps;
+			if($ExhibitDAO -> create()){
+				$ExhibitDAO->jsondata=json_encode($jsondata);
+				$exhibit_id = $ExhibitDAO->add();
+				if($exhibit_id){
+					$this->success('展品信息添加成功');
+				}else{
+					$this->error('展品信息添加失败！');
+				}	
+			}else{
+				$this->error($ExhibitDAO->getError());
+			}
+			//dump($jsondata);
+			//dump(json_encode($jsondata));
+			//$this->display();
+		}else{
+			$ExhibittypeDAO=D('Exhibittype');
+			$level_1=$level_1=$ExhibittypeDAO->where(array('parent_id'=>1))->select();
+			$this->assign('level1',$level_1);
+			$this->display();
+		}
+	}
+	
+	public function edit(){
+		$ExhibitDAO=D('Exhibit');
+		if(isset($_POST['dosubmit'])) {
+			
+		}else{
+			$id = $this->_get('id','intval',0);
+			if(!$id)$this->error('参数错误!');
+			$info = $ExhibitDAO->getExhibit(array('id'=>$id));
+			$ExhibittypeDAO=D('Exhibittype');
+			$level_1=$ExhibittypeDAO->where(array('parent_id'=>1))->select();
+			$level_2=$ExhibittypeDAO->where(array('parent_id'=>$info['level_1']))->select();
+			$level_3=$ExhibittypeDAO->where(array('parent_id'=>$info['level_2']))->select();
+			$this->assign('level1',$level_1);
+			$this->assign('level2',$level_2);
+			$this->assign('level3',$level_3);
+			$this->assign('info',$info);
+			$this->display('add');
+		}
+	}
+	
 	public function template(){
 		$ExhibittypeDAO=D('Exhibittype');
 		$level_1=$level_1=$ExhibittypeDAO->where(array('parent_id'=>1))->select();
-		$this->assign('level',$level_1);
+		$this->assign('level1',$level_1);
 		$this->display();
 	}
 	
 	public function template_del(){
 		$ExhibitTemplateDAO=D('ExhibitTemplate');
-		if(isset($_GET['id'])){
-			$where['exhibittype_id']=intval($_GET['id']);
+		if(isset($_GET['exhibittype_id'])){
+			$where['exhibittype_id']=intval($_GET['exhibittype_id']);
 			$result=$ExhibitTemplateDAO->where($where)->delete();
 			if($result){
-				$this->success('模板删除成功！！！');
+				//$this->success('模板删除成功！！！');
+				$this->redirect('Admin/Exhibit/template_display',array('id'=>$_GET['exhibittype_id']));
 			}else{
-				$this->error('模板删除失败！！');
+				//$this->error('模板删除失败！！');
+				$this->redirect('Admin/Exhibit/template_display',array('id'=>$_GET['exhibittype_id']),3,'<h1>模板删除失败！！！，请重试…………</h1>');
 			}
 		}
 	}
@@ -35,15 +100,19 @@ class ExhibitAction extends AdminAction{
 	{
 		$id = $this->_get('id','intval',0);
         if(!$id)$this->error('参数错误!');
-		$name= $_GET['name'];
 		$ExhibitTemplateDAO=D('ExhibitTemplate');
-		$where['exhibittype_id']=$id;
-		$where['att_name']=$name;
+		$where['id']=$id;
+		$exhibittype_id=intval($_GET['exhibittype_id']);
 		$result=$ExhibitTemplateDAO->where($where)->delete();
 		if($result){
-			$this->success('属性"'.$name.'"删除成功！！！');
+			//$this->success('属性"'.$name.'"删除成功！！！');
+			//有延迟重定向；
+			//$this->redirect('Admin/Exhibit/template_display',array('id'=>$id),1,'<h1>删除成功！！！</h1>');
+			//无延迟重定向；
+			$this->redirect('Admin/Exhibit/template_display',array('id'=>$exhibittype_id));
 		}else{
-			$this->error('属性"'.$name.'"删除失败！！');
+			//$this->error('属性"'.$name.'"删除失败！！');
+			$this->redirect('Admin/Exhibit/template_display',array('id'=>$exhibittype_id),3,'<h1>删除失败！！！，请重试…………</h1>');
 		}
 	}
 	
@@ -75,56 +144,88 @@ class ExhibitAction extends AdminAction{
 					$data['unit'] = $units[$i];
 					$data['value'] = $values[$i];
 					$attr_values=explode("\n",$data['value']);
-					$data['html_value']=$this->createHtmlElement($types[$i],$names[$i],$attr_values);
 					//dump($data['html_value']);
-					$result=D('ExhibitTemplate')->data($data)->add();
-					if($result){
-						continue;
+					$newid=D('ExhibitTemplate')->data($data)->add();
+					if($newid){
+						$obj['html_value']=$this->createHtmlElement($types[$i],$newid,$names[$i],$attr_values);
+						$obj['id']=$newid;
+						if(D('ExhibitTemplate')->save($obj))
+							continue;
+						else{
+							break;
+						}
 					}else{
 						break;
 					}
 				}
 				if($i==$length){
-					$this->success('模板添加成功');
+					//$this->success('模板添加成功');
+					//无延迟重定向；
+					$this->redirect('Admin/Exhibit/template_display',array('id'=>$_POST['exhibittype_id']));
 				}else{
-					$this->error('模板添加有错误fuck！');
+					//$this->error('模板添加有错误fuck！');
+					$this->redirect('Admin/Exhibit/template_display',array('id'=>$_POST['exhibittype_id']),3,'<h1>模板添加有错误fuck！，请重试…………</h1>');
 				}
 			}else{
-				$this->error('模板添加有错误！');
+				$this->redirect('Admin/Exhibit/template_display',array('id'=>$_POST['exhibittype_id']),3,'<h1>模板添加有错误！，请重试…………</h1>');
 			}
 		}else{
 			$this->display('template');
 		}
 	}
 	
-	private function createHtmlElement($type,$name,$values){
+	/**
+	ThinkPHP的完全开发手册中有提到，可以使用表达式更新,例如：
+$User = M("User"); 
+$data['name'] = 'ThinkPHP';
+$data['score'] = array('exp','score+1'); 
+$data['num'] = array('exp','num+1'); 
+$User->where('id=5')->save($data);
+或者使用另外提供的setField方法进行多字段更新
+$User->where('id=5')->setField(array('socre','num'),array(array('exp','score+1'),array('exp','num+1')));
+	*/
+	
+	private function createHtmlElement($type,$id,$name,$values){
 		$str="";
 		switch($type){
 			case "1":
-				$att_text="<input type='text' name='value[]' id='att_text'/>";
+				$att_text="<input type='text' name='value_".$id."[]' id='Attribute_".$id."'/>";
 				$str.=$att_text;
 			break;
 			case "2":
+				$i=1;
 				foreach ($values as $value) {
-					$att_checkbox = "<input type='checkbox' id='att_checkbox' name='value[]' value='".$value."' >".$value."</input>";
+					$value=$this->trimStr($value);//注意这里要对字符串进行处理，过滤掉换行符
+					$att_checkbox = "<input type='checkbox' id='Attribute_".$id."_".$i."' name='value_".$id."[]' value='".$value."' >".$value."</input>";
 					$str.=$att_checkbox;
+					++$i;
 				}
 			break;
 			case "3":
-				$str.="<select id='att_select'  name='value[]' style='width:150px'>";
+				$str.="<select id='Attribute_".$id."'  name='value_".$id."[]' style='width:150px'>";
+				$str.="<option>请选择</option>";
 				foreach ($values as $value) {
+					$value=$this->trimStr($value);//注意这里要对字符串进行处理，过滤掉换行符
 					$option="<option value='".$value."'>".$value."</option>";
 					$str.=$option;
 				}
+				$str.="<option value='其他'>其他</option>";
 				$str.="</select>";
 			break;
 			default:
 		}
-		$str.="<input type='hidden' name='name[]' id='att_name' value='".$name."'/>";
+		$str.="<input type='hidden' name='name_".$id."' id='Attribute_Name_".$id."' value='".$name."'/>";
 		return $str;
 	}
 	
-	public function template_test(){
+	//字符串处理函数
+	private function trimStr($str){
+		$order   = array("\r\n", "\n", "\r");
+		$replace = '';
+		return str_replace($order, $replace, $str);
+	}
+	
+	public function template_display(){
 		$ExhibitTemplateDAO=D('ExhibitTemplate');
 		if(isset($_GET['id'])){
 			$where['exhibittype_id']=$_GET['id'];
@@ -133,6 +234,13 @@ class ExhibitAction extends AdminAction{
 			$this->display();
 		}
 	}
+	
+	public function getTemplate(){
+        $where['exhibittype_id']=$_REQUEST['Id'];
+		$where['status']=1;
+        $data=D('ExhibitTemplate')->where($where)->select();
+        $this->ajaxReturn($data);
+    }
 	
 	public function type_add(){
 		$ExhibittypeDAO=D('Exhibittype');
@@ -184,6 +292,7 @@ class ExhibitAction extends AdminAction{
 	public function getTypes(){
         $where['parent_id']=$_REQUEST['Id'];
         $data=D('exhibittype')->where($where)->select();
+		
         $this->ajaxReturn($data);
     }
 	

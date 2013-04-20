@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>展览信息设置</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel='stylesheet' type='text/css' href='__PUBLIC__/Admin/css/admin_style.css' />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/area.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/formValidator.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/formValidatorRegex.js"></script>
+<script>
+var getTemplate="{:U('getTemplate')}";
+var getTypes="{:U('getTypes')}";
+
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    
+  });
+</script>
+</head>
+<body>
+	<gt name="info.id" value="0">
+		<form action="{:U('Admin/Exhibit/edit')}" method="post" name="form" id="myform" >
+		<input type="hidden" name="id" value="{$info.id}">
+		<input type="hidden" name="user_id" value="{$info.user_id}">
+	<else />
+		<form action="{:U('Admin/Exhibit/add')}" method="post" id="myform" >
+		<input type="hidden" name="user_id" value="<?php echo intval(session('userid'));?>">
+    </gt>
+		<input type="text" id="category_id" name="category_id" value="{$info.category_id}"/>
+		<input type="text" id="jsondata" name="jsondata" value="{$info.jsondata}"/>
+		<table width="98%" border="0" cellpadding="4" cellspacing="1" class="table">
+	<tr class="table_title"><td colspan="2">{$info.jsondata}</td></tr>
+	<tr class="ji">
+	  <td class="left">展品名称（中文）</td>
+	  <td><input type="text" name="name_cn" id="name_cn" size="35" maxlength="50" value="{$info.name_cn}">
+	  </td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">展品名称（英文）</td>
+	  <td ><input type="text" name="name_en" id="name_en" size="35" maxlength="50" value="{$info.name_en}" >
+	  </td>
+	</tr>
+	 <tr class="ji">
+		  <td class="left">展品类型</td>
+		  <td colspan="3" class="lt">
+				<select name="level_1" id="level_1" onchange="loadLevel(this,'level_2',1)" size="10" style="width:150px">
+						<option value="0" selected>请选择</option>
+					<volist name="level1" id="one">
+						<option value="{$one.id}" <eq name="one.id" value="$info.level_1">selected=""</eq>>{$one.type_name}</option>
+					</volist>
+				</select>
+				<select name="level_2" id="level_2" onchange="loadLevel(this,'level_3',1)" size="10" style="width:150px">
+					<gt name="info.id" value="0">
+					<volist name="level2" id="one">
+						<option value="{$one.id}" <eq name="one.id" value="$info.level_2">selected=""</eq>>{$one.area_name}</option>
+					</volist>
+					</gt>
+			    </select>
+				<select name="level_3" id="level_3" onchange="loadLevel(this,'null',1)" size="10" style="width:150px">
+					<gt name="info.id" value="0">
+					<volist name="level3" id="one">
+						<option value="{$one.id}" <eq name="one.id" value="$info.level_3">selected=""</eq>>{$one.area_name}</option>
+					</volist>
+					</gt>
+				</select>
+				<input type="text" id="level_1_name" name="level1_name" value="{$info.level1_name}"/>
+				<input type="text" id="level_2_name" name="level2_name" value="{$info.level2_name}"/>
+				<input type="text" id="level_3_name" name="level3_name" value="{$info.level3_name}"/>
+		   </td>
+		</tr> 
+		
+	
+	<tr class="table_title"><td colspan="2">展品详细设置 </td></tr>
+
+	<tr class="tr" id="tr_description">
+	  <td class="left">展品描述</td>
+	  <td title="展品描述">
+		<textarea name="description" id="description" style="width:500px;height:75px">{$info.description}</textarea> <br>
+	  </td>
+	</tr> 		
+	<tr class="table_title"><td colspan="2">联系人设置</td></tr>
+	<tr class="ji">
+		<td >展品状态：</td>
+		<td colspan="3" class="lt">
+			<input type="radio" class="radio" value="1" name="status" id="status1" <if condition="($info.status eq 1) OR ($info['status'] eq '') ">checked=""</if> >启用
+			<input type="radio" class="radio" value="0" name="status" id="status2" <eq name="info.status" value="0">checked=""</eq> >关闭
+		</td>
+	</tr>    
+	</table>
+<div id="bootline"></div>
+<div id="btnbox" class="btn">
+	<gt name="info.id" value="0">
+		<input class="bginput" type="submit" name="dosubmit" value="修改" >
+	<else />
+		<input class="bginput" type="submit" name="dosubmit" value="提交">
+	</gt>
+		&nbsp;
+    <input class="bginput" type="reset" name="Input" value="重置" >
+</div>
+</form>
+</body>

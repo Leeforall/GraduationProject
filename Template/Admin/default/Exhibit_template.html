@@ -14,7 +14,7 @@ var getTypes="{:U('getTypes')}";
 var getTypeById="{:U('getTypeById')}";
 var actionAdd="{:U('/Admin/Exhibit/type_add')}";
 var actionEdit="{:U('/Admin/Exhibit/type_edit')}";
-var iframesrc="{:U('/Admin/Exhibit/template_test')}";
+var iframesrc="{:U('/Admin/Exhibit/template_display')}";
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -41,7 +41,7 @@ var iframesrc="{:U('/Admin/Exhibit/template_test')}";
 					<td colspan="3" class="lt">
 						<select name="Level_1" id="Level_1" onchange="loadData(this,'Level_2')" size="10" style="width:150px">
 							<option value="0" selected>请选择</option>
-							<volist name="level" id="one">
+							<volist name="level1" id="one">
 								<option value="{$one.id}">{$one.type_name}</option>
 							</volist>
 							<option value="-1" >其他</option>
@@ -61,8 +61,8 @@ var iframesrc="{:U('/Admin/Exhibit/template_test')}";
 							</ul>
 						</div>
 						<div class="content"  >
-							<div class="tabbox" style="display:block;">
-								<iframe name="template_tab" id="template_tab" src="" onload="this.height=template_tab.document.body.scrollHeight" frameborder="false" scrolling="no" style="border:none;"  width="100%"  ></iframe>
+							<div class="tabbox" style="display:block;" >
+								<iframe name="template_tab" id="template_tab" src=""  frameborder="false" scrolling="no" style="border:none;"  width="100%"  ></iframe>
 						    </div>
 							<div class="tabbox" >
 								<form action="" method="post" name="form" id="type_add">
