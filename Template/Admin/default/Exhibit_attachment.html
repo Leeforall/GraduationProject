@@ -32,7 +32,7 @@ $moduleid=session('moduleid');
 		</fieldset>
 		<div class="c"></div>
 		<input type="button" class="button" value="资料上传" 
-		onclick="javascript:swfupload('docs_uploadfile','docs','文件上传',20,'doc,docx,pdf,xls,xlsx',2,<?php echo $moduleid?>,1,{$_GET.id},1,up_docs,nodo)"/> 
+		onclick="javascript:swfupload('docs_uploadfile','docs','文件上传',20,'doc,docx,pdf,xls,xlsx',2,<?php echo $moduleid?>,2,{$_GET.id},1,up_docs,nodo)"/> 
 	</td>
 	</tr>
 	<tr  class="ji">
@@ -53,7 +53,7 @@ $moduleid=session('moduleid');
 		</fieldset>
 		<div class="c"></div>
 		<input type="button" class="button" value="图片上传" 
-		onclick="javascript:swfupload('pics_uploadfile','pics','文件上传',20,'jpeg,jpg,png,gif',2,<?php echo $moduleid?>,1,{$_GET.id},2,up_images,nodo)"/> 
+		onclick="javascript:swfupload('pics_uploadfile','pics','文件上传',20,'jpeg,jpg,png,gif',2,<?php echo $moduleid?>,2,{$_GET.id},2,up_images,nodo)"/> 
 	</td>
 	</tr>
 	<tr  class="tr">
@@ -72,18 +72,17 @@ $moduleid=session('moduleid');
 		</fieldset>
 		<div class="c"></div>
 		<input type="button" class="button" value="视频上传" 
-		onclick="javascript:swfupload('vedios_uploadfile','vedios','文件上传',20,'flv,rmvb,avi',2,<?php echo $moduleid?>,1,{$_GET.id},3,up_vedios,nodo)"/> 
+		onclick="javascript:swfupload('vedios_uploadfile','vedios','文件上传',20,'flv,rmvb,avi',2,<?php echo $moduleid?>,2,{$_GET.id},3,up_vedios,nodo)"/> 
 		
 	</td>
 	</tr>
 </table>
 <div id="btnbox" class="btn">
     <empty name="_GET.type">
-	<input class="bginput" type="button" onclick="location.href='{:U('/Admin/Exhibition/index')}'" value="完 成" >
+	<input class="bginput" type="button" onclick="location.href='{:U('/Admin/Exhibit/index')}'" value="完 成" >
 	<else/>
 	<input class="bginput" type="button" onclick="location.href='{:U('/Admin/Attachment/attachmentlist/',array('id'=>$_GET['id'],'type'=>$_GET['type']))}'" value="完 成" >
-	
-    <input class="bginput" type="button" onclick="javascript:history.back(-1);" value="返 回" >
 	</empty>
+    <input class="bginput" type="button" onclick="javascript:history.back(-1);" value="返 回" >
 </div>
 </body>

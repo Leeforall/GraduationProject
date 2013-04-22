@@ -133,6 +133,50 @@ function setInputData(item){
 	}
 }
 
+function fillform(){
+	var jsondata=$('#jsondata').val();//value 属性要用单引号，要不就会出错
+		//alert(jsondata);
+		if(!(typeof  jsondata==="undefined")){
+			var datas=jQuery.parseJSON(jsondata);
+			var values=datas.values;
+			console.log("contain data");
+			//console.log(values);
+			$.each(values, function(key, val) {
+				// firebug console
+				console.log('index in arr:' + key + ", corresponding id:" + val.id + ", corresponding name:" + val.name + ", corresponding value:" + val.value);
+				// 如果想退出循环
+				// return false;
+				var prep='Attribute_'+val.id;
+				//alert(val.value.length);
+				//alert(prep);
+				$("[id^=" + prep + "]").each(function () {
+					if($(this).is('input')){
+						if($(this).attr('type')=='checkbox'){
+							for(var i=0;i<val.value.length;i++){
+								if($(this).val()==val.value[i]){
+									$(this).attr('checked',true);
+								}
+							}
+						}else if($(this).attr('type')=='text'){
+							for(var i=0;i<val.value.length;i++){
+								$(this).val(val.value[i]);
+							}
+						}else{
+							
+						}
+					}else if($(this).is('select')){
+						for(var i=0;i<val.value.length;i++){
+							$(this).val(val.value[i]);
+						}
+					}else{
+						
+					}
+				});
+			});
+		}else{
+			console.log("no data");
+		}
+  }
 
 function loadLevel(select,Type,action) {
 	var Id=select.value;
@@ -153,6 +197,7 @@ function loadLevel(select,Type,action) {
 					str+='</tr>';
 				});
 				$('#tr_description').before(str);
+				fillform();
 			}else{
 				$('.tr_dymanic').remove();
 			}

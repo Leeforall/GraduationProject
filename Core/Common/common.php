@@ -1,12 +1,14 @@
 <?php
 //删除附件
 function delattach($map=''){
-		$model = M('Attachment');
-		$att= $model->field('aid,filepath')->where($map)->select();
+		$model = D('Attachment');
+		$att= $model->field('id,file_path')->where($map)->select();
 		$aids=array();
 		foreach((array)$att as $key=> $r){
-			$aids[]=$r['aid'];
-			@unlink(__ROOT__.$r['filepath']);
+			$aids[]=$r['id'];
+			//必须转换为相对路径才能删除正确
+			$path=str_replace(__ROOT__,".",$r['file_path']);
+			@unlink($path);
 		}
 		$r =$model->delete(implode(',',$aids));
 		return  false!==$r ? true : false;

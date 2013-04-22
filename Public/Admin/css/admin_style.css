@@ -18,7 +18,10 @@ body fieldset legend{padding:3px 8px;font-weight:700;border:1px solid #D8D8D8;ba
 
 td, th {
 	cursor:default;
-	white-space:nowrap;
+	*white-space:nowrap;
+	word-wrap:break-word;
+	word-break : normal;
+	 overflow:hidden;
 }
 a {
 	color:#0066FF;
@@ -71,6 +74,8 @@ ul li {
 	font-size:12px;
 }
 .ji {
+	max-width: 150px;
+    overflow: hidden;
 	background-color: #fcfdfe;
 }
 .ou {
@@ -91,7 +96,7 @@ sup{
 	margin-bottom:5px;
 	background: #C6DCF2;
 	font-size:12px;
-	text-align:left
+	text-align:left;
 }
 .table td {
 	padding-left:10px;
@@ -109,7 +114,8 @@ sup{
 	background: #fff;
 }
 .table .td {
-	padding-left:0px;
+	padding-left:0px; 
+	max-width: 150px;
 }
 .table_title {
 	height:25px;
@@ -273,7 +279,7 @@ td.fieldset span.legend {
 
 #divStatus {text-align:right;padding-right:10px;}
 #bootline {height:42px;overflow:hidden;zoom:1;line-height:42px;}
-#btnbox{position:fixed;width:100%;left:0;margin:0;padding-left:250px;border-top:1px solid #EBEBEB;bottom:0;}
+#btnbox{position:fixed;width:100%;left:0;margin:0;padding-left:250px;border-top:1px solid #EBEBEB;bottom:0;background-color:rgb(175, 224, 224);}
 
 
 #btnbox{_position:absolute;left:expression(eval(document.documentElement.scrollLeft));top:expression(eval(document.documentElement.scrollTop))} 

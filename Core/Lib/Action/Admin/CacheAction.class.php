@@ -13,6 +13,7 @@ class CacheAction extends AdminAction{
     public function delCore(){
 		import("ORG.Io.Dir");
 		$dir = new Dir;
+		@unlink('./Temp/~runtime.php');
 		@unlink('./Temp/~runtime.php');		//删除主编译缓存文件
 		@unlink('./Temp/~crons.php');		//删除计划任务缓存文件
 		@unlink('./Temp/cron.lock');		//删除计划任务执行锁定文件

@@ -215,6 +215,34 @@ class AttachmentAction extends  AdminAction {
         }	
 	}
 
+	public function attachmentlist(){
+		$id = $this->_get('id','intval',0);
+		$type_id = $this->_get('type','intval',0);
+        if(!$id||!$type_id)$this->error('参数错误!');
+		$AttachmentDAO = D('Attachment');
+		$where['user_id']=session('userid');
+		$where['foreign_id']=$id ;
+		$where['type_id']=$type_id;
+		$where['file_type']=1;   //图片类型
+		$docs=$AttachmentDAO->where($where)->order('id ASC')->select();
+		$where['file_type']=2;   //视频类型
+		$pics=$AttachmentDAO->where($where)->order('id ASC')->select();
+		$where['file_type']=3;   //资料类型
+		$vedios=$AttachmentDAO->where($where)->order('id ASC')->select();
+		$where['file_type']=4;   //other类型
+		$ohters=$AttachmentDAO->where($where)->order('id ASC')->select();
+		$count=count($docs)+count($pics)+count($ohters)+count($vedios);
+		$this->assign('count',$count);
+		$this->assign('docs',$docs);
+		$this->assign('pics',$pics);
+		$this->assign('vedios',$vedios);
+		$this->assign('typeid',$type_id);
+		$this->assign('foreignid',$id);
+		//$this->assign('ohters',$ohters);
+		$this->display();
+		
+	}
+	
 	public function filelist(){
 
 		$where= $_REQUEST['typeid'] ?  " status=1 " : " status=0 ";
@@ -236,18 +264,33 @@ class AttachmentAction extends  AdminAction {
 		$this->display();
 	}
 
-	function delfile($aid){
-		if(empty($aid)){
-		$aid=$_REQUEST['aid'];
+	function delfile($id){
+		if(empty($id)){
+		$aid=$_REQUEST['id'];
 		}
-		$r = delattach(array('aid'=>$aid,'userid'=>$this->userid));
+		$r = delattach(array('id'=>$id,'user_id'=>session('userid')));
 		if($r){		 
-			$this->success ( L ( 'delete_ok' ) );
+			$this->success ("附件删除成功" );
 		}else{
-			$this->error ( L ( 'delete_error' ) );
+			$this->error ( "附件删除失败" );
 		}
-	
 	}
+	
+	function delall($foreignid,$typeid){
+		if(empty($foreignid)){
+		$aid=$_REQUEST['foreignid'];
+		}
+		if(empty($typeid)){
+		$aid=$_REQUEST['typeid'];
+		}
+		$r = delattach(array('foreign_id'=>$foreignid,'type_id'=>$typeid,'user_id'=>session('userid')));
+		if($r){		 
+			$this->success ("附件删除成功" );
+		}else{
+			$this->error ( "附件删除失败" );
+		}
+	}
+	
 	function cleanfile(){
 
 		$r = delattach(array('status'=>0,'userid'=>$this->userid));

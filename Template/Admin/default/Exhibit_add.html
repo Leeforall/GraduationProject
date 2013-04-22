@@ -11,12 +11,33 @@
 <script>
 var getTemplate="{:U('getTemplate')}";
 var getTypes="{:U('getTypes')}";
-
-</script>
-<script type="text/javascript">
   $(document).ready(function(){
-    
+		fillform();
   });
+  function check(){
+	 switch($("input[name='validity_period_value']:checked").val())
+	 {
+		case "1":
+			$('#validity_period_name').val('10天');
+		break;
+		case "2":
+			$('#validity_period_name').val('20天');
+		break;
+		case "3":
+			$('#validity_period_name').val('1个月');
+		break;
+		case "4":
+			$('#validity_period_name').val('3个月');
+		break;
+		case "5":
+			$('#validity_period_name').val('6个月');
+		break;
+		case "6":
+			$('#validity_period_name').val('1年');
+		break;
+	 }
+ }
+ 
 </script>
 </head>
 <body>
@@ -24,14 +45,16 @@ var getTypes="{:U('getTypes')}";
 		<form action="{:U('Admin/Exhibit/edit')}" method="post" name="form" id="myform" >
 		<input type="hidden" name="id" value="{$info.id}">
 		<input type="hidden" name="user_id" value="{$info.user_id}">
+		<input type='hidden' id='jsondata' name='jsondata' value='{$info.jsondata}'/>
 	<else />
 		<form action="{:U('Admin/Exhibit/add')}" method="post" id="myform" >
 		<input type="hidden" name="user_id" value="<?php echo intval(session('userid'));?>">
     </gt>
-		<input type="text" id="category_id" name="category_id" value="{$info.category_id}"/>
-		<input type="text" id="jsondata" name="jsondata" value="{$info.jsondata}"/>
+		<input type="hidden" id="category_id" name="category_id" value="{$info.category_id}"/>
 		<table width="98%" border="0" cellpadding="4" cellspacing="1" class="table">
-	<tr class="table_title"><td colspan="2">{$info.jsondata}</td></tr>
+		<col width="180px"/>	
+		<col/>
+	<tr class="table_title"><td colspan="2">展品基本信息</td></tr>
 	<tr class="ji">
 	  <td class="left">展品名称（中文）</td>
 	  <td><input type="text" name="name_cn" id="name_cn" size="35" maxlength="50" value="{$info.name_cn}">
@@ -65,15 +88,39 @@ var getTypes="{:U('getTypes')}";
 					</volist>
 					</gt>
 				</select>
-				<input type="text" id="level_1_name" name="level1_name" value="{$info.level1_name}"/>
-				<input type="text" id="level_2_name" name="level2_name" value="{$info.level2_name}"/>
-				<input type="text" id="level_3_name" name="level3_name" value="{$info.level3_name}"/>
+				<input type="hidden" id="level_1_name" name="level1_name" value="{$info.level1_name}"/>
+				<input type="hidden" id="level_2_name" name="level2_name" value="{$info.level2_name}"/>
+				<input type="hidden" id="level_3_name" name="level3_name" value="{$info.level3_name}"/>
 		   </td>
 		</tr> 
 		
-	
+	<tr class="tr">
+		<td >有效期：</td>
+		<td colspan="3" class="lt">
+			<input type="radio" class="radio" onclick="check()" value="1" name="validity_period_value" id="validity_period_value1" <if condition="($info.validity_period_value eq 1) OR ($info['validity_period_value'] eq '') ">checked=""</if> >10天
+			<input type="radio" class="radio" onclick="check()" value="2" name="validity_period_value" id="validity_period_value2" <eq name="info.validity_period_value" value="2">checked=""</eq> >20天
+			<input type="radio" class="radio" onclick="check()" value="3" name="validity_period_value" id="validity_period_value3" <eq name="info.validity_period_value" value="3">checked=""</eq> >1个月
+			<input type="radio" class="radio" onclick="check()" value="4" name="validity_period_value" id="validity_period_value4" <eq name="info.validity_period_value" value="4">checked=""</eq> >3个月
+			<input type="radio" class="radio" onclick="check()" value="5" name="validity_period_value" id="validity_period_value5" <eq name="info.validity_period_value" value="5">checked=""</eq> >6个月
+			<input type="radio" class="radio" onclick="check()" value="6" name="validity_period_value" id="validity_period_value6" <eq name="info.validity_period_value" value="6">checked=""</eq> >一年
+		</td>
+		<gt name="info.id" value="0">
+		<input type="hidden" id="validity_period_name" name="validity_period_name" value="{$info.validity_period_name}"/>
+		<else/>
+		<input type="hidden" id="validity_period_name" name="validity_period_name" value="10天"/>
+		</gt>
+	</tr>  
 	<tr class="table_title"><td colspan="2">展品详细设置 </td></tr>
-
+	<notempty name="list">
+    <volist name="list" id="vo">
+				<tr class="tr tr_dymanic">
+					<td class="left">{$vo.att_name}</td>
+					<td >
+						{$vo.html_value}
+					</td>
+				</tr>
+			</volist>	
+	</notempty>
 	<tr class="tr" id="tr_description">
 	  <td class="left">展品描述</td>
 	  <td title="展品描述">
@@ -100,4 +147,8 @@ var getTypes="{:U('getTypes')}";
     <input class="bginput" type="reset" name="Input" value="重置" >
 </div>
 </form>
+<script>
+check();
+ 
+</script>
 </body>

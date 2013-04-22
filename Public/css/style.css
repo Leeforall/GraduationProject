@@ -179,6 +179,12 @@ select{ vertical-align:middle;background:none repeat scroll 0 0 #F9F9F9;border-c
 .editor_box .editor_bottom  {position:absolute;bottom:0;_bottom:10px;left:150px;z-index:199;height:27px;color:#666666;}
 .editor_box .editor_bottom1 {background:#F0F0EE;border:1px solid #C5C5C5;margin-top:-1px;padding:2px 8px;border-top:0;}
 
+#tabs {margin:0px auto;overflow:hidden;}
+#tabs .title {overflow:hidden;background:url(../images/tab_bottom_line.jpg) repeat-x 0 28px;height:29px;}
+#tabs .title ul li {float:left;height:27px;line-height:27px;border:1px solid #CFDFF0;border-bottom:0;background:#EAEEF4;padding:0px 10px;}
+#tabs .title ul li.on {background:#FFF;height:28px;}
+#tabs .content_1 {border:1px solid #CFDFF0;overflow:hidden;border-top:none;}
+#tabs .tabbox {display:none;padding:0px;}
 
 .login_box  {width:511px;height:243px;margin:170px auto 0 auto;background:url(../images/admin_logo_bg.png) no-repeat;color:#FFF;}
 .login_title {height:40px;margin:0px 10px;line-height:40px;border-bottom:1px solid #7FA0CE;text-align:center;color:#fff;font-family:'Microsoft YaHei';font-size:14px;font-weight:bold;}

@@ -8,7 +8,20 @@ class ExhibitAction extends AdminAction{
 	}
 	
 	public function index(){
+		import('ORG.Util.Page');//导入分页类
+		$map=array();
+		$ExhibitDAO = D('Exhibit');
+		$count=$ExhibitDAO->where($map)->count();
+		$Page=new Page($count,C('web_admin_pagenum')); //实例化分页类，传入总数
+		// 进行分页数据查询 注意page方法的参数的前面部分是当前的页数使用 $_GET[p]获取
+        $nowPage = isset($_GET['p'])?$_GET['p']:1;
+        $show       = $Page->show();// 分页显示输出
+		$list = $ExhibitDAO->where($map)->order('id ASC')->page($nowPage.','.C('web_admin_pagenum'))->select();
 		
+		$this->assign('list',$list);
+		$this->assign('page',$show);
+		//$this->assign('type',$show);
+		$this->display();
 	}
 	
 	public function add(){
@@ -36,6 +49,7 @@ class ExhibitAction extends AdminAction{
 				$ExhibitDAO->jsondata=json_encode($jsondata);
 				$exhibit_id = $ExhibitDAO->add();
 				if($exhibit_id){
+					$this->assign("jumpUrl",U('/Admin/Exhibit/attachment?id='.$exhibit_id));
 					$this->success('展品信息添加成功');
 				}else{
 					$this->error('展品信息添加失败！');
@@ -54,10 +68,44 @@ class ExhibitAction extends AdminAction{
 		}
 	}
 	
+	public function attachment(){
+		$this->display();
+	}
+	
 	public function edit(){
 		$ExhibitDAO=D('Exhibit');
 		if(isset($_POST['dosubmit'])) {
-			
+			if($ExhibitDAO -> create()){
+				$ExhibitDAO ->modifytime=time();//增加一个更新时间，要不如果更新没改动就会失败
+				$categoryid=$_POST['category_id'];
+				$ExhibitTemplateDAO=D('ExhibitTemplate');
+				$ids=$ExhibitTemplateDAO->where(array('exhibittype_id'=>$categoryid))->getField('id',true);
+				$jsondata['category_id']=$categoryid;
+				$maps=array();
+				$index=0;
+				foreach($ids as $id){
+					$values=$_POST['value_'.$id];
+					$name=$_POST['name_'.$id];
+					//dump($id);
+					//dump($values);
+					$map['id']=$id;
+					$map['name']=$name;
+					$map['value']=$values;
+					$maps[$index]=$map;
+					$index++;
+				}
+				$jsondata['values']=$maps;
+				$ExhibitDAO->jsondata=json_encode($jsondata);
+				if($ExhibitDAO->save()){
+					//$this->assign("jumpUrl",U('/Admin/Exhibit/attachment?id='.$exhibit_id));
+					$this->assign("jumpUrl",U('/Admin/Exhibit/index'));
+					$this->success('展品信息修改成功！');
+				}else{
+					$this->error('展品信息修改失败！');
+				}	
+			}else{
+				$this->error($ExhibitDAO->getError());
+			}
 		}else{
 			$id = $this->_get('id','intval',0);
 			if(!$id)$this->error('参数错误!');
@@ -66,12 +114,29 @@ class ExhibitAction extends AdminAction{
 			$level_1=$ExhibittypeDAO->where(array('parent_id'=>1))->select();
 			$level_2=$ExhibittypeDAO->where(array('parent_id'=>$info['level_1']))->select();
 			$level_3=$ExhibittypeDAO->where(array('parent_id'=>$info['level_2']))->select();
+			$ExhibitTemplateDAO=D('ExhibitTemplate');
+			$where['exhibittype_id']=$info['category_id'];
+			$list=$ExhibitTemplateDAO->where($where)->select();
+			$this->assign('list',$list);
 			$this->assign('level1',$level_1);
 			$this->assign('level2',$level_2);
 			$this->assign('level3',$level_3);
 			$this->assign('info',$info);
 			$this->display('add');
 		}
+	}
+	
+	//删除展览类型
+	public function del(){
+		$id = $this->_get('id','intval',0);
+        if(!$id)$this->error('参数错误!');
+		$ExhibitDAO=D('Exhibit');
+        if($ExhibitDAO->delExhibit('id='.$id)){
+            $this->assign("jumpUrl",U('/Admin/Exhibit/index'));
+            $this->success('删除成功！');
+        }else{
+            $this->error('删除失败!');
+        }
 	}
 	
 	public function template(){
@@ -273,19 +338,6 @@ $User->where('id=5')->setField(array('socre','num'),array(array('exp','score+1')
 				$this->error($ExhibittypeDAO->getError());
 			}
 		}
-	}
-	
-	//删除展览类型
-	public function del(){
-		$id = $this->_get('id','intval',0);
-        if(!$id)$this->error('参数错误!');
-        $ExhibittypeDAO = D('Exhibittype');
-        if($ExhibittypeDAO->delType('id='.$id)){
-            $this->assign("jumpUrl",U('/Admin/Exhibit/template'));
-            $this->success('删除成功！');
-        }else{
-            $this->error('删除失败!');
-        }
 	}
 	
 	

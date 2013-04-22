@@ -132,7 +132,12 @@ function IFrameResize(){
 	
 			<div id="display_template">
 			
-					<table cellpadding="4" cellspacing="1" class="table" width="98%" id="sites">
+					<table cellpadding="5" cellspacing="1" class="table" width="98%" id="sites">
+					
+				<col width="75"/>
+				<col />
+				<col width="30"/>
+				<col width="70"/>
 					<tr >
 						<td colspan="4" class="table_title">
 						<span class="fl">模板具体样式预览</span>
@@ -155,14 +160,14 @@ function IFrameResize(){
 			</tr>
 		<else/>
 					<tr class="list_head ct">
-						<td width="200px">属性名称</td>
-						<td width="400px">属性元素</td>
-						<td width="70">状态</td>
+						<td >属性名称</td>
+						<td >属性元素</td>
+						<td >状态</td>
 						<td >管理操作</td>
 					</tr>
 						<volist name="list" id="vo">
 							<tr class="tr rt">
-							<td width="200px" >{$vo.att_name}</td>
+							<td  >{$vo.att_name}</td>
 							<td  class="lt" width="400px">
 								{$vo.html_value}
 							</td>

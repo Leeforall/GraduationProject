@@ -506,7 +506,7 @@ CREATE TABLE IF NOT EXISTS `tp_attachment` (
   `file_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '文件类型 0：未知，1：图片 2：视频，3：资料，4：其他类型',
   `createtime` int(10) unsigned NOT NULL DEFAULT '0',
   `upload_ip` char(15) NOT NULL DEFAULT '',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `is_verified` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否审核 1：是 0：否',
   PRIMARY KEY (`id`),
 	KEY `type_id` (`type_id`),
