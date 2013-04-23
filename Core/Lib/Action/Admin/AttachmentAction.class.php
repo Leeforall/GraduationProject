@@ -243,6 +243,27 @@ class AttachmentAction extends  AdminAction {
 		
 	}
 	
+	public function edit(){
+		if(isset($_POST['file_name'])){
+			$id =$_REQUEST['id'];
+			$AttachmentDAO = D('Attachment');
+			$data['user_id']=session('userid');
+			$data['file_name']=$_REQUEST['file_name'];
+			$data['id']=$id;
+			$result=$AttachmentDAO->save($data);
+			$where['id']=$id;
+			$attachment=$AttachmentDAO->where($where)->find();
+			if($result){
+				//$this->assign("jumpUrl",U('/Admin/Attachment/attachmentlist',array('id'=>$attachment['foreign_id'],'type'=>$attachment['type_id'])));
+				$this->ajaxReturn($result,'修改成功', '1');
+			}else{
+				$this->ajaxReturn($result,'修改失败', '1');
+			}
+		}else{		
+			$this->display();
+		}
+	}
+	
 	public function filelist(){
 
 		$where= $_REQUEST['typeid'] ?  " status=1 " : " status=0 ";
@@ -266,7 +287,7 @@ class AttachmentAction extends  AdminAction {
 
 	function delfile($id){
 		if(empty($id)){
-		$aid=$_REQUEST['id'];
+		$id=$_REQUEST['id'];
 		}
 		$r = delattach(array('id'=>$id,'user_id'=>session('userid')));
 		if($r){		 

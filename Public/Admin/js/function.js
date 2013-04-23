@@ -2,7 +2,17 @@
  * 后台公共JS函数库
  *
  */
-
+function attachmentedit(url,originname,ext){
+	art.dialog.data('oldname',originname);
+	art.dialog.data('ext',ext);
+	art.dialog.open(url,{
+		id:'attachmentedit',
+		lock: 'true',
+		window: 'top'
+	});
+}
+ 
+ 
 function confirmurl(url,message) {
 	window.top.art.dialog.confirm(message, function(){
     	redirect(url);
