@@ -14,7 +14,7 @@ return array (
   'CRON_MAX_TIME' => 60,
   'web_copyright' => '',
   'web_tongji' => '',
-  'web_admin_pagenum' => 10,
+  'web_admin_pagenum' => 6,
   'web_home_pagenum' => 15,
   'web_adsensepath' => 'Public/Banner',
 );

@@ -2,10 +2,31 @@
  * 后台公共JS函数库
  *
  */
-function attachmentedit(url,originname,ext){
+function changestatus(action,id,message) {
+	window.top.art.dialog.confirm(message, function(){
+    	$.post(action,{'id':id},function(responce){
+					console.log(responce);
+			if(responce.data='1'){
+					var win = art.dialog.open.origin;//来源页面
+					// 如果父页面重载或者关闭其子对话框全部会关闭
+					art.dialog.close();
+					//api.title('警告').content('请注意artDialog两秒后将关闭！').lock().time(2);
+					art.dialog.tips(responce.info, 2);
+					win.location.reload();
+				}else{
+					art.dialog.tips(responce.info, 1.5);
+				}
+		});
+	}, function(){
+	    art.dialog.tips('你取消了操作');
+	});
+}
+ 
+ 
+function attachmentedit(action,originname,ext){
 	art.dialog.data('oldname',originname);
 	art.dialog.data('ext',ext);
-	art.dialog.open(url,{
+	art.dialog.open(action,{
 		id:'attachmentedit',
 		lock: 'true',
 		window: 'top'

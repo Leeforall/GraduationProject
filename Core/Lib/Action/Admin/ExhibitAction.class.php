@@ -2,7 +2,6 @@
 
 class ExhibitAction extends AdminAction{
 
-
 	public function _initialize() {
 		parent::_initialize();	//RBAC 验证接口初始化
 	}
@@ -123,6 +122,26 @@ class ExhibitAction extends AdminAction{
 			$this->assign('level3',$level_3);
 			$this->assign('info',$info);
 			$this->display('add');
+		}
+	}
+	
+	public function changestatus(){
+		$id =$_REQUEST['id'];
+		$ExhibitDAO=D('Exhibit');
+		$map['id']=intval($id);
+		$exhibit=$ExhibitDAO->getExhibit($map,'id,status');
+		if($exhibit['status']=='1'){
+			$map['status']=0;
+		}else if($exhibit['status']=='0'){
+			$map['status']=1;
+		}else{
+			$map['status']=1;
+		}
+		$result=$ExhibitDAO->save($map);
+		if($result){
+			$this->ajaxReturn($result,'状态修改成功',1);
+		}else{
+			$this->ajaxReturn($result,'状态修改失败',0);
 		}
 	}
 	

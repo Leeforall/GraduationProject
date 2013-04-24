@@ -184,7 +184,7 @@ class ExhibitorAction extends AdminAction{
 					$this->error('添加失败!');
 				}
 			}else{
-				$this->error();
+				$this->error($ExhibitorTypeDB->getError());
 			}
 		}else{
             $this->display();

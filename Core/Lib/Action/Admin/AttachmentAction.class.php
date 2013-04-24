@@ -215,6 +215,26 @@ class AttachmentAction extends  AdminAction {
         }	
 	}
 
+	public function changestatus(){
+		$id =$_REQUEST['id'];
+		$AttachmentDAO = D('Attachment');
+		$map['id']=intval($id);
+		$attachment=$AttachmentDAO->field('id,status')->where($map)->find();
+		if($attachment['status']=='1'){
+			$map['status']=0;
+		}else if($attachment['status']=='0'){
+			$map['status']=1;
+		}else{
+			$map['status']=1;
+		}
+		$result=$AttachmentDAO->save($map);
+		if($result){
+			$this->ajaxReturn($result,'状态修改成功',1);
+		}else{
+			$this->ajaxReturn($result,'状态修改失败',0);
+		}
+	}
+	
 	public function attachmentlist(){
 		$id = $this->_get('id','intval',0);
 		$type_id = $this->_get('type','intval',0);

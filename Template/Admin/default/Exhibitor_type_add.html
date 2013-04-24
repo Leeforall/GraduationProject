@@ -7,13 +7,7 @@
 <script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/formValidator.js"></script>
 <script type="text/javascript">
-	$(document).ready(function(){
-		$.formValidator.initConfig({formid:"myform",autotip:true,onerror:function(msg,obj){
-			window.top.art.dialog({content:msg,lock:true,width:250,height:100,ok:function(){$(obj).focus();}});
-		}});
-		$("#name").formValidator({onshow:"请输入参展商类型名称",onfocus:"请输入参展商类型名称"}).inputValidator({min:1,onerror:"参展商类型名称必须填写"});
-		$("#remark").formValidator({empty:true,onshow:"请输入参展商类型描述",onfocus:"请输入参展商类型描述"}).inputValidator({max:25,onerror:"描述不能超过25个字符,请确认"});
-	});
+	
 </script>
 </head>
 <body>
