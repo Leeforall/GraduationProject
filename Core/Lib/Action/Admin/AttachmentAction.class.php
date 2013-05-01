@@ -235,6 +235,8 @@ class AttachmentAction extends  AdminAction {
 		}
 	}
 	
+	
+	//只可以查看到自己发布的附件,因为涉及到修改
 	public function attachmentlist(){
 		$id = $this->_get('id','intval',0);
 		$type_id = $this->_get('type','intval',0);
@@ -263,16 +265,12 @@ class AttachmentAction extends  AdminAction {
 		
 	}
 	
+	//看到关联的附件，不涉及到修改
 	public function attachmentlist_view(){
 		$id = $this->_get('id','intval',0);
 		$type_id = $this->_get('type','intval',0);
         if(!$id||!$type_id)$this->error('参数错误!');
 		$AttachmentDAO = D('Attachment');
-		if(intval($type_id)==2){ 
-			//如果是展品类型则只可以查看到自己发布的附件
-			//如果是展览的话则可以查看到所有附件
-			$where['user_id']=session('userid');  
-		}
 		$where['status']=1; //开启状态的 
 		//$where['is_verified']=1;  //审核通过的
 		$where['foreign_id']=$id ;

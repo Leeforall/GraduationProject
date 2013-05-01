@@ -59,12 +59,15 @@ class ExhibitAction extends AdminAction{
 			$map['user_id']=session('userid');
 			$map['status']=1;
 			$map['is_verified']=2;
-			$count=$ExhibitDAO->where($map)->count();
-			$Page=new Page($count,C('web_admin_pagenum')); //实例化分页类，传入总数
+			//$count=$ExhibitDAO->where($map)->count();
+			//$Page=new Page($count,C('web_admin_pagenum')); //实例化分页类，传入总数
 			// 进行分页数据查询 注意page方法的参数的前面部分是当前的页数使用 $_GET[p]获取
-			$nowPage = isset($_GET['p'])?$_GET['p']:1;
-			$show       = $Page->show();// 分页显示输出
-			$list = $ExhibitDAO->where($map)->order('is_verified ASC')->page($nowPage.','.C('web_admin_pagenum'))->select();
+			//$nowPage = isset($_GET['p'])?$_GET['p']:1;
+			//$show       = $Page->show();// 分页显示输出
+			//$list = $ExhibitDAO->where($map)->order('is_verified ASC')->page($nowPage.','.C('web_admin_pagenum'))->select();
+			
+			//不分页才不会逻辑出错 。 先用不分页的做
+			$list = $ExhibitDAO->where($map)->order('id ASC')->select();
 			$exhibition_id=$_GET['id'];
 			$ExhibitionExhibitDAO=D('ExhibitionExhibit');
 			$where['exhibition_id']=$exhibition_id;
@@ -72,7 +75,7 @@ class ExhibitAction extends AdminAction{
 			$exhibits=$ExhibitionExhibitDAO->field('exhibit_id')->where($where)->select();
 			$this->assign('exhibits',json_encode($exhibits));
 			$this->assign('list',$list);
-			$this->assign('page',$show);
+			//$this->assign('page',$show);
 			//$this->assign('type',$show);
 			$this->display();		
 		}
@@ -81,9 +84,9 @@ class ExhibitAction extends AdminAction{
 	public function list_exhibits(){
 		import('ORG.Util.Page');//导入分页类
 		$map=array();
-		$map['user_id']=$_GET['userid'];
+		$map['user_id']=$_GET['userid'];  // 获取展商id
 		$ExhibitDAO = D('Exhibit');
-		$map['user_id']=session('userid');
+		//$map['user_id']=session('userid');
 		$count=$ExhibitDAO->where($map)->count();
 		$Page=new Page($count,C('web_admin_pagenum')); //实例化分页类，传入总数
 		// 进行分页数据查询 注意page方法的参数的前面部分是当前的页数使用 $_GET[p]获取
@@ -129,7 +132,7 @@ class ExhibitAction extends AdminAction{
 	public function index_admin(){
 		import('ORG.Util.Page');//导入分页类
 		$map=array();
-		$ExhibitDAO = D('Exhibit');
+		$ExhibitDAO = D('ExhibitExhibitorView'); //用视图可以查找exhibitor
 		$count=$ExhibitDAO->where($map)->count();
 		$Page=new Page($count,C('web_admin_pagenum')); //实例化分页类，传入总数
 		// 进行分页数据查询 注意page方法的参数的前面部分是当前的页数使用 $_GET[p]获取
