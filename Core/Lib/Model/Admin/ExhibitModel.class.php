@@ -12,7 +12,7 @@ class ExhibitModel extends Model {
 	protected $_auto = array ( 
 		array('createtime','time',1,'function'), 	//新增时
 		array('modifytime','time',1,'function'), 	//新增时
-		array('is_verified',1), 	//新增时
+		array('is_verified',0), 	//新增时
 	);
 	
 	//取得所有展览

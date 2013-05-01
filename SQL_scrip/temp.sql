@@ -354,7 +354,7 @@ CREATE TABLE IF NOT EXISTS `tp_exhibition` (
 	`status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否激活 1：是 0：否',
 	`createtime` int(10) unsigned NOT NULL DEFAULT '0',
 	`modifytime` int(10) unsigned NOT NULL DEFAULT '0',
-	`is_verified` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否审核 1：是 0：否',
+	`is_verified` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否审核 1：是 0：tp_exhibit否',
 	PRIMARY KEY (`id`),
 	KEY `name_cn` (`name_cn`),
 	KEY `user_id` (`user_id`),
@@ -404,6 +404,32 @@ CREATE TABLE IF NOT EXISTS `tp_exhibit` (
 	KEY `status` (`status`),
 	KEY `is_verified` (`is_verified`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+
+
+-- 表的结构 `tp_exhibition_exhibit`
+--
+
+CREATE TABLE IF NOT EXISTS `tp_exhibition_exhibit` (
+  `exhibition_id` int(10) unsigned NOT NULL,
+  `exhibit_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  KEY `exhibition_id` (`exhibition_id`),
+  KEY `user_id` (`user_id`),
+  KEY `exhibit_id` (`exhibit_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- 表的结构 `tp_exhibitor_exhibition`
+--
+
+CREATE TABLE IF NOT EXISTS `tp_exhibitor_exhibition` (
+  `exhibition_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  KEY `exhibition_id` (`exhibition_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 -- ---------------------------------------------------------
 

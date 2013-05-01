@@ -22,6 +22,33 @@ class ExhibitorAction extends AdminAction{
 		$this->display();
 	}
 	
+	public function index_admin(){
+		import('ORG.Util.Page');//导入分页类
+		$map=array();
+		$ExhibitorDAO = D('Exhibitor');
+		$count=$ExhibitorDAO->where($map)->count();
+		$Page=new Page($count,C('web_admin_pagenum')); //实例化分页类，传入总数
+		// 进行分页数据查询 注意page方法的参数的前面部分是当前的页数使用 $_GET[p]获取
+        $nowPage = isset($_GET['p'])?$_GET['p']:1;
+        $show       = $Page->show();// 分页显示输出
+		$list = $ExhibitorDAO->where($map)->order('is_verified ASC, modifytime DESC')->page($nowPage.','.C('web_admin_pagenum'))->select();
+		$this->assign('list',$list);
+		$this->assign('page',$show);
+		//$this->assign('type',$show);
+		$this->display();
+	}
+	
+	public function home(){
+		$ExhibitorDAO = D('Exhibitor');
+		$where['user_id']=session('userid');
+		$exhibitor=$ExhibitorDAO->getExhibitor($where);
+		$this->assign('info',$exhibitor);
+		$where['exhibitor_id']=$exhibitor['id'];
+		$categories=D("ExhibitorExhibittype")->where($where)->select();
+		$this->assign('categories',$categories);
+		$this->display();
+	}
+	
 	public function add(){
 		$ExhibitorDAO = D('Exhibitor');
 		if(isset($_POST['dosubmit'])) {
@@ -86,6 +113,40 @@ class ExhibitorAction extends AdminAction{
 		
 	}
 	
+	public function read(){
+		$ExhibitorDAO = D('Exhibitor');
+		if(isset($_GET['id'])){
+			$id=intval($_GET['id']);
+			$map['id']=$id;
+			$exhibitor=$ExhibitorDAO->getExhibitor($map);
+			$where['exhibitor_id']=$id;
+			$categories=D("ExhibitorExhibittype")->where($where)->select();
+			$this->assign('categories',$categories);
+			$this->assign('info',$exhibitor);
+		}
+		$this->display();
+	}
+	
+	public function verify(){
+		$id =$_REQUEST['id'];
+		$ExhibitorDAO=D('Exhibitor');
+		$map['id']=intval($id);
+		$exhibitor=$ExhibitorDAO->getExhibitor($map,'id,is_verified');
+		if($_REQUEST['val']=='0'){
+			$map['is_verified']=0;
+		}else if($_REQUEST['val']=='1'){
+			$map['is_verified']=1;
+		}else if($_REQUEST['val']=='2'){
+			$map['is_verified']=2;
+		}
+		$result=$ExhibitorDAO->save($map);
+		if($result){
+			$this->ajaxReturn($result,'审核成功',1);
+		}else{
+			$this->ajaxReturn($result,'审核失败',0);
+		}
+	}
+	
 	public function edit(){
 		$ExhibitorDAO = D('Exhibitor');
 		if(isset($_POST['dosubmit'])) {
@@ -96,7 +157,7 @@ class ExhibitorAction extends AdminAction{
 					$categorynames=$_POST['categoryname'];
 					if(count($categoryids)==count($categorynames)){
 						$where['exhibitor_id']=$_POST['id'];
-						if(D("ExhibitorExhibittype")->where($where)->delete()){
+						D("ExhibitorExhibittype")->where($where)->delete();
 							$length=count($categoryids);
 							$i=0;
 							for(;$i<$length;$i++){
@@ -110,21 +171,15 @@ class ExhibitorAction extends AdminAction{
 								}
 							}
 							if($i==$length){
-								$this->assign("jumpUrl",U('/Admin/Exhibitor/index'));
-								$this->success('展商信息编辑成功！');
+								$this->assign("jumpUrl",U('/Admin/Exhibitor/home'));
+								$this->success('我的展商信息编辑成功！');
 							}else{
-								$this->error('展商信息编辑成功,但主要经营行业更新失败!');
+								$this->error('我的展商信息编辑成功,但主要经营行业更新失败!');
 							}
-						}else{
-							D("ExhibitorExhibittype")->where($where)->delete();
-							$this->error('展商信息编辑成功,但主要经营行业更新失败!');
-						}
+						
 					}
-					/*
-					$this->assign("jumpUrl",U('/Admin/Exhibitor/index'));
-                    $this->success('编辑成功！');*/
 				}else{
-					$this->error('展商信息编辑失败!');
+					$this->error('我的展商信息编辑失败!');
 				}
 			}else{
 				$this->error($ExhibitorDAO->getError());
@@ -152,6 +207,7 @@ class ExhibitorAction extends AdminAction{
             $this->display('add');
 		}
 	}
+	
 	//参展商类型列表
 	public function type(){
 		import('ORG.Util.Page');//导入分页类

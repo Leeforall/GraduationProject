@@ -10,12 +10,119 @@ class ExhibitAction extends AdminAction{
 		import('ORG.Util.Page');//导入分页类
 		$map=array();
 		$ExhibitDAO = D('Exhibit');
+		$map['user_id']=session('userid');
 		$count=$ExhibitDAO->where($map)->count();
 		$Page=new Page($count,C('web_admin_pagenum')); //实例化分页类，传入总数
 		// 进行分页数据查询 注意page方法的参数的前面部分是当前的页数使用 $_GET[p]获取
         $nowPage = isset($_GET['p'])?$_GET['p']:1;
         $show       = $Page->show();// 分页显示输出
-		$list = $ExhibitDAO->where($map)->order('id ASC')->page($nowPage.','.C('web_admin_pagenum'))->select();
+		$list = $ExhibitDAO->where($map)->order('is_verified ASC')->page($nowPage.','.C('web_admin_pagenum'))->select();
+		$this->assign('list',$list);
+		$this->assign('page',$show);
+		$this->assign('count',$count);
+		$this->display();
+	}
+	
+	public function myexhibit(){
+		$this->index();
+	}
+	
+	public function join(){
+		$ExhibitDAO = D('Exhibit');
+		if(isset($_POST['dosubmit'])) {
+			$chosens = $this->_POST('chosen');
+			if(!is_array($chosens))$this->error('参数错误!');
+			$exhibition_id=$_POST['id'];
+			$ExhibitionExhibitDAO=D('ExhibitionExhibit');
+			$where['exhibition_id']=$exhibition_id;
+			$ExhibitionExhibitDAO->where($where)->delete();
+			foreach ($chosens as $id => $exhibit) {
+				$data['user_id']=session('userid');
+				$data['exhibit_id']=$id;
+				$data['exhibition_id']=$exhibition_id;
+				$result=$ExhibitionExhibitDAO->data($data)->add();
+				if($result){
+					continue;
+				}else{
+					$ExhibitionExhibitDAO->where($where)->delete();
+					$this->error('参展品设置出错!');
+				}
+			}
+			
+			$ExhibitorExhibitionDAO=D('ExhibitorExhibition');
+			$this->assign('jumpUrl',U('/Admin/Exhibition/view'));
+			$this->success('参展品设置成功!');
+		}else{
+			import('ORG.Util.Page');//导入分页类
+			$map=array();
+			$map['user_id']=session('userid');
+			$map['status']=1;
+			$map['is_verified']=2;
+			$count=$ExhibitDAO->where($map)->count();
+			$Page=new Page($count,C('web_admin_pagenum')); //实例化分页类，传入总数
+			// 进行分页数据查询 注意page方法的参数的前面部分是当前的页数使用 $_GET[p]获取
+			$nowPage = isset($_GET['p'])?$_GET['p']:1;
+			$show       = $Page->show();// 分页显示输出
+			$list = $ExhibitDAO->where($map)->order('is_verified ASC')->page($nowPage.','.C('web_admin_pagenum'))->select();
+			$exhibition_id=$_GET['id'];
+			$ExhibitionExhibitDAO=D('ExhibitionExhibit');
+			$where['exhibition_id']=$exhibition_id;
+			$exhibits=$ExhibitionExhibitDAO->field('exhibit_id')->where($where)->select();
+			$this->assign('exhibits',json_encode($exhibits));
+			$this->assign('list',$list);
+			$this->assign('page',$show);
+			//$this->assign('type',$show);
+			$this->display();		
+		}
+	}
+	
+	public function list_exhibits(){
+		import('ORG.Util.Page');//导入分页类
+		$map=array();
+		$map['user_id']=$_GET['userid'];
+		$ExhibitDAO = D('Exhibit');
+		$map['user_id']=session('userid');
+		$count=$ExhibitDAO->where($map)->count();
+		$Page=new Page($count,C('web_admin_pagenum')); //实例化分页类，传入总数
+		// 进行分页数据查询 注意page方法的参数的前面部分是当前的页数使用 $_GET[p]获取
+        $nowPage = isset($_GET['p'])?$_GET['p']:1;
+        $show       = $Page->show();// 分页显示输出
+		$list = $ExhibitDAO->where($map)->order('is_verified ASC')->page($nowPage.','.C('web_admin_pagenum'))->select();
+		
+		$this->assign('list',$list);
+		$this->assign('page',$show);
+		//$this->assign('type',$show);
+		$this->display('index_admin');
+	}
+	
+	public function exhibitofexhibition(){
+		$map=array();
+		$map['user_id']=session('userid');
+		$map['exhibition_id']=$_GET['id'];
+		import('ORG.Util.Page');//导入分页类		
+		// 进行分页数据查询 注意page方法的参数的前面部分是当前的页数使用 $_GET[p]获取
+		$nowPage = isset($_GET['p'])?$_GET['p']:1;
+		$view = D('MyexhibitView');
+		$list = $view->where($map)->order('id ASC')->page($nowPage.','.C('web_admin_pagenum'))->select();
+		$count=$view->where($map)->count();
+		$Page=new Page($count,C('web_admin_pagenum')); //实例化分页类，传入总数
+		$show       = $Page->show();// 分页显示输出
+		$this->assign('list',$list);
+		$this->assign('page',$show);
+		$this->assign('count',$count);
+		$this->display();
+	}
+	
+	public function index_admin(){
+		import('ORG.Util.Page');//导入分页类
+		$map=array();
+		$ExhibitDAO = D('Exhibit');
+		$count=$ExhibitDAO->where($map)->count();
+		$Page=new Page($count,C('web_admin_pagenum')); //实例化分页类，传入总数
+		// 进行分页数据查询 注意page方法的参数的前面部分是当前的页数使用 $_GET[p]获取
+        $nowPage = isset($_GET['p'])?$_GET['p']:1;
+        $show       = $Page->show();// 分页显示输出
+		$list = $ExhibitDAO->where($map)->order('is_verified ASC,modifytime DESC')->page($nowPage.','.C('web_admin_pagenum'))->select();
 		
 		$this->assign('list',$list);
 		$this->assign('page',$show);
@@ -142,6 +249,26 @@ class ExhibitAction extends AdminAction{
 			$this->ajaxReturn($result,'状态修改成功',1);
 		}else{
 			$this->ajaxReturn($result,'状态修改失败',0);
+		}
+	}
+	
+	public function verify(){
+		$id =$_REQUEST['id'];
+		$ExhibitDAO=D('Exhibit');
+		$map['id']=intval($id);
+		$exhibit=$ExhibitDAO->getExhibit($map,'id,is_verified');
+		if($_REQUEST['val']=='0'){
+			$map['is_verified']=0;
+		}else if($_REQUEST['val']=='1'){
+			$map['is_verified']=1;
+		}else if($_REQUEST['val']=='2'){
+			$map['is_verified']=2;
+		}
+		$result=$ExhibitDAO->save($map);
+		if($result){
+			$this->ajaxReturn($result,'审核成功',1);
+		}else{
+			$this->ajaxReturn($result,'审核失败',0);
 		}
 	}
 	

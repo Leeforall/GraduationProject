@@ -29,6 +29,15 @@ class AdminAction extends CmsAction{
         }
 
     }
+	
+	/*
+	* 空操作
+	* 前台模块操作指定错误时调用
+	*/
+    public function _empty(){
+    	$this->display(C('ERROR_PAGE'));
+    	exit;
+    }
 /*
 	public function getProvince(){
 		//获取省级地区

@@ -280,5 +280,12 @@ class UserAction extends AdminAction {
         $this->success('设置成功！');
     }
 
+	public function myinfo(){
+		$id=session('userid');
+        $UserDB = D('User');
+        $info = $UserDB->getUser(array('id'=>$id));
+		$this->assign('info',$info);
+		$this->display();
+	}
 	
 }

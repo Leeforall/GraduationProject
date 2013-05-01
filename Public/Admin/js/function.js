@@ -21,6 +21,40 @@ function changestatus(action,id,message) {
 	    art.dialog.tips('你取消了操作');
 	});
 }
+
+function doverify(action,val,id){
+	switch(val){
+		case "0":
+			message="设为审核进行中？";
+		break;
+		case "1":
+			message="确认审核不通过？";
+		break;
+		case "2":
+			message="确认审核通过";
+		break;
+		default:
+			return;
+		
+	}
+	window.top.art.dialog.confirm(message, function(){
+    	$.post(action,{'id':id,'val':val},function(responce){
+					console.log(responce);
+			if(responce.data='1'){
+					var win = art.dialog.open.origin;//来源页面
+					// 如果父页面重载或者关闭其子对话框全部会关闭
+					art.dialog.close();
+					//api.title('警告').content('请注意artDialog两秒后将关闭！').lock().time(2);
+					art.dialog.tips(responce.info, 2);
+					win.location.reload();
+				}else{
+					art.dialog.tips(responce.info, 1.5);
+				}
+		});
+	}, function(){
+	    art.dialog.tips('你取消了操作');
+	});
+}
  
  
 function attachmentedit(action,originname,ext){

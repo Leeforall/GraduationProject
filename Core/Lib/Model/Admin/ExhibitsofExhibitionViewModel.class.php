@@ -1,0 +1,1 @@
+<?phpclass ExhibitsofExhibitionViewModel extends ViewModel{	 public $viewFields = array(        'exhibition_exhibit'=>array('exhibition_id','user_id','exhibit_id'),		'exhibit'=>array('id'=>'exhibit_id','name_cn','name_en',		'level1_name','level2_name','level3_name','user_id'=>'uid','is_verified',		'_on'=>'exhibition_exhibit.exhibit_id=exhibit.id'),    );}?>

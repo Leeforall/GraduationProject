@@ -19,9 +19,9 @@ $array = array(
 		'TOKEN_TYPE'           => 'md5',  //令牌哈希验证规则 默认为MD5
 		'TOKEN_RESET'          => true,  //令牌验证出错后是否重置令牌 默认为true
 
-		'TMPL_ACTION_ERROR'    => './Public/tips/tips.html', // 默认错误跳转对应的模板文件
-		'TMPL_ACTION_SUCCESS'  => './Public/tips/tips.html', // 默认成功跳转对应的模板文件
-		'ERROR_PAGE'           => './Public/tips/error_1.html',// 异常和错误
+		'TMPL_ACTION_ERROR'    => './Public/tips/success.html', // 默认错误跳转对应的模板文件
+		'TMPL_ACTION_SUCCESS'  => './Public/tips/success.html', // 默认成功跳转对应的模板文件
+		'ERROR_PAGE'           => './Public/tips/error.html',// 异常和错误
 		
 		'SHOW_PAGE_TRACE'      => true,	 // 显示TRACE页面
 		

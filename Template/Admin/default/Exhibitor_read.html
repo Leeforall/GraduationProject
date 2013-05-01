@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>展览管理-{$Think.config.cms_name}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel='stylesheet' type='text/css' href='__PUBLIC__/Admin/css/admin_style.css' />
+	<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+	
+</head>
+
+<table width="98%" border="0" cellpadding="4" cellspacing="1" class="table" style="font-size:15px">
+		<col width="180"/>
+		<col />
+		<col width="200"/>
+	<tr class="table_title">
+		<td colspan="4">
+		<span class="fl">参展商基本信息</span>
+		<span class="fr">
+			<a href="{:U('/Admin/Exhibit/list_exhibits/',array('userid'=>$info['user_id']))}">查看该展商的展品</a>
+		</span>
+		</td>	
+	</tr>
+	<tr class="tr">
+	  <td class="left">公司名称（中文）</td>
+	  <td>{$info.name_cn}</td>
+	  <td rowspan="5" align="center"><img id="thumbnail" style="margin:5px;height:111px" <eq name="info.logo_url" value=""> src='__PUBLIC__/images/no_pic.jpg'<else/>src='{$info.logo_url}'</eq>  ></img></td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">公司名称（英文）</td>
+	  <td >{$info.name_en}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">公司类型</td>
+	  <td >{$info.type_name}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">主要经营地点</td>
+	  <td >	
+			<neq name="info.province_name" value="">{$info.province_name}</neq>
+			<neq name="info.city_name" value="">-{$info.city_name}</neq>	
+			<neq name="info.district_name" value="">-{$info.district_name}</neq>
+	  </td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">网址</td>
+	  <td >{$info.website}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">主营产品</td>
+	  <td colspan="2">
+			<notempty name="info.product1">{$info.product1}<br/></notempty>
+			<notempty name="info.product2">{$info.product2}<br/></notempty>
+			<notempty name="info.product3">{$info.product3}<br/></notempty>
+			<notempty name="info.product4">{$info.product4}<br/></notempty>
+			<notempty name="info.product5">{$info.product5}<br/></notempty>
+			<notempty name="info.product6">{$info.product6}<br/></notempty>
+			<notempty name="info.product7">{$info.product7}<br/></notempty>
+			<notempty name="info.product8">{$info.product8}<br/></notempty>
+			<notempty name="info.product9">{$info.product9}<br/></notempty>
+	  </td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">主要经营行业</td>
+	  <td colspan="2">
+		<volist name="categories" id="category">
+			{$i}:{$category.category_name}<br/>
+		</volist>
+	  </td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">公司描述</td>
+	  <td colspan="2">{$info.description}</td>
+	</tr>
+	<tr class="table_title"><td colspan="4">联系人信息</td></tr>
+	<tr class="tr">
+	  <td class="left">联系人</td>
+	  <td colspan="2">{$info.contact} <eq name="info['status']" value="0">(女士)</eq> <eq name="info['status']" value="1">(先生)</eq></td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">部门</td>
+	  <td colspan="2">{$info.department}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">职位</td>
+	  <td colspan="2">{$info.position}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">负责人</td>
+	  <td colspan="2">{$info.charger}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">联系地址</td>
+	  <td colspan="2">{$info.contact_add}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">邮编</td>
+	  <td colspan="2">{$info.postcode}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">电话</td>
+	  <td colspan="2">{$info.telephone}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">传真</td>
+	  <td colspan="2">{$info.fax}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">邮箱</td>
+	  <td colspan="2">{$info.email}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">手机号码</td>
+	  <td colspan="2">{$info.mobilephone}</td>
+	</tr>
+	<tr class="tr">
+		<td colspan="4" align="right"><b><font color="red">创建时间 {:date('Y-m-d H:i:s',$info['createtime'])}</font></b></td>
+	</tr>
+</table>
+<body>
+</body>

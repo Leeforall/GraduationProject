@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>展览管理-{$Think.config.cms_name}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel='stylesheet' type='text/css' href='__PUBLIC__/Admin/css/admin_style.css' />
+	<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+	
+</head>
+
+<table width="98%" border="0" cellpadding="4" cellspacing="1" class="table" style="font-size:15px">
+		<col width="180"/>
+		<col />
+		<col width="200"/>
+	<tr class="table_title">
+		<td colspan="4">展览基本信息</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">展览名称（中文）</td>
+	  <td>{$info.name_cn}</td>
+	  <td rowspan="5" align="center"><img id="thumbnail" style="margin:5px;height:111px" <eq name="info.logo_url" value=""> src='__PUBLIC__/images/no_pic.jpg'<else/>src='{$info.logo_url}'</eq>  ></img></td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">展览名称（英文）</td>
+	  <td >{$info.name_en}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">所属行业</td>
+	  <td >{$info.type_name}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">展览时间</td>
+	  <td >开始日期：{$info.period_start|substr=0,10} —— 结束日期：{$info.period_end|substr=0,10}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">日开放时间</td>
+	  <td >开始时间：{$info.day_start|substr=0,5} ——  结束时间：{$info.day_end|substr=0,5}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">地区</td>
+	  <td colspan="2">
+			<neq name="info.province_name" value="">{$info.province_name}</neq>
+			<neq name="info.city_name" value="">-{$info.city_name}</neq>	
+			<neq name="info.district_name" value="">-{$info.district_name}</neq></td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">展览详细地址</td>
+	  <td colspan="2">{$info.address}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">网址</td>
+	  <td colspan="2">{$info.website}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">展馆名称</td>
+	  <td colspan="2">{$info.hall}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">展会描述</td>
+	  <td colspan="2">{$info.description}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">主办单位</td>
+	  <td colspan="2">{$info.organizer}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">承办单位</td>
+	  <td colspan="2">{$info.host}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">协办单位</td>
+	  <td colspan="2">{$info.coorganizer}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">支持单位</td>
+	  <td colspan="2">{$info.supporter}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">举办状态</td>
+	  <td colspan="2"><eq name="info['status']" value="0">筹备中</eq> <eq name="info['status']" value="1">举办中</eq></td>
+	</tr>
+	<tr class="table_title"><td colspan="4">联系人信息</td></tr>
+	<tr class="tr">
+	  <td class="left">联系人</td>
+	  <td colspan="2">{$info.contact}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">联系地址</td>
+	  <td colspan="2">{$info.contact_add}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">邮编</td>
+	  <td colspan="2">{$info.postcode}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">电话</td>
+	  <td colspan="2">{$info.telephone}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">传真</td>
+	  <td colspan="2">{$info.fax}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">手机号码</td>
+	  <td colspan="2">{$info.mobilephone}</td>
+	</tr>
+	<tr class="tr">
+		<td colspan="4" align="right"><b>创建时间 {:date('Y-m-d H:i:s',$info['createtime'])}</td>
+	</tr>
+</table>
+<body>
+</body>

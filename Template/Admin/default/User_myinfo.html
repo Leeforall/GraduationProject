@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>展览管理-{$Think.config.cms_name}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel='stylesheet' type='text/css' href='__PUBLIC__/Admin/css/admin_style.css' />
+	<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+	
+</head>
+
+<table width="98%" border="0" cellpadding="4" cellspacing="1" class="table" style="font-size:15px">
+		<col width="180"/>
+		<col />
+		<col width="200"/>
+	<tr class="table_title">
+		<td colspan="3">会员基本信息</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">账号</td>
+	  <td colspan="2">{$info.username}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">真实姓名</td>
+	  <td colspan="2">{$info.real_name}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">联系方式</td>
+	  <td colspan="2">{$info.telephone}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">电子邮件</td>
+	  <td colspan="2">{$info.email}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">最后登录时间</td>
+	  <td colspan="2">{:date('Y-m-d H:i:s',$info['last_login_time'])}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">最后登录IP</td>
+	  <td colspan="2">{$info.last_login_ip}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">最后登录位置</td>
+	  <td colspan="2">{$info.last_location}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">登录次数</td>
+	  <td colspan="2">{$info.login_count}</td>
+	</tr>
+</table>
+<body>
+</body>

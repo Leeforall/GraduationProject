@@ -1,9 +1,10 @@
 html, body, img, a img, form{margin:0; padding:0; border:none;_overflow-x:hidden;}
 img{text-align:absmiddle; background-color:transparent}
-html, body, p, table{font: normal 12PX Tahoma,Verdana,Helvetica,Arial,sans-serif; }
+html, body, p{font: normal 12PX Tahoma,Verdana,Helvetica,Arial,sans-serif; }
 a{color:#444444;text-decoration:none;}
 a:hover{color:#BF0000; text-decoration:underline;}
-body{background:#FFF;height:100%}
+table,div{font:normal normal normal 14PX 微软雅黑,Tahoma,Verdana,Helvetica,Arial,sans-serif; line-height:150%}
+body, table{background-color:white}
 ul, ol { list-style:none;margin:0;padding:0;}
 p, li {	line-height:1.8em;}
 input, textarea, select, button, file {	font-size:12px;margin:0px;}
@@ -213,3 +214,13 @@ body fieldset{border:1px solid #D8D8D8; padding:10px;}
 body fieldset legend{padding:3px 8px;font-weight:700;border:1px solid #D8D8D8;background-color: #F9F9F9;}
 body fieldset.blue{border:1px solid #dce3ed}
 body fieldset.blue legend{padding:3px 8px;font-weight:700;color:#347add; background:none; border:none}
+
+div.message{width:75%; padding:5pt; float:none; margin:15% auto 0% auto; clear:both; text-align:center}
+
+ table.message th,
+ table.message td,
+ table.error th,
+ table.error td{border-left:1px solid silver; border-bottom:1px solid silver; vertical-align:top; padding:3px}
+ table td.topTd{background:url(../images/bgline.gif) repeat-x; border-bottom:1pt solid gray;padding:0px}
+ table tr.row{background-color:#FFF}
+ table td.bottomTd{background:url(../images/bgline.gif) repeat-x; border-bottom:1pt solid gray;padding:0px}
