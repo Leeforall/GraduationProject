@@ -268,7 +268,13 @@ class AttachmentAction extends  AdminAction {
 		$type_id = $this->_get('type','intval',0);
         if(!$id||!$type_id)$this->error('参数错误!');
 		$AttachmentDAO = D('Attachment');
-		$where['user_id']=session('userid');
+		if(intval($type_id)==2){ 
+			//如果是展品类型则只可以查看到自己发布的附件
+			//如果是展览的话则可以查看到所有附件
+			$where['user_id']=session('userid');  
+		}
+		$where['status']=1; //开启状态的 
+		//$where['is_verified']=1;  //审核通过的
 		$where['foreign_id']=$id ;
 		$where['type_id']=$type_id;
 		$where['file_type']=1;   //图片类型

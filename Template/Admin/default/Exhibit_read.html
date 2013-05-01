@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>展览管理-{$Think.config.cms_name}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel='stylesheet' type='text/css' href='__PUBLIC__/Admin/css/admin_style.css' />
+	<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+	<script>
+		function buildtable(){
+			var jsondata=$('#jsondata').val();//value 属性要用单引号，要不就会出错
+			//alert(jsondata);
+			if(!(typeof  jsondata==="undefined")){
+				var datas=jQuery.parseJSON(jsondata);
+				var values=datas.values;
+				console.log("contain data");
+				//console.log(values);
+				var str="";
+				$.each(values, function(key, val) {
+					// firebug console
+					console.log('index in arr:' + key + ", corresponding id:" + val.id + ", corresponding name:" + val.name + ", corresponding value:" + val.value);
+					    str+="<tr class='tr'>";
+						str+=" <td class='left'>"+val.name +"</td>";
+					    str+="<td colspan='2'>"+val.value+"</td>"
+						str+="</tr>";
+				});
+				//alert(str);
+				$('#tr_description').before(str);
+			}
+		}
+		$(document).ready(function(){
+			 buildtable();
+		});
+	</script>
+</head>
+<input type="hidden" value='{$info.jsondata}' id="jsondata" name='jsondata'>
+<table width="98%" border="0" cellpadding="4" cellspacing="1" class="table" style="font-size:15px">
+		<col width="180"/>
+		<col />
+		<col width="200"/>
+	<tr class="table_title">
+		<td colspan="4">展品基本信息</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">展品名称（中文）</td>
+	  <td colspan="2">{$info.name_cn}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">展品名称（英文）</td>
+	  <td colspan="2">{$info.name_en}</td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">展品类型</td>
+	  <td colspan="2">
+			<neq name="info.level1_name" value="">{$info.level1_name}</neq>
+			<neq name="info.level2_name" value="">-{$info.level2_name}</neq>	
+			<neq name="info.level3_name" value="">-{$info.level3_name}</neq></td>
+	</tr>
+	<tr class="tr">
+	  <td class="left">有效期</td>
+	  <td colspan="2">{$info.organizer}</td>
+	</tr>
+	<tr class="table_title">
+		<td colspan="4">展品具体属性</td>
+	</tr>
+	<tr class="table_title" id="tr_description">
+		<td colspan="4">展品描述</td>
+	</tr>
+	<tr class="tr" >
+	  <td class="left">展品描述</td>
+	  <td colspan="2">{$info.description}</td>
+	</tr>
+	<tr class="tr">
+		<td colspan="4" align="right"><b>创建时间 {:date('Y-m-d H:i:s',$info['createtime'])}</td>
+	</tr>
+</table>
+<body>
+</body>

@@ -81,7 +81,7 @@ function selectAllOptions()
     $.formValidator.initConfig({formid:"myform",autotip:true,onerror:function(msg,obj){
 			window.top.art.dialog({content:msg,lock:true,width:250,height:100,ok:function(){$(obj).focus();}});
 		}});
-		$("#name_cn").formValidator({onshow:"请输入用户名",onfocus:"用户名至少3个字符,最多50个字符",oncorrect:"输入正确"}).inputValidator({min:3,empty:{leftempty:false,rightempty:false,emptyerror:"两边不能有空符号"},onerror:"你输入的用户名非法,请确认"})
+		/*$("#name_cn").formValidator({onshow:"请输入用户名",onfocus:"用户名至少3个字符,最多50个字符",oncorrect:"输入正确"}).inputValidator({min:3,empty:{leftempty:false,rightempty:false,emptyerror:"两边不能有空符号"},onerror:"你输入的用户名非法,请确认"})
 		    .ajaxValidator({
 			datatype : "json",
 			async : true,
@@ -99,7 +99,7 @@ function selectAllOptions()
 			},
 			onerror : "该用户名已存在，请更换",
 			onwait : "用户名校验中..."
-		});
+		});*/
 	//$("#mobilephone").formValidator({onshow:"请输入联系人的手机号码，可以为空哦",onfocus:"你要是输入了，必须输入正确",oncorrect:"谢谢你的合作",onempty:"你真的不想留手机号码啊？"}).inputValidator({min:11,max:11,onerror:"手机号码必须是11位的,请确认"}).regexValidator({regexp:"mobile",datatype:"enum",onerror:"你输入的手机号码格式不正确"});;
 	//$("#telephone").formValidator({onshow:"请输入联系人的联系电话，可以为空哦",onfocus:"格式例如：0577-88888888",oncorrect:"谢谢你的合作",onempty:"你真的不想留联系电话了吗？"}).regexValidator({regexp:"^(([0\\+]\\d{2,3}-)?(0\\d{2,3})-)?(\\d{7,8})(-(\\d{3,}))?$",onerror:"你输入的联系电话格式不正确"});
     $("#email").formValidator({onshow:"请输入邮箱",onfocus:"邮箱6-100个字符,输入正确了才能离开焦点",oncorrect:"恭喜你,你输对了"}).inputValidator({min:6,max:100,onError:"你输入的邮箱长度非法,请确认"}).regexValidator({regexp:"^([\\w-.]+)@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.)|(([\\w-]+.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$",onerror:"你输入的邮箱格式不正确"});

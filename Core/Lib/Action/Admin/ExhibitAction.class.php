@@ -35,6 +35,7 @@ class ExhibitAction extends AdminAction{
 			$exhibition_id=$_POST['id'];
 			$ExhibitionExhibitDAO=D('ExhibitionExhibit');
 			$where['exhibition_id']=$exhibition_id;
+			$where['user_id']=session('userid');
 			$ExhibitionExhibitDAO->where($where)->delete();
 			foreach ($chosens as $id => $exhibit) {
 				$data['user_id']=session('userid');
@@ -67,6 +68,7 @@ class ExhibitAction extends AdminAction{
 			$exhibition_id=$_GET['id'];
 			$ExhibitionExhibitDAO=D('ExhibitionExhibit');
 			$where['exhibition_id']=$exhibition_id;
+			$where['user_id']=session('userid');
 			$exhibits=$ExhibitionExhibitDAO->field('exhibit_id')->where($where)->select();
 			$this->assign('exhibits',json_encode($exhibits));
 			$this->assign('list',$list);
@@ -110,6 +112,17 @@ class ExhibitAction extends AdminAction{
 		$this->assign('list',$list);
 		$this->assign('page',$show);
 		$this->assign('count',$count);
+		$this->display();
+	}
+	
+	public function read(){
+		$ExhibitDAO = D('Exhibit');
+		if(isset($_GET['id'])){
+			$id=intval($_GET['id']);
+			$map['id']=$id;
+			$exhibit=$ExhibitDAO->getExhibit($map);
+		}
+		$this->assign('info',$exhibit);
 		$this->display();
 	}
 	
@@ -183,6 +196,7 @@ class ExhibitAction extends AdminAction{
 		if(isset($_POST['dosubmit'])) {
 			if($ExhibitDAO -> create()){
 				$ExhibitDAO ->modifytime=time();//增加一个更新时间，要不如果更新没改动就会失败
+				$ExhibitDAO ->is_verified=0;  //修改后要重新审核
 				$categoryid=$_POST['category_id'];
 				$ExhibitTemplateDAO=D('ExhibitTemplate');
 				$ids=$ExhibitTemplateDAO->where(array('exhibittype_id'=>$categoryid))->getField('id',true);

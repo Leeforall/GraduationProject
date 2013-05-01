@@ -16,7 +16,8 @@
 		<td colspan="4">
 		<span class="fl">我的公司信息</span>
 		<span class="fr">
-			<a href="{:U('/Admin/Exhibitor/edit/',array('id'=>$info['id']))}">修改</a>
+			<notempty name='info'><a href="{:U('/Admin/Exhibitor/edit/',array('id'=>$info['id']))}">修改</a><else/>
+			<a href="{:U('/Admin/Exhibitor/add/')}">修改</a></notempty>
 		</span>
 		</td>
 	</tr>

@@ -71,7 +71,7 @@ class ExhibitorAction extends AdminAction{
 							}
 						}
 						if($i==$length){
-							$this->assign("jumpUrl",U('/Admin/Exhibitor/index'));
+							$this->assign("jumpUrl",U('/Admin/Exhibitor/home'));
 							$this->success('展商信息添加成功！');
 						}else{
 							$where['exhibitor_id']=$exhibitor_id;
@@ -152,6 +152,7 @@ class ExhibitorAction extends AdminAction{
 		if(isset($_POST['dosubmit'])) {
 			if($ExhibitorDAO -> create()){
 				$ExhibitorDAO ->modifytime=time();//增加一个更新时间，要不如果更新没改动就会失败
+				$ExhibitorDAO ->is_verified=0;  //修改后要重新审核
 				if($ExhibitorDAO->save()){
 					$categoryids=$_POST['categoryid'];
 					$categorynames=$_POST['categoryname'];
@@ -283,5 +284,17 @@ class ExhibitorAction extends AdminAction{
             $this->error('删除失败!');
         }
 	}
+	
+	//类型排序权重更新
+	public function type_sort(){
+		$sorts = $this->_POST('sort');
+		if(!is_array($sorts))$this->error('参数错误!');
+		foreach ($sorts as $id => $sort) {
+			D('Exhibitortype')->upType( array('id' =>$id , 'sort' =>intval($sort) ) );
+		}
+		$this->assign("jumpUrl",U('/Admin/Exhibitor/type'));
+		$this->success('更新完成！');
+	}
+
 	
 }
