@@ -326,8 +326,10 @@ CREATE TABLE IF NOT EXISTS `tp_exhibition` (
 	`period_end`  datetime DEFAULT NULL COMMENT '结束时间',
 	`day_start` time DEFAULT NULL COMMENT '日开放起始时间',
 	`day_end`  time DEFAULT NULL COMMENT '日开放结束时间',
-	`logo_name` varchar(50) NOT NULL DEFAULT '',
-	`logo_url` varchar(80) NOT NULL DEFAULT '',
+	`logo_name` varchar(80) NOT NULL DEFAULT '',
+	`logo_url` varchar(255) NOT NULL DEFAULT '',
+	`map_name` varchar(80) NOT NULL DEFAULT '' COMMENT '展览地图',
+	`map_url` varchar(255) NOT NULL DEFAULT '' COMMENT '展览地图URL',
 	`is_on_show` tinyint(1) unsigned NOT NULL DEFAULT '0',
 	`type_id` smallint(6) unsigned NOT NULL default '0' ,
 	`type_name` varchar(50) NOT NULL DEFAULT '' COMMENT '展览类型名称',
@@ -340,18 +342,18 @@ CREATE TABLE IF NOT EXISTS `tp_exhibition` (
 	`address`	varchar(50) NOT NULL DEFAULT '',
 	`hall`  varchar(30) NOT NULL DEFAULT '',
 	`website` varchar(50) NOT NULL DEFAULT '',
-	`organizer` varchar(250) NOT NULL DEFAULT '',
-	`host` varchar(250) NOT NULL DEFAULT '',
-	`coorganizer` varchar(250) NOT NULL DEFAULT '',
-	`supporter` varchar(250) NOT NULL DEFAULT '',
-	`description` varchar(250) NOT NULL DEFAULT '',
+	`organizer` varchar(255) NOT NULL DEFAULT '',
+	`host` varchar(255) NOT NULL DEFAULT '',
+	`coorganizer` varchar(255) NOT NULL DEFAULT '',
+	`supporter` varchar(255) NOT NULL DEFAULT '',
+	`description` varchar(255) NOT NULL DEFAULT '',
 	`contact` varchar(10) NOT NULL DEFAULT '',
 	`contact_add` varchar(50) NOT NULL DEFAULT '',
 	`postcode` varchar(10) NOT NULL DEFAULT '',
 	`telephone` varchar(20) NOT NULL DEFAULT '',
 	`mobilephone` varchar(20) NOT NULL DEFAULT '',
 	`fax` varchar(20) NOT NULL DEFAULT '',
-	`status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否激活 1：是 0：否',
+	`status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否激活 1：是 0：否',
 	`createtime` int(10) unsigned NOT NULL DEFAULT '0',
 	`modifytime` int(10) unsigned NOT NULL DEFAULT '0',
 	`is_verified` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否审核 1：是 0：tp_exhibit否',
@@ -417,17 +419,6 @@ CREATE TABLE IF NOT EXISTS `tp_exhibition_exhibit` (
   KEY `exhibition_id` (`exhibition_id`),
   KEY `user_id` (`user_id`),
   KEY `exhibit_id` (`exhibit_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
--- 表的结构 `tp_exhibitor_exhibition`
---
-
-CREATE TABLE IF NOT EXISTS `tp_exhibitor_exhibition` (
-  `exhibition_id` int(10) unsigned NOT NULL,
-  `user_id` int(10) unsigned NOT NULL,
-  KEY `exhibition_id` (`exhibition_id`),
-  KEY `user_id` (`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -511,10 +502,29 @@ CREATE TABLE IF NOT EXISTS `tp_exhibit_template` (
   `html_value` varchar(5000) NOT NULL DEFAULT '',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
+  KEY `status` (`status`),
   KEY `exhibittype_id` (`exhibittype_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+-- ----------------------------------------------------------------
 
+-- ----tp_comment--------------
+
+CREATE TABLE IF NOT EXISTS `tp_comment` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `type_id` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '评论所属的类型，目前有两种 0：未知，1：展会类型评论 2：展品类型评论 后续可扩展其他类型',
+  `foreign_id` int(10) unsigned NOT NULL DEFAULT '0'COMMENT '附件关联的外部id，可以是展会或者展品的id',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '评论的用户',
+  `comment` varchar(255) NOT NULL DEFAULT '' COMMENT '评论内容',
+  `rate`  tinyint(1) unsigned NOT NULL DEFAULT '3' COMMENT '评分',
+  `createtime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '评论时间', 
+  `is_verified` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否审核 1：未通过 0：待审核 2： 通过审核' ,
+	PRIMARY KEY (`id`),
+	KEY `type_id` (`type_id`),
+	KEY `user_id` (`user_id`),
+	KEY `foreign_id` (`foreign_id`),
+	KEY `is_verified` (`is_verified`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- ----------------------------------------------------------------
 
 -- ----tp_attachment--------------
@@ -524,23 +534,25 @@ CREATE TABLE IF NOT EXISTS `tp_attachment` (
   `type_id` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '附件所属的类型，目前有两种 0：未知，1：展会类型附件 2：展品类型附件 后续可扩展其他类型',
   `foreign_id` int(10) unsigned NOT NULL DEFAULT '0'COMMENT '附件关联的外部id，可以是展会或者展品的id',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '上传附件的用户',
-  `module_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '附件所属模块的id，为了方便附件管理',
-  `file_name` varchar(50) NOT NULL DEFAULT '',
-  `file_path` varchar(80) NOT NULL DEFAULT '',
+  `module_id` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '附件所属模块的id，为了方便附件管理',
+  `file_name` varchar(80) NOT NULL DEFAULT '',
+  `file_path` varchar(255) NOT NULL DEFAULT '',
   `file_size` int(10) unsigned NOT NULL DEFAULT '0',
   `file_ext` char(10) NOT NULL DEFAULT '',
   `file_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '文件类型 0：未知，1：图片 2：视频，3：资料，4：其他类型',
   `createtime` int(10) unsigned NOT NULL DEFAULT '0',
   `upload_ip` char(15) NOT NULL DEFAULT '',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `is_verified` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否审核 1：是 0：否',
+  `is_verified` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否审核 1：未通过 0：待审核 2： 通过审核' ,
   PRIMARY KEY (`id`),
 	KEY `type_id` (`type_id`),
 	KEY `module_id` (`module_id`),
+	KEY `user_id` (`user_id`),
 	KEY `foreign_id` (`foreign_id`),
+	KEY `file_type` (`file_type`),
 	KEY `status` (`status`),
 	KEY `is_verified` (`is_verified`)
-) ENGINE=MyISAM AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 AUTO_INCREMENT=3429;;
+) ENGINE=MyISAM AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 ;
 
 
 
@@ -552,11 +564,12 @@ CREATE TABLE IF NOT EXISTS `tp_exhibittype` (
   `id` smallint(6) unsigned NOT NULL auto_increment COMMENT '展品信息类型id',
   `parent_id` smallint(6) unsigned NOT NULL default '0' COMMENT '展品信息类型父id',
   `type_name` varchar(20) NOT NULL default '' COMMENT '类型名称',
-  `type_level` tinyint(1) NOT NULL default '2' COMMENT '类型层次 0:根,1:一级类型,2:二级类型,3:三级类型',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否激活 1：是 2：否',
+  `type_level` tinyint(1) NOT NULL default '0' COMMENT '类型层次 0:根,1:一级类型,2:二级类型,3:三级类型',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否激活 1：是 2：否',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注说明',
   PRIMARY KEY  (`id`),
   KEY `parent_id` (`parent_id`),
+  KEY `status` (`status`),
   KEY `type_level` (`type_level`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -3985,7 +3998,7 @@ CREATE TABLE IF NOT EXISTS `tp_areas` (
   `area_id` smallint(6) unsigned NOT NULL auto_increment COMMENT '地区id',
   `parent_id` smallint(6) unsigned NOT NULL default '0' COMMENT '地区父id',
   `area_name` varchar(20) NOT NULL default '' COMMENT '地区名称',
-  `area_type` tinyint(1) NOT NULL default '2' COMMENT '地区类型 0:country,1:province,2:city,3:district',
+  `area_type` tinyint(1) NOT NULL default '0' COMMENT '地区类型 0:country,1:province,2:city,3:district',
   PRIMARY KEY  (`area_id`),
   KEY `parent_id` (`parent_id`),
   KEY `area_type` (`area_type`)
